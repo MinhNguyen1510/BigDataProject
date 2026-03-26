@@ -1,0 +1,355 @@
+version: "3.9"
+
+# --- CẤU HÌNH DÙNG CHUNG CHO AIRFLOW ---
+x-airflow-common: &airflow-common
+  build:
+    context: ./docker_image/airflow
+    dockerfile: Dockerfile
+  env_file:
+    - .env
+  environment: &airflow-common-env
+    PYTHONPATH: /opt/airflow
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    # Ghép chuỗi kết nối Database từ các biến môi trường
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    # Cấu hình timezone (sửa lỗi offset-naive vs offset-aware datetimes)
+    AIRFLOW__CORE__DEFAULT_TIMEZONE: "UTC"
+    TZ: "UTC"
+    # Session configuration - sử dụng database sessions thay vì cookies
+    AIRFLOW__WEBSERVER__SESSION_BACKEND_PROVIDER: airflow.www.security.SessionPersistenceBackend
+    AIRFLOW__WEBSERVER__SESSION_COOKIE_SAMESITE: "Lax"
+    # Disable session expiry check lỗi
+    PYTHONDONTWRITEBYTECODE: "1"
+
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags
+    - ./airflow/logs:/opt/airflow/logs
+    - ./airflow/plugins:/opt/airflow/plugins
+    - ./airflow/config/webserver_config.py:/opt/airflow/webserver_config.py
+    - ./etl:/opt/airflow/etl
+  depends_on:
+    - postgres
+  networks:
+    - data_network
+
+services:
+  minio:
+    hostname: minio
+    image: "minio/minio"
+    container_name: minio
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    command: ["server", "/data", "--console-address", ":9001"]
+    volumes:
+      - miniodata:/data
+    env_file:
+      - .env
+    networks:
+      - data_network
+
+  mc:
+    image: minio/mc
+    container_name: mc
+    hostname: mc
+    env_file:
+      - .env
+    entrypoint: >
+      /bin/sh -c " until (/usr/bin/mc alias set minio http://minio:9000/ minio minio123) do echo '...waiting...' && sleep 10; done; /usr/bin/mc mb minio/mlflow; tail -f /dev/null;"
+    depends_on:
+      - minio
+    networks:
+      - data_network
+
+  spark-master:
+    build:
+      context: ./docker_image/spark
+      dockerfile: ./Dockerfile
+    container_name: "spark-master"
+    ports:
+      - "7077:7077" # Spark master port
+      - "8081:8080" # Spark master web UI port
+    expose:
+      - "7077"
+    environment:
+      # - SPARK_MODE=master
+      # - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      # - SPARK_RPC_ENCRYPTION_ENABLED=no
+      # - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      # - SPARK_SSL_ENABLED=no
+      # - SPARK_USER=spark
+      - SPARK_USER=spark
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+    volumes:
+      - ./docker_image/spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
+      - ./docker_image/spark/conf/log4j.properties:/opt/spark/conf/log4j.properties
+    networks:
+      - data_network
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master --host spark-master
+
+  spark-worker:
+    build:
+      context: ./docker_image/spark
+      dockerfile: ./Dockerfile
+    container_name: "spark-worker"
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_USER=spark
+      - SPARK_WORKER_WEBUI_PORT=8081
+    volumes:
+      - ./docker_image/spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
+      - ./docker_image/spark/conf/log4j.properties:/opt/spark/conf/log4j.properties
+    networks:
+      - data_network
+    # Chỉ định lệnh chạy Worker và trỏ về node Master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    ports:
+      - "8082:8081"
+
+  # --- APACHE SUPERSET ---
+  superset:
+    build:
+      context: ./docker_image/superset
+      dockerfile: Dockerfile
+    container_name: superset
+    ports:
+      - "8088:8088"
+    environment:
+      - SUPERSET_SECRET_KEY=DayLaMotCaiKeyBiMatChoSupersetCuaBan123!@#
+    volumes:
+      - superset_data:/app/superset_home
+    networks:
+      - data_network
+    depends_on:
+      superset-init:
+        condition: service_completed_successfully
+
+  # Khởi tạo Database và tài khoản Admin cho Superset
+  superset-init:
+    build:
+      context: ./docker_image/superset
+      dockerfile: Dockerfile
+    container_name: superset-init
+    environment:
+      - SUPERSET_SECRET_KEY=DayLaMotCaiKeyBiMatChoSupersetCuaBan123!@#
+    volumes:
+      - superset_data:/app/superset_home
+    networks:
+      - data_network
+    command: >
+      bash -c "superset db upgrade &&
+               superset fab create-admin --username admin --firstname Admin --lastname Superset --email admin@example.com --password admin &&
+               superset init"
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    volumes:
+      - mysql_h:/var/lib/mysql
+      - ./dataset:/tmp/dataset
+      - ./load_dataset_into_mysql:/tmp/load_dataset
+      - ./load_dataset_into_mysql/01_create_tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql
+    ports:
+      - "3307:3306"
+    env_file:
+      - .env
+    environment:
+      - MYSQL_DATABASE=${MLFLOW_DB_NAME}
+      - MYSQL_ROOT_USER=root
+      - MYSQL_USER=${MLFLOW_DB_USER}
+      - MYSQL_PASSWORD=${MLFLOW_DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${MLFLOW_DB_ROOT_PASS}
+    networks:
+      - data_network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MLFLOW_DB_ROOT_PASS}",
+        ]
+      interval: 3s
+      timeout: 20s
+      retries: 30
+      start_period: 60s
+
+  # Service load dữ liệu OLIST vào MySQL lần đầu tiên
+  init-olist-data:
+    image: python:3.11-slim
+    container_name: init-olist-data
+    depends_on:
+      mysql:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - ./dataset:/tmp/dataset
+      - ./load_dataset_into_mysql:/app
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MLFLOW_DB_USER=root # Bắt buộc dùng root để có quyền ghi vào olist_db
+      - MLFLOW_DB_ROOT_PASS=${MLFLOW_DB_ROOT_PASS}
+      - DB_NAME=${DB_NAME}
+    working_dir: /app
+    command: >
+      sh -c "
+        pip install --quiet pandas sqlalchemy pymysql mysql-connector-python &&
+        echo 'Đợi DNS resolution cho mysql...' &&
+        sleep 30 &&
+        python load_data.py
+      "
+    networks:
+      - data_network
+
+  web:
+    restart: always
+    build: ./docker_image/mlflow
+    container_name: mlflow_server
+    depends_on:
+      - mc
+      - mysql
+    ports:
+      - "7893:5000"
+    networks:
+      - data_network
+    environment:
+      - MLFLOW_S3_ENDPOINT_URL=http://minio:9000/
+      - AWS_ACCESS_KEY_ID=minio
+      - AWS_SECRET_ACCESS_KEY=minio123
+    # environment:#   - MLFLOW_S3_ENDPOINT_URL=http://minio:9000/#   - AWS_ACCESS_KEY_ID=minio#   - AWS_SECRET_ACCESS_KEY=minio123
+    command: mlflow server --backend-store-uri mysql+pymysql://root:${MLFLOW_DB_ROOT_PASS}@mysql:3306/${MLFLOW_DB_NAME} --default-artifact-root s3://mlflow/ --artifacts-destination s3://mlflow/ --host 0.0.0.0
+
+  mariadb:
+    image: mariadb:10.5.16
+    container_name: mariadb
+    volumes:
+      - mariadb:/var/lib/mysql
+    ports:
+      - "3309:3306"
+    env_file:
+      - .env
+    networks:
+      - data_network
+
+  hive-metastore:
+    container_name: hive-metastore
+    hostname: hive-metastore
+    image: "bitsondatadev/hive-metastore:latest"
+    entrypoint: /entrypoint.sh
+    ports:
+      - "9083:9083"
+    volumes:
+      - ./docker_image/hive-metastore/metastore-site.xml:/opt/apache-hive-metastore-3.0.0-bin/conf/metastore-site.xml:ro
+    environment:
+      METASTORE_DB_HOSTNAME: mariadb
+    networks:
+      - data_network
+    depends_on:
+      - mariadb
+      # - minio
+
+  postgres:
+    image: postgres:14-alpine
+    container_name: postgres
+    volumes:
+      - postgres_data_h:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    networks:
+      - data_network
+
+  spark-thrift-server:
+    build:
+      context: ./docker_image/spark
+      dockerfile: ./Dockerfile
+    container_name: "spark-thrift-server"
+    restart: always
+    depends_on:
+      - spark-master
+      - hive-metastore
+    ports:
+      - "4041:4040"
+      - "10000:10000"
+    command: >
+      bash -c "
+      echo 'Chờ Metastore lên hẳn...' &&
+      sleep 20 &&
+      /opt/spark/bin/spark-submit 
+      --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 
+      --name 'Thrift JDBC/ODBC Server' 
+      --master spark://spark-master:7077 
+      --conf spark.hadoop.hive.metastore.uris=thrift://hive-metastore:9083 
+      --executor-memory 1G 
+      --total-executor-cores 1 
+      --driver-memory 1G &
+      tail -f /dev/null"
+    volumes:
+      - ./docker_image/spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
+      - ./docker_image/spark/conf/hive-site.xml:/opt/spark/conf/hive-site.xml
+    networks:
+      - data_network
+
+  # Giao diện Web của Airflow (UI)
+  airflow-webserver:
+    <<: *airflow-common
+    container_name: airflow-webserver
+    command: webserver
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  # Lập lịch của Airflow
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: airflow-scheduler
+    command: scheduler
+    restart: always
+
+  # Chạy 1 lần để tạo tài khoản đăng nhập lúc đầu
+  airflow-init:
+    <<: *airflow-common
+    container_name: airflow-init
+    command: version
+    environment:
+      <<: *airflow-common-env
+      _AIRFLOW_DB_UPGRADE: "true"
+      _AIRFLOW_WWW_USER_CREATE: "true"
+      _AIRFLOW_WWW_USER_USERNAME: ${AIRFLOW_ADMIN_USER}
+      _AIRFLOW_WWW_USER_PASSWORD: ${AIRFLOW_ADMIN_PASS}
+
+
+networks:
+  data_network:
+    driver: bridge
+    name: data_network
+
+
+volumes:
+  postgres_data_h: {}
+  mysql_h: {}
+  miniodata: {}
+  mariadb: {}
+  superset_data: {}
+
