@@ -1,0 +1,17 @@
+[2026-04-02T10:28:49.718+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_customers manual__2026-04-02T04:00:07.771225+00:00 [queued]>
+[2026-04-02T10:28:49.754+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_customers manual__2026-04-02T04:00:07.771225+00:00 [queued]>
+[2026-04-02T10:28:49.754+0000] {taskinstance.py:1361} INFO - Starting attempt 5 of 6
+[2026-04-02T10:28:49.845+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): extract_customers> on 2026-04-02 04:00:07.771225+00:00
+[2026-04-02T10:28:49.884+0000] {standard_task_runner.py:57} INFO - Started process 917 to run task
+[2026-04-02T10:28:49.896+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'bronze_mysql_to_minio', 'extract_customers', 'manual__2026-04-02T04:00:07.771225+00:00', '--job-id', '188', '--raw', '--subdir', 'DAGS_FOLDER/bronze_dag.py', '--cfg-path', '/tmp/tmptrxsvrfe']
+[2026-04-02T10:28:49.904+0000] {standard_task_runner.py:85} INFO - Job 188: Subtask extract_customers
+[2026-04-02T10:28:50.075+0000] {task_command.py:416} INFO - Running <TaskInstance: bronze_mysql_to_minio.extract_customers manual__2026-04-02T04:00:07.771225+00:00 [running]> on host 1115d2cb4d12
+[2026-04-02T10:28:50.345+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='bronze_mysql_to_minio' AIRFLOW_CTX_TASK_ID='extract_customers' AIRFLOW_CTX_EXECUTION_DATE='2026-04-02T04:00:07.771225+00:00' AIRFLOW_CTX_TRY_NUMBER='5' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-02T04:00:07.771225+00:00'
+[2026-04-02T10:28:50.407+0000] {extract_mysql.py:32} INFO - [customers] Full Load | Query: SELECT * FROM customers;
+[2026-04-02T10:28:56.399+0000] {extract_mysql.py:35} INFO - [customers] Đã đọc: 99441 dòng x 7 cột
+[2026-04-02T10:28:56.686+0000] {extract_mysql.py:38} INFO - [customers] Đã lưu MinIO: bronze/olist/customers/year=2026/month=04/day=02/customers_20260402_000000.parquet
+[2026-04-02T10:28:56.690+0000] {bronze_dag.py:59} INFO -  extract_customers | {'table': 'customers', 'layer': 'bronze', 'schema': 'olist', 'row_count': 99441, 'column_count': 7, 'columns': ['customer_id', 'customer_unique_id', 'customer_zip_code_prefix', 'customer_city', 'customer_state', 'created_date', 'last_modified_date'], 'minio_path': 'bronze/olist/customers/year=2026/month=04/day=02/customers_20260402_000000.parquet', 'mode': 'full'}
+[2026-04-02T10:28:56.691+0000] {python.py:194} INFO - Done. Returned value was: {'table': 'customers', 'layer': 'bronze', 'schema': 'olist', 'row_count': 99441, 'column_count': 7, 'columns': ['customer_id', 'customer_unique_id', 'customer_zip_code_prefix', 'customer_city', 'customer_state', 'created_date', 'last_modified_date'], 'minio_path': 'bronze/olist/customers/year=2026/month=04/day=02/customers_20260402_000000.parquet', 'mode': 'full'}
+[2026-04-02T10:28:56.758+0000] {taskinstance.py:1400} INFO - Marking task as SUCCESS. dag_id=bronze_mysql_to_minio, task_id=extract_customers, execution_date=20260402T040007, start_date=20260402T102849, end_date=20260402T102856
+[2026-04-02T10:28:56.916+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2026-04-02T10:28:56.978+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

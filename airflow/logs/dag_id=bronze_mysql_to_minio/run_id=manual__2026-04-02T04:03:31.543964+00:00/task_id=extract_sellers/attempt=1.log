@@ -1,0 +1,17 @@
+[2026-04-02T04:03:43.617+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_sellers manual__2026-04-02T04:03:31.543964+00:00 [queued]>
+[2026-04-02T04:03:43.631+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_sellers manual__2026-04-02T04:03:31.543964+00:00 [queued]>
+[2026-04-02T04:03:43.632+0000] {taskinstance.py:1361} INFO - Starting attempt 1 of 2
+[2026-04-02T04:03:43.650+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): extract_sellers> on 2026-04-02 04:03:31.543964+00:00
+[2026-04-02T04:03:43.666+0000] {standard_task_runner.py:57} INFO - Started process 1155 to run task
+[2026-04-02T04:03:43.672+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'bronze_mysql_to_minio', 'extract_sellers', 'manual__2026-04-02T04:03:31.543964+00:00', '--job-id', '97', '--raw', '--subdir', 'DAGS_FOLDER/bronze_dag.py', '--cfg-path', '/tmp/tmpo8wr71z0']
+[2026-04-02T04:03:43.675+0000] {standard_task_runner.py:85} INFO - Job 97: Subtask extract_sellers
+[2026-04-02T04:03:43.776+0000] {task_command.py:416} INFO - Running <TaskInstance: bronze_mysql_to_minio.extract_sellers manual__2026-04-02T04:03:31.543964+00:00 [running]> on host bfff109fd42e
+[2026-04-02T04:03:43.984+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='bronze_mysql_to_minio' AIRFLOW_CTX_TASK_ID='extract_sellers' AIRFLOW_CTX_EXECUTION_DATE='2026-04-02T04:03:31.543964+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-02T04:03:31.543964+00:00'
+[2026-04-02T04:03:44.012+0000] {extract_mysql.py:32} INFO - [sellers] Full Load | Query: SELECT * FROM sellers;
+[2026-04-02T04:03:44.142+0000] {extract_mysql.py:35} INFO - [sellers] Đã đọc: 3095 dòng x 6 cột
+[2026-04-02T04:03:44.177+0000] {extract_mysql.py:38} INFO - [sellers] Đã lưu MinIO: bronze/seller/sellers/year=2026/month=04/day=02/sellers_20260402_000000.parquet
+[2026-04-02T04:03:44.177+0000] {bronze_dag.py:59} INFO -  extract_sellers | {'table': 'sellers', 'layer': 'bronze', 'schema': 'seller', 'row_count': 3095, 'column_count': 6, 'columns': ['seller_id', 'seller_zip_code_prefix', 'seller_city', 'seller_state', 'created_date', 'last_modified_date'], 'minio_path': 'bronze/seller/sellers/year=2026/month=04/day=02/sellers_20260402_000000.parquet', 'mode': 'full'}
+[2026-04-02T04:03:44.178+0000] {python.py:194} INFO - Done. Returned value was: {'table': 'sellers', 'layer': 'bronze', 'schema': 'seller', 'row_count': 3095, 'column_count': 6, 'columns': ['seller_id', 'seller_zip_code_prefix', 'seller_city', 'seller_state', 'created_date', 'last_modified_date'], 'minio_path': 'bronze/seller/sellers/year=2026/month=04/day=02/sellers_20260402_000000.parquet', 'mode': 'full'}
+[2026-04-02T04:03:44.228+0000] {taskinstance.py:1400} INFO - Marking task as SUCCESS. dag_id=bronze_mysql_to_minio, task_id=extract_sellers, execution_date=20260402T040331, start_date=20260402T040343, end_date=20260402T040344
+[2026-04-02T04:03:44.288+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2026-04-02T04:03:44.351+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

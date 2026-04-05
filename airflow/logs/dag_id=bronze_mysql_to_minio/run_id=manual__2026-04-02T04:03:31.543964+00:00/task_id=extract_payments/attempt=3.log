@@ -1,0 +1,17 @@
+[2026-04-02T10:23:37.269+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_payments manual__2026-04-02T04:03:31.543964+00:00 [queued]>
+[2026-04-02T10:23:37.407+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_payments manual__2026-04-02T04:03:31.543964+00:00 [queued]>
+[2026-04-02T10:23:37.413+0000] {taskinstance.py:1361} INFO - Starting attempt 3 of 4
+[2026-04-02T10:23:37.649+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): extract_payments> on 2026-04-02 04:03:31.543964+00:00
+[2026-04-02T10:23:37.724+0000] {standard_task_runner.py:57} INFO - Started process 213 to run task
+[2026-04-02T10:23:37.765+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'bronze_mysql_to_minio', 'extract_payments', 'manual__2026-04-02T04:03:31.543964+00:00', '--job-id', '148', '--raw', '--subdir', 'DAGS_FOLDER/bronze_dag.py', '--cfg-path', '/tmp/tmpi32tct_t']
+[2026-04-02T10:23:37.792+0000] {standard_task_runner.py:85} INFO - Job 148: Subtask extract_payments
+[2026-04-02T10:23:38.074+0000] {task_command.py:416} INFO - Running <TaskInstance: bronze_mysql_to_minio.extract_payments manual__2026-04-02T04:03:31.543964+00:00 [running]> on host 1115d2cb4d12
+[2026-04-02T10:23:38.447+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='bronze_mysql_to_minio' AIRFLOW_CTX_TASK_ID='extract_payments' AIRFLOW_CTX_EXECUTION_DATE='2026-04-02T04:03:31.543964+00:00' AIRFLOW_CTX_TRY_NUMBER='3' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-02T04:03:31.543964+00:00'
+[2026-04-02T10:23:38.506+0000] {extract_mysql.py:32} INFO - [order_payments] Full Load | Query: SELECT * FROM order_payments;
+[2026-04-02T10:23:49.962+0000] {extract_mysql.py:35} INFO - [order_payments] Đã đọc: 103886 dòng x 8 cột
+[2026-04-02T10:23:50.194+0000] {extract_mysql.py:38} INFO - [order_payments] Đã lưu MinIO: bronze/olist/order_payments/year=2026/month=04/day=02/order_payments_20260402_000000.parquet
+[2026-04-02T10:23:50.195+0000] {bronze_dag.py:59} INFO -  extract_order_payments | {'table': 'order_payments', 'layer': 'bronze', 'schema': 'olist', 'row_count': 103886, 'column_count': 8, 'columns': ['id', 'order_id', 'payment_sequential', 'payment_type', 'payment_installments', 'payment_value', 'created_date', 'last_modified_date'], 'minio_path': 'bronze/olist/order_payments/year=2026/month=04/day=02/order_payments_20260402_000000.parquet', 'mode': 'full'}
+[2026-04-02T10:23:50.196+0000] {python.py:194} INFO - Done. Returned value was: {'table': 'order_payments', 'layer': 'bronze', 'schema': 'olist', 'row_count': 103886, 'column_count': 8, 'columns': ['id', 'order_id', 'payment_sequential', 'payment_type', 'payment_installments', 'payment_value', 'created_date', 'last_modified_date'], 'minio_path': 'bronze/olist/order_payments/year=2026/month=04/day=02/order_payments_20260402_000000.parquet', 'mode': 'full'}
+[2026-04-02T10:23:50.262+0000] {taskinstance.py:1400} INFO - Marking task as SUCCESS. dag_id=bronze_mysql_to_minio, task_id=extract_payments, execution_date=20260402T040331, start_date=20260402T102337, end_date=20260402T102350
+[2026-04-02T10:23:50.390+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2026-04-02T10:23:50.455+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

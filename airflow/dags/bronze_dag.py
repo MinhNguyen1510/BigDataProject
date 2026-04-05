@@ -1,17 +1,11 @@
 """
 DAG: bronze_mysql_to_minio
-
-Nhiệm vụ DUY NHẤT của file này:
-  - Đọc config từ biến môi trường
-  - Tạo các Task và định nghĩa thứ tự chạy
-  - GỌI logic từ etl/ — KHÔNG tự xử lý data
-
-Mọi logic extract/transform/load đều nằm trong etl/
 """
 
 import os
 import logging
 from datetime import datetime, timedelta
+from airflow.models import Variable
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
@@ -22,9 +16,7 @@ from etl.bronze import (
     extract_customers,
     extract_sellers,
     extract_products,
-    extract_orders,
-    extract_order_items,
-    extract_payments,
+    extract_order_payments,
     extract_order_reviews,
     extract_product_category,
     extract_geolocation,
@@ -32,16 +24,12 @@ from etl.bronze import (
 
 logger = logging.getLogger(__name__)
 
-# ─────────────────────────────────────────────
-# CONFIG — đọc từ .env (docker-compose truyền vào container)
-# ─────────────────────────────────────────────
-
 MYSQL_CONFIG = {
-    "host":     os.getenv("MYSQL_HOST", "mysql"),
-    "port":     int(os.getenv("MYSQL_PORT", 3306)),
-    "database": os.getenv("MYSQL_DATABASE", "olist"),
-    "user":     os.getenv("MYSQL_ROOT_USER", "root"),
-    "password": os.getenv("MYSQL_ROOT_PASSWORD", "admin"),
+    "host":     "mysql",
+    "port":     int(3306),
+    "database": os.getenv("DB_NAME", "olist_db"),
+    "user":     "root",
+    "password": os.getenv("MLFLOW_DB_ROOT_PASS", "admin"),
 }
 
 MINIO_CONFIG = {
@@ -52,21 +40,57 @@ MINIO_CONFIG = {
 }
 
 
-# ─────────────────────────────────────────────
-# FACTORY: bọc hàm etl/ thành Airflow callable
-# ─────────────────────────────────────────────
+def make_dim_task(extract_fn):
+    """
+    Dành cho các bảng (Chạy Full Load, ghi đè theo phân mảnh ngày)
+    """
 
-def make_task(extract_fn):
-    """
-    Nhận vào 1 hàm từ etl/bronze, trả về callable cho PythonOperator.
-    Task chỉ khởi tạo client rồi gọi hàm — không làm gì thêm.
-    """
     def _run(**context):
+        # Lấy ngày chạy logical của Airflow
+        logical_date = context["data_interval_end"]
+
         mysql = MySQLClient(MYSQL_CONFIG)
         minio = MinIOClient(MINIO_CONFIG)
-        metadata = extract_fn(mysql, minio)
-        logger.info(f"✅ {extract_fn.__name__} | {metadata}")
-        return metadata  # tự động đẩy vào XCom
+
+        # Truyền logical_date xuống để MinIO chia folder
+        metadata = extract_fn(mysql, minio, logical_date=logical_date)
+        logger.info(f" {extract_fn.__name__} | {metadata}")
+        return metadata
+
+    _run.__name__ = extract_fn.__name__
+    return _run
+
+def make_fact_task(extract_fn, table_name):
+    """
+    Dành cho các bảng Transaction (Tự động chuyển đổi Full/Incremental Load)
+    Có đọc và cập nhật Airflow Variable để lưu vết Watermark.
+    """
+    def _run(**context):
+        logical_date = context["data_interval_end"]
+        mysql = MySQLClient(MYSQL_CONFIG)
+        minio = MinIOClient(MINIO_CONFIG)
+
+        # Đọc Watermark từ lần chạy trước (Mặc định None nếu là lần chạy đầu)
+        var_key = f"watermark_{table_name}"
+        last_watermark = Variable.get(var_key, default_var=None)
+
+        # Gọi logic thực thi (Code bên dưới sẽ tự lo việc chạy Full hay Inc)
+        metadata = extract_fn(
+            mysql,
+            minio,
+            last_watermark=last_watermark,
+            logical_date=logical_date
+        )
+        logger.info(f" {extract_fn.__name__} | {metadata}")
+
+        # Cập nhật Watermark MỚI cho lần chạy ngày mai
+        # Chúng ta dùng luôn mốc thời gian chạy xong (logical_date) làm mốc quét cho ngày mai
+        if metadata.get("status") != "skipped":
+            new_watermark = logical_date.strftime("%Y-%m-%d %H:%M:%S")
+            Variable.set(var_key, new_watermark)
+            logger.info(f" Đã cập nhật watermark cho '{table_name}' thành: {new_watermark}")
+
+        return metadata
 
     _run.__name__ = extract_fn.__name__
     return _run
@@ -85,30 +109,33 @@ default_args = {
 
 with DAG(
     dag_id="bronze_mysql_to_minio",
-    description="[Bronze] Extract toàn bộ bảng Olist từ MySQL → MinIO (Parquet)",
+    description="[Bronze] Extract Olist MySQL → MinIO (Partitioning & Incremental)",
     default_args=default_args,
     schedule_interval="@daily",
-    start_date=datetime(2024, 1, 1),
+    start_date=datetime(2027, 1, 5),
     catchup=False,
     tags=["bronze", "mysql", "minio", "olist"],
 ) as dag:
 
-    # ── Khai báo task — mỗi dòng = 1 bảng ──
-    # Thêm bảng mới: thêm hàm vào etl/bronze, thêm 1 dòng ở đây
-    t_product_category = PythonOperator(task_id="extract_product_category", python_callable=make_task(extract_product_category))
-    t_geolocation      = PythonOperator(task_id="extract_geolocation",      python_callable=make_task(extract_geolocation))
-    t_sellers          = PythonOperator(task_id="extract_sellers",          python_callable=make_task(extract_sellers))
-    t_customers        = PythonOperator(task_id="extract_customers",        python_callable=make_task(extract_customers))
-    t_products         = PythonOperator(task_id="extract_products",         python_callable=make_task(extract_products))
-    t_orders           = PythonOperator(task_id="extract_orders",           python_callable=make_task(extract_orders))
-    t_order_items      = PythonOperator(task_id="extract_order_items",      python_callable=make_task(extract_order_items))
-    t_payments         = PythonOperator(task_id="extract_payments",         python_callable=make_task(extract_payments))
-    t_order_reviews    = PythonOperator(task_id="extract_order_reviews",    python_callable=make_task(extract_order_reviews))
+    t_product_category = PythonOperator(task_id="extract_product_category", python_callable=make_dim_task(extract_product_category))
+    t_geolocation = PythonOperator(task_id="extract_geolocation", python_callable=make_dim_task(extract_geolocation))
+    t_customers = PythonOperator(task_id="extract_customers", python_callable=make_dim_task(extract_customers))
+    t_products = PythonOperator(task_id="extract_products", python_callable=make_dim_task(extract_products))
+    t_sellers = PythonOperator(task_id="extract_sellers", python_callable=make_dim_task(extract_sellers))
+    t_order_payments = PythonOperator(task_id="extract_payments", python_callable=make_dim_task(extract_order_payments))
+
+    # t_orders = PythonOperator(task_id="extract_orders", python_callable=make_fact_task(extract_orders, "orders"))
+    # t_order_items = PythonOperator(task_id="extract_order_items", python_callable=make_fact_task(extract_order_items, "order_items"))
+    t_order_reviews = PythonOperator(task_id="extract_order_reviews", python_callable=make_fact_task(extract_order_reviews, "order_reviews"))
 
     # ── Thứ tự chạy (theo FOREIGN KEY) ──
     t_product_category >> t_products
-    t_customers        >> t_orders
-    t_sellers          >> t_orders
-    t_products         >> t_order_items
-    t_sellers          >> t_order_items
-    t_orders           >> [t_order_items, t_payments, t_order_reviews]
+
+    # Các luồng song song hội tụ lại trước khi chạy bảng Transaction cuối
+    [t_products, t_customers, t_sellers, t_geolocation, t_order_payments] >> t_order_reviews
+
+    # t_customers        >> t_orders
+    # t_sellers          >> t_orders
+    # t_products         >> t_order_items
+    # t_sellers          >> t_order_items
+    # t_orders           >> [t_order_items, t_payments, t_order_reviews]

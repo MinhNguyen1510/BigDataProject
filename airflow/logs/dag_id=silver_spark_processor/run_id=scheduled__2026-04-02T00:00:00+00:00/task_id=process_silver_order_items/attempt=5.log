@@ -1,0 +1,118 @@
+[2026-04-03T13:35:25.246+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_order_items scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-03T13:35:25.264+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_order_items scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-03T13:35:25.266+0000] {taskinstance.py:1361} INFO - Starting attempt 5 of 4
+[2026-04-03T13:35:25.299+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_order_items> on 2026-04-02 00:00:00+00:00
+[2026-04-03T13:35:25.310+0000] {standard_task_runner.py:57} INFO - Started process 190 to run task
+[2026-04-03T13:35:25.318+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_order_items', 'scheduled__2026-04-02T00:00:00+00:00', '--job-id', '485', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmpnwvd5oi_']
+[2026-04-03T13:35:25.328+0000] {standard_task_runner.py:85} INFO - Job 485: Subtask process_silver_order_items
+[2026-04-03T13:35:25.457+0000] {task_command.py:416} INFO - Running <TaskInstance: silver_spark_processor.process_silver_order_items scheduled__2026-04-02T00:00:00+00:00 [running]> on host 3e1e8c99e894
+[2026-04-03T13:35:25.717+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='silver_spark_processor' AIRFLOW_CTX_TASK_ID='process_silver_order_items' AIRFLOW_CTX_EXECUTION_DATE='2026-04-02T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='5' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-02T00:00:00+00:00'
+[2026-04-03T13:35:25.746+0000] {base.py:73} INFO - Using connection ID 'spark_default' for task execution.
+[2026-04-03T13:35:25.748+0000] {spark_submit.py:340} INFO - Spark-Submit cmd: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_order_items /opt/airflow/etl/silver/main_silver.py --table_name order_items --merge_key order_item_id --is_cdc true --json_schema order_id STRING, order_item_id STRING, product_id STRING, seller_id STRING, shipping_limit_date STRING, price STRING, freight_value STRING
+[2026-04-03T13:35:26.007+0000] {spark_submit.py:491} INFO - /home/airflow/.local/lib/python3.10/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+[2026-04-03T13:35:37.086+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:37 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[2026-04-03T13:35:40.568+0000] {spark_submit.py:491} INFO - INFO:__main__:Khởi tạo Spark Job cho bảng: order_items
+[2026-04-03T13:35:41.040+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO SparkContext: Running Spark version 3.3.2
+[2026-04-03T13:35:41.221+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO ResourceUtils: ==============================================================
+[2026-04-03T13:35:41.227+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO ResourceUtils: No custom resources configured for spark.driver.
+[2026-04-03T13:35:41.227+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO ResourceUtils: ==============================================================
+[2026-04-03T13:35:41.227+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO SparkContext: Submitted application: <class 'pyspark.sql.session.SparkSession'>
+[2026-04-03T13:35:41.302+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+[2026-04-03T13:35:41.339+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO ResourceProfile: Limiting resource is cpus at 1 tasks per executor
+[2026-04-03T13:35:41.353+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO ResourceProfileManager: Added ResourceProfile id: 0
+[2026-04-03T13:35:41.542+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO SecurityManager: Changing view acls to: airflow
+[2026-04-03T13:35:41.543+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO SecurityManager: Changing modify acls to: airflow
+[2026-04-03T13:35:41.544+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO SecurityManager: Changing view acls groups to:
+[2026-04-03T13:35:41.552+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO SecurityManager: Changing modify acls groups to:
+[2026-04-03T13:35:41.553+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:41 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(airflow); groups with view permissions: Set(); users  with modify permissions: Set(airflow); groups with modify permissions: Set()
+[2026-04-03T13:35:42.837+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:42 INFO Utils: Successfully started service 'sparkDriver' on port 37875.
+[2026-04-03T13:35:42.974+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:42 INFO SparkEnv: Registering MapOutputTracker
+[2026-04-03T13:35:43.112+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:43 INFO SparkEnv: Registering BlockManagerMaster
+[2026-04-03T13:35:43.235+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:43 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+[2026-04-03T13:35:43.236+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:43 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+[2026-04-03T13:35:43.244+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:43 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+[2026-04-03T13:35:43.294+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:43 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-0f965cc6-b8e2-41ad-b697-90b08336a0a9
+[2026-04-03T13:35:43.338+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:43 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+[2026-04-03T13:35:43.381+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:43 INFO SparkEnv: Registering OutputCommitCoordinator
+[2026-04-03T13:35:44.116+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
+[2026-04-03T13:35:44.119+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 WARN Utils: Service 'SparkUI' could not bind on port 4041. Attempting port 4042.
+[2026-04-03T13:35:44.126+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 WARN Utils: Service 'SparkUI' could not bind on port 4042. Attempting port 4043.
+[2026-04-03T13:35:44.128+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 WARN Utils: Service 'SparkUI' could not bind on port 4043. Attempting port 4044.
+[2026-04-03T13:35:44.129+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 WARN Utils: Service 'SparkUI' could not bind on port 4044. Attempting port 4045.
+[2026-04-03T13:35:44.129+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 WARN Utils: Service 'SparkUI' could not bind on port 4045. Attempting port 4046.
+[2026-04-03T13:35:44.133+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 WARN Utils: Service 'SparkUI' could not bind on port 4046. Attempting port 4047.
+[2026-04-03T13:35:44.202+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 INFO Utils: Successfully started service 'SparkUI' on port 4047.
+[2026-04-03T13:35:44.332+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar at spark://3e1e8c99e894:37875/jars/hadoop-aws-3.3.2.jar with timestamp 1775223340978
+[2026-04-03T13:35:44.336+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar at spark://3e1e8c99e894:37875/jars/aws-java-sdk-bundle-1.11.1026.jar with timestamp 1775223340978
+[2026-04-03T13:35:44.336+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar at spark://3e1e8c99e894:37875/jars/delta-core_2.12-2.3.0.jar with timestamp 1775223340978
+[2026-04-03T13:35:44.741+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+[2026-04-03T13:35:44.980+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:44 INFO TransportClientFactory: Successfully created connection to spark-master/172.18.0.4:7077 after 181 ms (0 ms spent in bootstraps)
+[2026-04-03T13:35:45.573+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20260403133545-0000
+[2026-04-03T13:35:45.601+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 32841.
+[2026-04-03T13:35:45.602+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO NettyBlockTransferService: Server created on 3e1e8c99e894:32841
+[2026-04-03T13:35:45.609+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+[2026-04-03T13:35:45.644+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 3e1e8c99e894, 32841, None)
+[2026-04-03T13:35:45.691+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO BlockManagerMasterEndpoint: Registering block manager 3e1e8c99e894:32841 with 434.4 MiB RAM, BlockManagerId(driver, 3e1e8c99e894, 32841, None)
+[2026-04-03T13:35:45.702+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/0 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.719+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 3e1e8c99e894, 32841, None)
+[2026-04-03T13:35:45.729+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/0 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.730+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 3e1e8c99e894, 32841, None)
+[2026-04-03T13:35:45.737+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/1 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.738+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/1 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.738+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/2 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.747+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/2 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.747+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/3 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.751+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/3 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.751+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/4 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.763+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/4 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.764+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/5 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.775+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/5 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.776+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/6 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.776+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/6 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.776+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/7 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.784+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/7 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.785+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/8 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.801+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/8 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.802+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/9 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.802+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/9 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.805+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/10 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.806+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/10 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:45.816+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403133545-0000/11 on worker-20260403133511-172.18.0.11-44541 (172.18.0.11:44541) with 1 core(s)
+[2026-04-03T13:35:45.822+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:45 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403133545-0000/11 on hostPort 172.18.0.11:44541 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T13:35:46.561+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/0 is now RUNNING
+[2026-04-03T13:35:46.608+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/10 is now RUNNING
+[2026-04-03T13:35:46.609+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/4 is now RUNNING
+[2026-04-03T13:35:46.621+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/1 is now RUNNING
+[2026-04-03T13:35:46.631+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/2 is now RUNNING
+[2026-04-03T13:35:46.633+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/5 is now RUNNING
+[2026-04-03T13:35:46.643+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/7 is now RUNNING
+[2026-04-03T13:35:46.651+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/8 is now RUNNING
+[2026-04-03T13:35:46.651+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/9 is now RUNNING
+[2026-04-03T13:35:46.659+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/6 is now RUNNING
+[2026-04-03T13:35:46.660+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/3 is now RUNNING
+[2026-04-03T13:35:46.667+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:46 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403133545-0000/11 is now RUNNING
+[2026-04-03T13:35:48.067+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:48 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+[2026-04-03T13:35:55.924+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu xử lý lớp Silver cho bảng: order_items | Chế độ CDC: True
+[2026-04-03T13:35:55.926+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu quét Data Nóng từ Bronze...
+[2026-04-03T13:35:58.425+0000] {spark_submit.py:491} INFO - 26/04/03 13:35:58 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties
+[2026-04-03T13:42:30.393+0000] {local_task_job_runner.py:294} WARNING - State of this instance has been externally set to restarting. Terminating instance.
+[2026-04-03T13:42:30.398+0000] {process_utils.py:131} INFO - Sending 15 to group 190. PIDs of all processes in the group: [215, 690, 190]
+[2026-04-03T13:42:30.399+0000] {process_utils.py:86} INFO - Sending the signal 15 to group 190
+[2026-04-03T13:42:30.402+0000] {taskinstance.py:1632} ERROR - Received SIGTERM. Terminating subprocesses.
+[2026-04-03T13:42:30.402+0000] {spark_submit.py:618} INFO - Sending kill signal to spark-submit
+[2026-04-03T13:42:30.456+0000] {taskinstance.py:1937} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 410, in submit
+    self._process_spark_submit_log(iter(self._submit_sp.stdout))  # type: ignore
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 459, in _process_spark_submit_log
+    for line in itr:
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/models/taskinstance.py", line 1634, in signal_handler
+    raise AirflowException("Task received SIGTERM signal")
+airflow.exceptions.AirflowException: Task received SIGTERM signal
+[2026-04-03T13:42:30.473+0000] {taskinstance.py:1400} INFO - Marking task as UP_FOR_RETRY. dag_id=silver_spark_processor, task_id=process_silver_order_items, execution_date=20260402T000000, start_date=20260403T133525, end_date=20260403T134230
+[2026-04-03T13:42:30.640+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 485 for task process_silver_order_items (Task received SIGTERM signal; 190)
+[2026-04-03T13:42:30.700+0000] {process_utils.py:79} INFO - Process psutil.Process(pid=215, status='terminated', started='13:35:25') (215) terminated with exit code None
+[2026-04-03T13:42:30.701+0000] {process_utils.py:79} INFO - Process psutil.Process(pid=690, status='terminated', started='13:35:37') (690) terminated with exit code None
+[2026-04-03T13:42:30.702+0000] {process_utils.py:79} INFO - Process psutil.Process(pid=190, status='terminated', exitcode=1, started='13:35:24') (190) terminated with exit code 1

@@ -1,4 +1,5 @@
 import os
+import uuid
 import polars as pl
 from minio import Minio
 from datetime import datetime
@@ -25,24 +26,35 @@ class MinIOClient:
         if not self._client.bucket_exists(self._bucket):
             self._client.make_bucket(self._bucket)
 
-    def _make_object_key(self, layer: str, schema: str, table: str) -> str:
+    def _make_object_key(self, layer: str, schema: str, table: str, logical_date: datetime = None) -> str:
         """
-        Tạo đường dẫn object trên MinIO.
-        Ví dụ: bronze/customer/customers.parquet
+        Tạo đường dẫn object trên MinIO có phân mảnh thời gian.
+        Ví dụ: bronze/olist/customers/year=2026/month=03/day=29/customers_20260329_103000.parquet
         """
+        run_time = logical_date or datetime.now()
+
+        year = run_time.strftime("%Y")
+        month = run_time.strftime("%m")
+        day = run_time.strftime("%d")
+        timestamp = run_time.strftime("%Y%m%d_%H%M%S")
+
+        # Áp dụng partition cho lớp Bronze
+        if layer.lower() == "bronze":
+            return f"{layer}/{schema}/{table}/year={year}/month={month}/day={day}/{table}_{timestamp}.parquet"
+
+        # Lớp Silver/Gold có thể dùng đường dẫn tĩnh nếu dùng Delta Lake
         return f"{layer}/{schema}/{table}.parquet"
 
     def _make_tmp_path(self, layer: str, schema: str, table: str) -> str:
-        """Tạo đường dẫn file tạm cục bộ."""
-        ts = datetime.now().strftime("%Y%m%d%H%M%S")
-        return f"/tmp/file_{layer}_{schema}_{table}_{ts}.parquet"
+        unique_id = uuid.uuid4().hex
+        return f"/tmp/file_{layer}_{schema}_{table}_{unique_id}.parquet"
 
-    def save(self, df: pl.DataFrame, layer: str, schema: str, table: str) -> str:
+    def save(self, df: pl.DataFrame, layer: str, schema: str, table: str, logical_date: datetime = None) -> str:
         """
         Lưu Polars DataFrame lên MinIO dưới dạng Parquet.
         Trả về object key (đường dẫn trên MinIO).
         """
-        object_key = self._make_object_key(layer, schema, table)
+        object_key = self._make_object_key(layer, schema, table, logical_date=logical_date)
         tmp_path = self._make_tmp_path(layer, schema, table)
         try:
             df.write_parquet(tmp_path)

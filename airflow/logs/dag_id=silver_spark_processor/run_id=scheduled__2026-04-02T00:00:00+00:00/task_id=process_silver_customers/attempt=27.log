@@ -1,0 +1,492 @@
+[2026-04-03T16:34:06.087+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_customers scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-03T16:34:06.096+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_customers scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-03T16:34:06.096+0000] {taskinstance.py:1361} INFO - Starting attempt 27 of 27
+[2026-04-03T16:34:06.108+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_customers> on 2026-04-02 00:00:00+00:00
+[2026-04-03T16:34:06.115+0000] {standard_task_runner.py:57} INFO - Started process 761 to run task
+[2026-04-03T16:34:06.118+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_customers', 'scheduled__2026-04-02T00:00:00+00:00', '--job-id', '633', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmps6qay4gu']
+[2026-04-03T16:34:06.121+0000] {standard_task_runner.py:85} INFO - Job 633: Subtask process_silver_customers
+[2026-04-03T16:34:06.177+0000] {task_command.py:416} INFO - Running <TaskInstance: silver_spark_processor.process_silver_customers scheduled__2026-04-02T00:00:00+00:00 [running]> on host f094757a841d
+[2026-04-03T16:34:06.272+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='silver_spark_processor' AIRFLOW_CTX_TASK_ID='process_silver_customers' AIRFLOW_CTX_EXECUTION_DATE='2026-04-02T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='27' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-02T00:00:00+00:00'
+[2026-04-03T16:34:06.283+0000] {base.py:73} INFO - Using connection ID 'spark_default' for task execution.
+[2026-04-03T16:34:06.285+0000] {spark_submit.py:340} INFO - Spark-Submit cmd: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 --conf spark.hadoop.fs.s3a.access.key=minio --conf spark.hadoop.fs.s3a.secret.key=****** --conf spark.hadoop.fs.s3a.path.style.access=true --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 512m --name airflow_silver_customers --verbose /opt/airflow/etl/silver/main_silver.py --table_name customers --merge_key customer_id --is_cdc false --json_schema 
+[2026-04-03T16:34:06.432+0000] {spark_submit.py:491} INFO - /home/airflow/.local/lib/python3.10/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+[2026-04-03T16:34:08.186+0000] {spark_submit.py:491} INFO - Using properties file: null
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - Parsed arguments:
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - master                  spark://spark-master:7077
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - deployMode              null
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - executorMemory          1g
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - executorCores           1
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - totalExecutorCores      null
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - propertiesFile          null
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - driverMemory            512m
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - driverCores             null
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - driverExtraClassPath    null
+[2026-04-03T16:34:08.319+0000] {spark_submit.py:491} INFO - driverExtraLibraryPath  null
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - driverExtraJavaOptions  null
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - supervise               false
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - queue                   null
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - numExecutors            null
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - files                   null
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - pyFiles                 null
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - archives                null
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - mainClass               null
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - primaryResource         file:/opt/airflow/etl/silver/main_silver.py
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - name                    airflow_silver_customers
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - childArgs               [--table_name customers --merge_key customer_id --is_cdc false --json_schema ]
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - jars                    file:/opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,file:/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,file:/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,file:/opt/airflow/etl/jars/delta-storage-2.3.0.jar
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - packages                null
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - packagesExclusions      null
+[2026-04-03T16:34:08.320+0000] {spark_submit.py:491} INFO - repositories            null
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - verbose                 true
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - Spark properties used, including those specified through
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - --conf and those from the properties file null:
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - (spark.databricks.delta.schema.autoMerge.enabled,true)
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - (spark.driver.memory,512m)
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.access.key,*********(redacted))
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.connection.ssl.enabled,false)
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.endpoint,http://minio:9000)
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.impl,org.apache.hadoop.fs.s3a.S3AFileSystem)
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.path.style.access,true)
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.secret.key,*********(redacted))
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - (spark.sql.catalog.spark_catalog,org.apache.spark.sql.delta.catalog.DeltaCatalog)
+[2026-04-03T16:34:08.321+0000] {spark_submit.py:491} INFO - (spark.sql.extensions,io.delta.sql.DeltaSparkSessionExtension)
+[2026-04-03T16:34:08.322+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:08.322+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:08.665+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:08 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[2026-04-03T16:34:08.838+0000] {spark_submit.py:491} INFO - Main class:
+[2026-04-03T16:34:08.838+0000] {spark_submit.py:491} INFO - org.apache.spark.deploy.PythonRunner
+[2026-04-03T16:34:08.839+0000] {spark_submit.py:491} INFO - Arguments:
+[2026-04-03T16:34:08.839+0000] {spark_submit.py:491} INFO - file:/opt/airflow/etl/silver/main_silver.py
+[2026-04-03T16:34:08.839+0000] {spark_submit.py:491} INFO - null
+[2026-04-03T16:34:08.839+0000] {spark_submit.py:491} INFO - --table_name
+[2026-04-03T16:34:08.839+0000] {spark_submit.py:491} INFO - customers
+[2026-04-03T16:34:08.839+0000] {spark_submit.py:491} INFO - --merge_key
+[2026-04-03T16:34:08.839+0000] {spark_submit.py:491} INFO - customer_id
+[2026-04-03T16:34:08.840+0000] {spark_submit.py:491} INFO - --is_cdc
+[2026-04-03T16:34:08.840+0000] {spark_submit.py:491} INFO - false
+[2026-04-03T16:34:08.840+0000] {spark_submit.py:491} INFO - --json_schema
+[2026-04-03T16:34:08.840+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:08.841+0000] {spark_submit.py:491} INFO - Spark config:
+[2026-04-03T16:34:08.841+0000] {spark_submit.py:491} INFO - (spark.app.name,airflow_silver_customers)
+[2026-04-03T16:34:08.841+0000] {spark_submit.py:491} INFO - (spark.app.submitTime,1775234048825)
+[2026-04-03T16:34:08.841+0000] {spark_submit.py:491} INFO - (spark.databricks.delta.schema.autoMerge.enabled,true)
+[2026-04-03T16:34:08.841+0000] {spark_submit.py:491} INFO - (spark.driver.memory,512m)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.executor.cores,1)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.executor.memory,1g)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.access.key,*********(redacted))
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.connection.ssl.enabled,false)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.endpoint,http://minio:9000)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.impl,org.apache.hadoop.fs.s3a.S3AFileSystem)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.path.style.access,true)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.secret.key,*********(redacted))
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.jars,file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.master,spark://spark-master:7077)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.repl.local.jars,file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.sql.catalog.spark_catalog,org.apache.spark.sql.delta.catalog.DeltaCatalog)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.sql.extensions,io.delta.sql.DeltaSparkSessionExtension)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.submit.deployMode,client)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - (spark.submit.pyFiles,)
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - Classpath elements:
+[2026-04-03T16:34:08.842+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar
+[2026-04-03T16:34:08.843+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar
+[2026-04-03T16:34:08.843+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar
+[2026-04-03T16:34:08.843+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar
+[2026-04-03T16:34:08.843+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:08.843+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:09.776+0000] {spark_submit.py:491} INFO - INFO:__main__:Khởi tạo Spark Job cho bảng: customers
+[2026-04-03T16:34:09.869+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:09 INFO SparkContext: Running Spark version 3.3.2
+[2026-04-03T16:34:09.903+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:09 INFO ResourceUtils: ==============================================================
+[2026-04-03T16:34:09.904+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:09 INFO ResourceUtils: No custom resources configured for spark.driver.
+[2026-04-03T16:34:09.904+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:09 INFO ResourceUtils: ==============================================================
+[2026-04-03T16:34:09.905+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:09 INFO SparkContext: Submitted application: Silver_Processor_customers
+[2026-04-03T16:34:09.932+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:09 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+[2026-04-03T16:34:09.945+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:09 INFO ResourceProfile: Limiting resource is cpus at 1 tasks per executor
+[2026-04-03T16:34:09.948+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:09 INFO ResourceProfileManager: Added ResourceProfile id: 0
+[2026-04-03T16:34:10.014+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SecurityManager: Changing view acls to: airflow
+[2026-04-03T16:34:10.015+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SecurityManager: Changing modify acls to: airflow
+[2026-04-03T16:34:10.016+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SecurityManager: Changing view acls groups to:
+[2026-04-03T16:34:10.017+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SecurityManager: Changing modify acls groups to:
+[2026-04-03T16:34:10.017+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(airflow); groups with view permissions: Set(); users  with modify permissions: Set(airflow); groups with modify permissions: Set()
+[2026-04-03T16:34:10.329+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO Utils: Successfully started service 'sparkDriver' on port 42971.
+[2026-04-03T16:34:10.397+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SparkEnv: Registering MapOutputTracker
+[2026-04-03T16:34:10.437+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SparkEnv: Registering BlockManagerMaster
+[2026-04-03T16:34:10.460+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+[2026-04-03T16:34:10.461+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+[2026-04-03T16:34:10.466+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+[2026-04-03T16:34:10.489+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-ec7c21f2-81f2-4271-912d-25892b56ab92
+[2026-04-03T16:34:10.505+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO MemoryStore: MemoryStore started with capacity 127.2 MiB
+[2026-04-03T16:34:10.522+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SparkEnv: Registering OutputCommitCoordinator
+[2026-04-03T16:34:10.903+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+[2026-04-03T16:34:10.970+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar at spark://f094757a841d:42971/jars/hadoop-aws-3.3.2.jar with timestamp 1775234049859
+[2026-04-03T16:34:10.971+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar at spark://f094757a841d:42971/jars/aws-java-sdk-bundle-1.11.1026.jar with timestamp 1775234049859
+[2026-04-03T16:34:10.971+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar at spark://f094757a841d:42971/jars/delta-core_2.12-2.3.0.jar with timestamp 1775234049859
+[2026-04-03T16:34:10.972+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:10 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar at spark://f094757a841d:42971/jars/delta-storage-2.3.0.jar with timestamp 1775234049859
+[2026-04-03T16:34:11.086+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+[2026-04-03T16:34:11.135+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO TransportClientFactory: Successfully created connection to spark-master/172.18.0.6:7077 after 27 ms (0 ms spent in bootstraps)
+[2026-04-03T16:34:11.235+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20260403163411-0002
+[2026-04-03T16:34:11.240+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/0 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.249+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/0 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.254+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/1 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.255+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 41633.
+[2026-04-03T16:34:11.255+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO NettyBlockTransferService: Server created on f094757a841d:41633
+[2026-04-03T16:34:11.255+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/1 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.256+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/2 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.257+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/2 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.257+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/3 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.258+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+[2026-04-03T16:34:11.259+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/3 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.261+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/4 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.262+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/4 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.264+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/5 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.264+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/5 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.265+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/6 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.268+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/6 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.268+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/7 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.269+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/7 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.270+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/8 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.271+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/8 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.272+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/9 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.275+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/9 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.276+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/10 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.276+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/10 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.276+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403163411-0002/11 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:34:11.279+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403163411-0002/11 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:34:11.280+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, f094757a841d, 41633, None)
+[2026-04-03T16:34:11.290+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO BlockManagerMasterEndpoint: Registering block manager f094757a841d:41633 with 127.2 MiB RAM, BlockManagerId(driver, f094757a841d, 41633, None)
+[2026-04-03T16:34:11.299+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, f094757a841d, 41633, None)
+[2026-04-03T16:34:11.310+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, f094757a841d, 41633, None)
+[2026-04-03T16:34:11.324+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/1 is now RUNNING
+[2026-04-03T16:34:11.327+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/0 is now RUNNING
+[2026-04-03T16:34:11.337+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/3 is now RUNNING
+[2026-04-03T16:34:11.355+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/9 is now RUNNING
+[2026-04-03T16:34:11.361+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/8 is now RUNNING
+[2026-04-03T16:34:11.377+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/2 is now RUNNING
+[2026-04-03T16:34:11.385+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/4 is now RUNNING
+[2026-04-03T16:34:11.392+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/7 is now RUNNING
+[2026-04-03T16:34:11.414+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/6 is now RUNNING
+[2026-04-03T16:34:11.435+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/11 is now RUNNING
+[2026-04-03T16:34:11.439+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/5 is now RUNNING
+[2026-04-03T16:34:11.446+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403163411-0002/10 is now RUNNING
+[2026-04-03T16:34:11.832+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:11 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+[2026-04-03T16:34:14.200+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu xử lý lớp Silver cho bảng: customers | Chế độ CDC: False
+[2026-04-03T16:34:14.201+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu quét Data Nóng từ Bronze...
+[2026-04-03T16:34:14.861+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:14 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties
+[2026-04-03T16:34:33.151+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:33 WARN TaskSetManager: Lost task 0.0 in stage 0.0 (TID 0) (172.18.0.12 executor 2): org.apache.spark.sql.AnalysisException: Illegal Parquet type: INT64 (TIMESTAMP(NANOS,false))
+[2026-04-03T16:34:33.151+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryCompilationErrors$.illegalParquetTypeError(QueryCompilationErrors.scala:1317)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.illegalType$1(ParquetSchemaConverter.scala:191)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertPrimitiveField$2(ParquetSchemaConverter.scala:269)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertPrimitiveField(ParquetSchemaConverter.scala:209)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertField(ParquetSchemaConverter.scala:173)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertInternal$3(ParquetSchemaConverter.scala:138)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertInternal$3$adapted(ParquetSchemaConverter.scala:108)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.$anonfun$map$1(TraversableLike.scala:286)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at scala.collection.immutable.Range.foreach(Range.scala:158)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.map(TraversableLike.scala:286)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.map$(TraversableLike.scala:279)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at scala.collection.AbstractTraversable.map(Traversable.scala:108)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertInternal(ParquetSchemaConverter.scala:108)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convert(ParquetSchemaConverter.scala:78)
+[2026-04-03T16:34:33.152+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$readSchemaFromFooter$2(ParquetFileFormat.scala:577)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.readSchemaFromFooter(ParquetFileFormat.scala:577)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$2(ParquetFileFormat.scala:557)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at scala.collection.immutable.Stream.map(Stream.scala:418)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$1(ParquetFileFormat.scala:557)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$1$adapted(ParquetFileFormat.scala:549)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.SchemaMergeUtils$.$anonfun$mergeSchemasInParallel$2(SchemaMergeUtils.scala:76)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitions$2(RDD.scala:855)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitions$2$adapted(RDD.scala:855)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:34:33.153+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:34:33.154+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:34:33.154+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:34:33.154+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:38.082+0000] {spark_submit.py:491} INFO - 26/04/03 16:34:38 ERROR TaskSetManager: Task 0 in stage 0.0 failed 4 times; aborting job
+[2026-04-03T16:34:38.251+0000] {spark_submit.py:491} INFO - ERROR:__main__:Lỗi khi xử lý lớp Silver bảng customers: An error occurred while calling o47.load.
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - : org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 0.0 failed 4 times, most recent failure: Lost task 0.3 in stage 0.0 (TID 3) (172.18.0.12 executor 3): org.apache.spark.sql.AnalysisException: Illegal Parquet type: INT64 (TIMESTAMP(NANOS,false))
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryCompilationErrors$.illegalParquetTypeError(QueryCompilationErrors.scala:1317)
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.illegalType$1(ParquetSchemaConverter.scala:191)
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertPrimitiveField$2(ParquetSchemaConverter.scala:269)
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertPrimitiveField(ParquetSchemaConverter.scala:209)
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertField(ParquetSchemaConverter.scala:173)
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertInternal$3(ParquetSchemaConverter.scala:138)
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertInternal$3$adapted(ParquetSchemaConverter.scala:108)
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.$anonfun$map$1(TraversableLike.scala:286)
+[2026-04-03T16:34:38.252+0000] {spark_submit.py:491} INFO - at scala.collection.immutable.Range.foreach(Range.scala:158)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.map(TraversableLike.scala:286)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.map$(TraversableLike.scala:279)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at scala.collection.AbstractTraversable.map(Traversable.scala:108)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertInternal(ParquetSchemaConverter.scala:108)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convert(ParquetSchemaConverter.scala:78)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$readSchemaFromFooter$2(ParquetFileFormat.scala:577)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.readSchemaFromFooter(ParquetFileFormat.scala:577)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$2(ParquetFileFormat.scala:557)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at scala.collection.immutable.Stream.map(Stream.scala:418)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$1(ParquetFileFormat.scala:557)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$1$adapted(ParquetFileFormat.scala:549)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.SchemaMergeUtils$.$anonfun$mergeSchemasInParallel$2(SchemaMergeUtils.scala:76)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitions$2(RDD.scala:855)
+[2026-04-03T16:34:38.253+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitions$2$adapted(RDD.scala:855)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - Driver stacktrace:
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.failJobAndIndependentStages(DAGScheduler.scala:2672)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:2608)
+[2026-04-03T16:34:38.254+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:2607)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach(ResizableArray.scala:62)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach$(ResizableArray.scala:55)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:49)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:2607)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1182)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1182)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at scala.Option.foreach(Option.scala:407)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1182)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:2860)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2802)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2791)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)
+[2026-04-03T16:34:38.255+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:952)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2238)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2259)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2278)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2303)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$collect$1(RDD.scala:1021)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:112)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.withScope(RDD.scala:406)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.collect(RDD.scala:1020)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.SchemaMergeUtils$.mergeSchemasInParallel(SchemaMergeUtils.scala:70)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.mergeSchemasInParallel(ParquetFileFormat.scala:560)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetUtils$.inferSchema(ParquetUtils.scala:125)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat.inferSchema(ParquetFileFormat.scala:171)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.$anonfun$getOrInferFileFormatSchema$11(DataSource.scala:210)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at scala.Option.orElse(Option.scala:447)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.getOrInferFileFormatSchema(DataSource.scala:207)
+[2026-04-03T16:34:38.256+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceSchema(DataSource.scala:262)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceInfo$lzycompute(DataSource.scala:118)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceInfo(DataSource.scala:118)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamingRelation$.apply(StreamingRelation.scala:34)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.streaming.DataStreamReader.loadInternal(DataStreamReader.scala:196)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.streaming.DataStreamReader.load(DataStreamReader.scala:210)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at py4j.Gateway.invoke(Gateway.java:282)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at py4j.commands.CallCommand.execute(CallCommand.java:79)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
+[2026-04-03T16:34:38.257+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - Caused by: org.apache.spark.sql.AnalysisException: Illegal Parquet type: INT64 (TIMESTAMP(NANOS,false))
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryCompilationErrors$.illegalParquetTypeError(QueryCompilationErrors.scala:1317)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.illegalType$1(ParquetSchemaConverter.scala:191)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertPrimitiveField$2(ParquetSchemaConverter.scala:269)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertPrimitiveField(ParquetSchemaConverter.scala:209)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertField(ParquetSchemaConverter.scala:173)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertInternal$3(ParquetSchemaConverter.scala:138)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertInternal$3$adapted(ParquetSchemaConverter.scala:108)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.$anonfun$map$1(TraversableLike.scala:286)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at scala.collection.immutable.Range.foreach(Range.scala:158)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.map(TraversableLike.scala:286)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.map$(TraversableLike.scala:279)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at scala.collection.AbstractTraversable.map(Traversable.scala:108)
+[2026-04-03T16:34:38.258+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertInternal(ParquetSchemaConverter.scala:108)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convert(ParquetSchemaConverter.scala:78)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$readSchemaFromFooter$2(ParquetFileFormat.scala:577)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.readSchemaFromFooter(ParquetFileFormat.scala:577)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$2(ParquetFileFormat.scala:557)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at scala.collection.immutable.Stream.map(Stream.scala:418)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$1(ParquetFileFormat.scala:557)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$1$adapted(ParquetFileFormat.scala:549)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.SchemaMergeUtils$.$anonfun$mergeSchemasInParallel$2(SchemaMergeUtils.scala:76)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitions$2(RDD.scala:855)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitions$2$adapted(RDD.scala:855)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:34:38.259+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:34:38.260+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:34:38.260+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:34:38.260+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:34:38.260+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:34:38.260+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:34:38.260+0000] {spark_submit.py:491} INFO - ... 1 more
+[2026-04-03T16:34:38.260+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:38.435+0000] {spark_submit.py:491} INFO - Traceback (most recent call last):
+[2026-04-03T16:34:38.436+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/main_silver.py", line 60, in <module>
+[2026-04-03T16:34:38.437+0000] {spark_submit.py:491} INFO - raise e
+[2026-04-03T16:34:38.437+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/main_silver.py", line 49, in <module>
+[2026-04-03T16:34:38.437+0000] {spark_submit.py:491} INFO - process_silver_layer(
+[2026-04-03T16:34:38.437+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/silver_processor.py", line 78, in process_silver_layer
+[2026-04-03T16:34:38.437+0000] {spark_submit.py:491} INFO - .load(bronze_path)
+[2026-04-03T16:34:38.437+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/streaming.py", line 467, in load
+[2026-04-03T16:34:38.437+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/java_gateway.py", line 1321, in __call__
+[2026-04-03T16:34:38.437+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 190, in deco
+[2026-04-03T16:34:38.438+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/protocol.py", line 326, in get_return_value
+[2026-04-03T16:34:38.480+0000] {spark_submit.py:491} INFO - py4j.protocol.Py4JJavaError: An error occurred while calling o47.load.
+[2026-04-03T16:34:38.480+0000] {spark_submit.py:491} INFO - : org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 0.0 failed 4 times, most recent failure: Lost task 0.3 in stage 0.0 (TID 3) (172.18.0.12 executor 3): org.apache.spark.sql.AnalysisException: Illegal Parquet type: INT64 (TIMESTAMP(NANOS,false))
+[2026-04-03T16:34:38.480+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryCompilationErrors$.illegalParquetTypeError(QueryCompilationErrors.scala:1317)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.illegalType$1(ParquetSchemaConverter.scala:191)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertPrimitiveField$2(ParquetSchemaConverter.scala:269)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertPrimitiveField(ParquetSchemaConverter.scala:209)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertField(ParquetSchemaConverter.scala:173)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertInternal$3(ParquetSchemaConverter.scala:138)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertInternal$3$adapted(ParquetSchemaConverter.scala:108)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.$anonfun$map$1(TraversableLike.scala:286)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at scala.collection.immutable.Range.foreach(Range.scala:158)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.map(TraversableLike.scala:286)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.map$(TraversableLike.scala:279)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at scala.collection.AbstractTraversable.map(Traversable.scala:108)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertInternal(ParquetSchemaConverter.scala:108)
+[2026-04-03T16:34:38.481+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convert(ParquetSchemaConverter.scala:78)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$readSchemaFromFooter$2(ParquetFileFormat.scala:577)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.readSchemaFromFooter(ParquetFileFormat.scala:577)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$2(ParquetFileFormat.scala:557)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at scala.collection.immutable.Stream.map(Stream.scala:418)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$1(ParquetFileFormat.scala:557)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$1$adapted(ParquetFileFormat.scala:549)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.SchemaMergeUtils$.$anonfun$mergeSchemasInParallel$2(SchemaMergeUtils.scala:76)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitions$2(RDD.scala:855)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitions$2$adapted(RDD.scala:855)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:34:38.482+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - Driver stacktrace:
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.failJobAndIndependentStages(DAGScheduler.scala:2672)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:2608)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:2607)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach(ResizableArray.scala:62)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach$(ResizableArray.scala:55)
+[2026-04-03T16:34:38.483+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:49)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:2607)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1182)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1182)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at scala.Option.foreach(Option.scala:407)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1182)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:2860)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2802)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2791)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:952)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2238)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2259)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2278)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2303)
+[2026-04-03T16:34:38.484+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$collect$1(RDD.scala:1021)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:112)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.withScope(RDD.scala:406)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.collect(RDD.scala:1020)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.SchemaMergeUtils$.mergeSchemasInParallel(SchemaMergeUtils.scala:70)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.mergeSchemasInParallel(ParquetFileFormat.scala:560)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetUtils$.inferSchema(ParquetUtils.scala:125)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat.inferSchema(ParquetFileFormat.scala:171)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.$anonfun$getOrInferFileFormatSchema$11(DataSource.scala:210)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at scala.Option.orElse(Option.scala:447)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.getOrInferFileFormatSchema(DataSource.scala:207)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceSchema(DataSource.scala:262)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceInfo$lzycompute(DataSource.scala:118)
+[2026-04-03T16:34:38.485+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceInfo(DataSource.scala:118)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamingRelation$.apply(StreamingRelation.scala:34)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.streaming.DataStreamReader.loadInternal(DataStreamReader.scala:196)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.streaming.DataStreamReader.load(DataStreamReader.scala:210)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at py4j.Gateway.invoke(Gateway.java:282)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at py4j.commands.CallCommand.execute(CallCommand.java:79)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
+[2026-04-03T16:34:38.486+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - Caused by: org.apache.spark.sql.AnalysisException: Illegal Parquet type: INT64 (TIMESTAMP(NANOS,false))
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryCompilationErrors$.illegalParquetTypeError(QueryCompilationErrors.scala:1317)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.illegalType$1(ParquetSchemaConverter.scala:191)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertPrimitiveField$2(ParquetSchemaConverter.scala:269)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertPrimitiveField(ParquetSchemaConverter.scala:209)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertField(ParquetSchemaConverter.scala:173)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertInternal$3(ParquetSchemaConverter.scala:138)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.$anonfun$convertInternal$3$adapted(ParquetSchemaConverter.scala:108)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.$anonfun$map$1(TraversableLike.scala:286)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at scala.collection.immutable.Range.foreach(Range.scala:158)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.map(TraversableLike.scala:286)
+[2026-04-03T16:34:38.487+0000] {spark_submit.py:491} INFO - at scala.collection.TraversableLike.map$(TraversableLike.scala:279)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at scala.collection.AbstractTraversable.map(Traversable.scala:108)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convertInternal(ParquetSchemaConverter.scala:108)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetToSparkSchemaConverter.convert(ParquetSchemaConverter.scala:78)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$readSchemaFromFooter$2(ParquetFileFormat.scala:577)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.readSchemaFromFooter(ParquetFileFormat.scala:577)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$2(ParquetFileFormat.scala:557)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at scala.collection.immutable.Stream.map(Stream.scala:418)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$1(ParquetFileFormat.scala:557)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat$.$anonfun$mergeSchemasInParallel$1$adapted(ParquetFileFormat.scala:549)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.SchemaMergeUtils$.$anonfun$mergeSchemasInParallel$2(SchemaMergeUtils.scala:76)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitions$2(RDD.scala:855)
+[2026-04-03T16:34:38.488+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitions$2$adapted(RDD.scala:855)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:34:38.489+0000] {spark_submit.py:491} INFO - ... 1 more
+[2026-04-03T16:34:38.490+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:34:38.490+0000] {spark_submit.py:491} INFO - INFO:py4j.clientserver:Closing down clientserver connection
+[2026-04-03T16:34:38.679+0000] {taskinstance.py:1937} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 422, in submit
+    raise AirflowException(
+airflow.exceptions.AirflowException: Cannot execute: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 --conf spark.hadoop.fs.s3a.access.key=minio --conf spark.hadoop.fs.s3a.secret.key=****** --conf spark.hadoop.fs.s3a.path.style.access=true --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 512m --name airflow_silver_customers --verbose /opt/airflow/etl/silver/main_silver.py --table_name customers --merge_key customer_id --is_cdc false --json_schema . Error code is: 1.
+[2026-04-03T16:34:38.683+0000] {taskinstance.py:1400} INFO - Marking task as FAILED. dag_id=silver_spark_processor, task_id=process_silver_customers, execution_date=20260402T000000, start_date=20260403T163406, end_date=20260403T163438
+[2026-04-03T16:34:38.700+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 633 for task process_silver_customers (Cannot execute: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 --conf spark.hadoop.fs.s3a.access.key=minio --conf spark.hadoop.fs.s3a.secret.key=****** --conf spark.hadoop.fs.s3a.path.style.access=true --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 512m --name airflow_silver_customers --verbose /opt/airflow/etl/silver/main_silver.py --table_name customers --merge_key customer_id --is_cdc false --json_schema . Error code is: 1.; 761)
+[2026-04-03T16:34:38.747+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2026-04-03T16:34:38.775+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

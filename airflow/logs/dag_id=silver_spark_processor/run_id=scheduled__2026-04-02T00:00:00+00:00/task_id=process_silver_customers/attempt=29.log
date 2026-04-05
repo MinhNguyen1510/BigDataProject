@@ -1,0 +1,1031 @@
+[2026-04-03T16:45:52.320+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_customers scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-03T16:45:52.329+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_customers scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-03T16:45:52.329+0000] {taskinstance.py:1361} INFO - Starting attempt 29 of 30
+[2026-04-03T16:45:52.344+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_customers> on 2026-04-02 00:00:00+00:00
+[2026-04-03T16:45:52.352+0000] {standard_task_runner.py:57} INFO - Started process 1406 to run task
+[2026-04-03T16:45:52.355+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_customers', 'scheduled__2026-04-02T00:00:00+00:00', '--job-id', '635', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmp9zn2u5jl']
+[2026-04-03T16:45:52.357+0000] {standard_task_runner.py:85} INFO - Job 635: Subtask process_silver_customers
+[2026-04-03T16:45:52.411+0000] {task_command.py:416} INFO - Running <TaskInstance: silver_spark_processor.process_silver_customers scheduled__2026-04-02T00:00:00+00:00 [running]> on host f094757a841d
+[2026-04-03T16:45:52.510+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='silver_spark_processor' AIRFLOW_CTX_TASK_ID='process_silver_customers' AIRFLOW_CTX_EXECUTION_DATE='2026-04-02T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='29' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-02T00:00:00+00:00'
+[2026-04-03T16:45:52.522+0000] {base.py:73} INFO - Using connection ID 'spark_default' for task execution.
+[2026-04-03T16:45:52.524+0000] {spark_submit.py:340} INFO - Spark-Submit cmd: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 --conf spark.hadoop.fs.s3a.access.key=minio --conf spark.hadoop.fs.s3a.secret.key=****** --conf spark.hadoop.fs.s3a.path.style.access=true --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem --conf spark.sql.parquet.enableVectorizedReader=false --conf spark.sql.legacy.parquet.nanosAsLong=true --conf spark.sql.parquet.int64RebaseModeInRead=LEGACY --conf spark.sql.parquet.datetimeRebaseModeInRead=LEGACY --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 512m --name airflow_silver_customers --verbose /opt/airflow/etl/silver/main_silver.py --table_name customers --merge_key customer_id --is_cdc false --json_schema 
+[2026-04-03T16:45:52.622+0000] {spark_submit.py:491} INFO - /home/airflow/.local/lib/python3.10/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+[2026-04-03T16:45:54.062+0000] {spark_submit.py:491} INFO - Using properties file: null
+[2026-04-03T16:45:54.194+0000] {spark_submit.py:491} INFO - Parsed arguments:
+[2026-04-03T16:45:54.195+0000] {spark_submit.py:491} INFO - master                  spark://spark-master:7077
+[2026-04-03T16:45:54.195+0000] {spark_submit.py:491} INFO - deployMode              null
+[2026-04-03T16:45:54.195+0000] {spark_submit.py:491} INFO - executorMemory          1g
+[2026-04-03T16:45:54.195+0000] {spark_submit.py:491} INFO - executorCores           1
+[2026-04-03T16:45:54.195+0000] {spark_submit.py:491} INFO - totalExecutorCores      null
+[2026-04-03T16:45:54.195+0000] {spark_submit.py:491} INFO - propertiesFile          null
+[2026-04-03T16:45:54.195+0000] {spark_submit.py:491} INFO - driverMemory            512m
+[2026-04-03T16:45:54.195+0000] {spark_submit.py:491} INFO - driverCores             null
+[2026-04-03T16:45:54.195+0000] {spark_submit.py:491} INFO - driverExtraClassPath    null
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - driverExtraLibraryPath  null
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - driverExtraJavaOptions  null
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - supervise               false
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - queue                   null
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - numExecutors            null
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - files                   null
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - pyFiles                 null
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - archives                null
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - mainClass               null
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - primaryResource         file:/opt/airflow/etl/silver/main_silver.py
+[2026-04-03T16:45:54.196+0000] {spark_submit.py:491} INFO - name                    airflow_silver_customers
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - childArgs               [--table_name customers --merge_key customer_id --is_cdc false --json_schema ]
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - jars                    file:/opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,file:/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,file:/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,file:/opt/airflow/etl/jars/delta-storage-2.3.0.jar
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - packages                null
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - packagesExclusions      null
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - repositories            null
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - verbose                 true
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - Spark properties used, including those specified through
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - --conf and those from the properties file null:
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - (spark.databricks.delta.schema.autoMerge.enabled,true)
+[2026-04-03T16:45:54.197+0000] {spark_submit.py:491} INFO - (spark.driver.memory,512m)
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.access.key,*********(redacted))
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.connection.ssl.enabled,false)
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.endpoint,http://minio:9000)
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.impl,org.apache.hadoop.fs.s3a.S3AFileSystem)
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.path.style.access,true)
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.secret.key,*********(redacted))
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.sql.catalog.spark_catalog,org.apache.spark.sql.delta.catalog.DeltaCatalog)
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.sql.extensions,io.delta.sql.DeltaSparkSessionExtension)
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.sql.legacy.parquet.nanosAsLong,true)
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.datetimeRebaseModeInRead,LEGACY)
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.enableVectorizedReader,false)
+[2026-04-03T16:45:54.198+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.int64RebaseModeInRead,LEGACY)
+[2026-04-03T16:45:54.199+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:45:54.199+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:45:54.724+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:54 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[2026-04-03T16:45:54.917+0000] {spark_submit.py:491} INFO - Main class:
+[2026-04-03T16:45:54.917+0000] {spark_submit.py:491} INFO - org.apache.spark.deploy.PythonRunner
+[2026-04-03T16:45:54.917+0000] {spark_submit.py:491} INFO - Arguments:
+[2026-04-03T16:45:54.917+0000] {spark_submit.py:491} INFO - file:/opt/airflow/etl/silver/main_silver.py
+[2026-04-03T16:45:54.917+0000] {spark_submit.py:491} INFO - null
+[2026-04-03T16:45:54.917+0000] {spark_submit.py:491} INFO - --table_name
+[2026-04-03T16:45:54.917+0000] {spark_submit.py:491} INFO - customers
+[2026-04-03T16:45:54.918+0000] {spark_submit.py:491} INFO - --merge_key
+[2026-04-03T16:45:54.918+0000] {spark_submit.py:491} INFO - customer_id
+[2026-04-03T16:45:54.918+0000] {spark_submit.py:491} INFO - --is_cdc
+[2026-04-03T16:45:54.918+0000] {spark_submit.py:491} INFO - false
+[2026-04-03T16:45:54.918+0000] {spark_submit.py:491} INFO - --json_schema
+[2026-04-03T16:45:54.918+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:45:54.920+0000] {spark_submit.py:491} INFO - Spark config:
+[2026-04-03T16:45:54.921+0000] {spark_submit.py:491} INFO - (spark.app.name,airflow_silver_customers)
+[2026-04-03T16:45:54.921+0000] {spark_submit.py:491} INFO - (spark.app.submitTime,1775234754897)
+[2026-04-03T16:45:54.921+0000] {spark_submit.py:491} INFO - (spark.databricks.delta.schema.autoMerge.enabled,true)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.driver.memory,512m)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.executor.cores,1)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.executor.memory,1g)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.access.key,*********(redacted))
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.connection.ssl.enabled,false)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.endpoint,http://minio:9000)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.impl,org.apache.hadoop.fs.s3a.S3AFileSystem)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.path.style.access,true)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.secret.key,*********(redacted))
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.jars,file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.master,spark://spark-master:7077)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.repl.local.jars,file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.sql.catalog.spark_catalog,org.apache.spark.sql.delta.catalog.DeltaCatalog)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.sql.extensions,io.delta.sql.DeltaSparkSessionExtension)
+[2026-04-03T16:45:54.922+0000] {spark_submit.py:491} INFO - (spark.sql.legacy.parquet.nanosAsLong,true)
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.datetimeRebaseModeInRead,LEGACY)
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.enableVectorizedReader,false)
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.int64RebaseModeInRead,LEGACY)
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - (spark.submit.deployMode,client)
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - (spark.submit.pyFiles,)
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - Classpath elements:
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:45:54.923+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:45:55.885+0000] {spark_submit.py:491} INFO - INFO:__main__:Khởi tạo Spark Job cho bảng: customers
+[2026-04-03T16:45:55.970+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:55 INFO SparkContext: Running Spark version 3.3.2
+[2026-04-03T16:45:55.998+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:55 INFO ResourceUtils: ==============================================================
+[2026-04-03T16:45:55.998+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:55 INFO ResourceUtils: No custom resources configured for spark.driver.
+[2026-04-03T16:45:55.998+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:55 INFO ResourceUtils: ==============================================================
+[2026-04-03T16:45:55.998+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:55 INFO SparkContext: Submitted application: Silver_Processor_customers
+[2026-04-03T16:45:56.019+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+[2026-04-03T16:45:56.031+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO ResourceProfile: Limiting resource is cpus at 1 tasks per executor
+[2026-04-03T16:45:56.032+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO ResourceProfileManager: Added ResourceProfile id: 0
+[2026-04-03T16:45:56.077+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SecurityManager: Changing view acls to: airflow
+[2026-04-03T16:45:56.078+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SecurityManager: Changing modify acls to: airflow
+[2026-04-03T16:45:56.078+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SecurityManager: Changing view acls groups to:
+[2026-04-03T16:45:56.078+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SecurityManager: Changing modify acls groups to:
+[2026-04-03T16:45:56.079+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(airflow); groups with view permissions: Set(); users  with modify permissions: Set(airflow); groups with modify permissions: Set()
+[2026-04-03T16:45:56.353+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO Utils: Successfully started service 'sparkDriver' on port 41051.
+[2026-04-03T16:45:56.386+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SparkEnv: Registering MapOutputTracker
+[2026-04-03T16:45:56.421+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SparkEnv: Registering BlockManagerMaster
+[2026-04-03T16:45:56.440+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+[2026-04-03T16:45:56.441+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+[2026-04-03T16:45:56.445+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+[2026-04-03T16:45:56.461+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-68ada4ad-2ed6-4ba0-a5bd-faee649c4248
+[2026-04-03T16:45:56.477+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO MemoryStore: MemoryStore started with capacity 127.2 MiB
+[2026-04-03T16:45:56.500+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SparkEnv: Registering OutputCommitCoordinator
+[2026-04-03T16:45:56.739+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+[2026-04-03T16:45:56.774+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar at spark://f094757a841d:41051/jars/hadoop-aws-3.3.2.jar with timestamp 1775234755962
+[2026-04-03T16:45:56.774+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar at spark://f094757a841d:41051/jars/aws-java-sdk-bundle-1.11.1026.jar with timestamp 1775234755962
+[2026-04-03T16:45:56.775+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar at spark://f094757a841d:41051/jars/delta-core_2.12-2.3.0.jar with timestamp 1775234755962
+[2026-04-03T16:45:56.775+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar at spark://f094757a841d:41051/jars/delta-storage-2.3.0.jar with timestamp 1775234755962
+[2026-04-03T16:45:56.857+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+[2026-04-03T16:45:56.911+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO TransportClientFactory: Successfully created connection to spark-master/172.18.0.6:7077 after 26 ms (0 ms spent in bootstraps)
+[2026-04-03T16:45:57.000+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:56 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20260403164556-0004
+[2026-04-03T16:45:57.005+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/0 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.008+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/0 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.008+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/1 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.010+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/1 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.011+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/2 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.012+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/2 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.012+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/3 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.013+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/3 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.014+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/4 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.015+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 38613.
+[2026-04-03T16:45:57.015+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO NettyBlockTransferService: Server created on f094757a841d:38613
+[2026-04-03T16:45:57.015+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/4 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.015+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/5 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.016+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/5 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.017+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/6 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.017+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+[2026-04-03T16:45:57.018+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/6 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.018+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/7 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.019+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/7 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.020+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/8 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.020+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/8 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.021+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/9 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.021+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/9 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.022+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/10 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.022+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/10 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.023+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260403164556-0004/11 on worker-20260403162332-172.18.0.12-38281 (172.18.0.12:38281) with 1 core(s)
+[2026-04-03T16:45:57.023+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: Granted executor ID app-20260403164556-0004/11 on hostPort 172.18.0.12:38281 with 1 core(s), 1024.0 MiB RAM
+[2026-04-03T16:45:57.030+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, f094757a841d, 38613, None)
+[2026-04-03T16:45:57.034+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO BlockManagerMasterEndpoint: Registering block manager f094757a841d:38613 with 127.2 MiB RAM, BlockManagerId(driver, f094757a841d, 38613, None)
+[2026-04-03T16:45:57.037+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, f094757a841d, 38613, None)
+[2026-04-03T16:45:57.041+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, f094757a841d, 38613, None)
+[2026-04-03T16:45:57.096+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/0 is now RUNNING
+[2026-04-03T16:45:57.097+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/2 is now RUNNING
+[2026-04-03T16:45:57.103+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/6 is now RUNNING
+[2026-04-03T16:45:57.105+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/3 is now RUNNING
+[2026-04-03T16:45:57.110+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/8 is now RUNNING
+[2026-04-03T16:45:57.116+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/1 is now RUNNING
+[2026-04-03T16:45:57.126+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/4 is now RUNNING
+[2026-04-03T16:45:57.131+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/7 is now RUNNING
+[2026-04-03T16:45:57.136+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/11 is now RUNNING
+[2026-04-03T16:45:57.137+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/5 is now RUNNING
+[2026-04-03T16:45:57.146+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/10 is now RUNNING
+[2026-04-03T16:45:57.150+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260403164556-0004/9 is now RUNNING
+[2026-04-03T16:45:57.616+0000] {spark_submit.py:491} INFO - 26/04/03 16:45:57 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+[2026-04-03T16:45:59.737+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu xử lý lớp Silver cho bảng: customers | Chế độ CDC: False
+[2026-04-03T16:45:59.737+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu quét Data Nóng từ Bronze...
+[2026-04-03T16:46:00.270+0000] {spark_submit.py:491} INFO - 26/04/03 16:46:00 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties
+[2026-04-03T16:46:19.859+0000] {spark_submit.py:491} INFO - INFO:py4j.java_gateway:Callback Server Starting
+[2026-04-03T16:46:19.859+0000] {spark_submit.py:491} INFO - INFO:py4j.java_gateway:Socket listening on ('127.0.0.1', 33373)
+[2026-04-03T16:46:20.075+0000] {spark_submit.py:491} INFO - 26/04/03 16:46:20 WARN ResolveWriteToStream: spark.sql.adaptive.enabled is not supported in streaming DataFrames/Datasets and will be disabled.
+[2026-04-03T16:46:21.554+0000] {spark_submit.py:491} INFO - INFO:py4j.clientserver:Python Server ready to receive messages
+[2026-04-03T16:46:21.554+0000] {spark_submit.py:491} INFO - INFO:py4j.clientserver:Received command c on object id p0
+[2026-04-03T16:46:24.182+0000] {spark_submit.py:491} INFO - 26/04/03 16:46:24 WARN TaskSetManager: Lost task 0.0 in stage 1.0 (TID 1) (172.18.0.12 executor 9): org.apache.spark.sql.execution.QueryExecutionException: Encountered error while reading file s3a://lakehouse/bronze/olist/customers/year=2026/month=04/day=01/customers_20260401_000000.parquet. Details:
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryExecutionErrors$.cannotReadFilesError(QueryExecutionErrors.scala:731)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:283)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:460)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.WholeStageCodegenExec$$anon$1.hasNext(WholeStageCodegenExec.scala:760)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:364)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:46:24.183+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - Caused by: java.io.IOException: can not read class org.apache.parquet.format.PageHeader: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@3cc99b80
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:365)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.readPageHeader(Util.java:132)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readPageHeader(ParquetFileReader.java:1382)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1429)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1402)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readChunkPages(ParquetFileReader.java:1023)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextRowGroup(ParquetFileReader.java:928)
+[2026-04-03T16:46:24.184+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextFilteredRowGroup(ParquetFileReader.java:956)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.checkRead(InternalParquetRecordReader.java:126)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.nextKeyValue(InternalParquetRecordReader.java:225)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetRecordReader.nextKeyValue(ParquetRecordReader.java:207)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator.hasNext(RecordReaderIterator.scala:39)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator$$anon$1.hasNext(RecordReaderIterator.scala:61)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:274)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - ... 19 more
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - Caused by: shaded.parquet.org.apache.thrift.protocol.TProtocolException: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@3cc99b80
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1108)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1019)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader.read(PageHeader.java:896)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:362)
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - ... 33 more
+[2026-04-03T16:46:24.185+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:31.489+0000] {spark_submit.py:491} INFO - 26/04/03 16:46:31 ERROR TaskSetManager: Task 0 in stage 1.0 failed 4 times; aborting job
+[2026-04-03T16:46:31.686+0000] {spark_submit.py:491} INFO - ERROR:py4j.clientserver:There was an exception while executing the Python Proxy on the Python Side.
+[2026-04-03T16:46:31.686+0000] {spark_submit.py:491} INFO - Traceback (most recent call last):
+[2026-04-03T16:46:31.686+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/clientserver.py", line 617, in _call_proxy
+[2026-04-03T16:46:31.686+0000] {spark_submit.py:491} INFO - return_value = getattr(self.pool[obj_id], method)(*params)
+[2026-04-03T16:46:31.686+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 276, in call
+[2026-04-03T16:46:31.686+0000] {spark_submit.py:491} INFO - raise e
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 273, in call
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - self.func(DataFrame(jdf, wrapped_session_jdf), batch_id)
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/silver_processor.py", line 34, in process_micro_batch
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - if micro_batch_df.isEmpty():
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/dataframe.py", line 553, in isEmpty
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - return self._jdf.isEmpty()
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/java_gateway.py", line 1321, in __call__
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - return_value = get_return_value(
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 190, in deco
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - return f(*a, **kw)
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/protocol.py", line 326, in get_return_value
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - raise Py4JJavaError(
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - py4j.protocol.Py4JJavaError: An error occurred while calling o56.isEmpty.
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - : org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 1.0 failed 4 times, most recent failure: Lost task 0.3 in stage 1.0 (TID 4) (172.18.0.12 executor 7): org.apache.spark.sql.execution.QueryExecutionException: Encountered error while reading file s3a://lakehouse/bronze/olist/customers/year=2026/month=04/day=01/customers_20260401_000000.parquet. Details:
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryExecutionErrors$.cannotReadFilesError(QueryExecutionErrors.scala:731)
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:283)
+[2026-04-03T16:46:31.687+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:460)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.WholeStageCodegenExec$$anon$1.hasNext(WholeStageCodegenExec.scala:760)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:364)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:46:31.688+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - Caused by: java.io.IOException: can not read class org.apache.parquet.format.PageHeader: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:365)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.readPageHeader(Util.java:132)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readPageHeader(ParquetFileReader.java:1382)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1429)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1402)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readChunkPages(ParquetFileReader.java:1023)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextRowGroup(ParquetFileReader.java:928)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextFilteredRowGroup(ParquetFileReader.java:956)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.checkRead(InternalParquetRecordReader.java:126)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.nextKeyValue(InternalParquetRecordReader.java:225)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetRecordReader.nextKeyValue(ParquetRecordReader.java:207)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator.hasNext(RecordReaderIterator.scala:39)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator$$anon$1.hasNext(RecordReaderIterator.scala:61)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:31.689+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:274)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - ... 19 more
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - Caused by: shaded.parquet.org.apache.thrift.protocol.TProtocolException: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1108)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1019)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader.read(PageHeader.java:896)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:362)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - ... 33 more
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - Driver stacktrace:
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.failJobAndIndependentStages(DAGScheduler.scala:2672)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:2608)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:2607)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach(ResizableArray.scala:62)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach$(ResizableArray.scala:55)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:49)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:2607)
+[2026-04-03T16:46:31.690+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1182)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1182)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at scala.Option.foreach(Option.scala:407)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1182)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:2860)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2802)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2791)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:952)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2238)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2259)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2278)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.executeTake(SparkPlan.scala:506)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.executeTake(SparkPlan.scala:459)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$isEmpty$1(Dataset.scala:605)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$isEmpty$1$adapted(Dataset.scala:604)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$withAction$2(Dataset.scala:3858)
+[2026-04-03T16:46:31.691+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.QueryExecution$.withInternalError(QueryExecution.scala:510)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$withAction$1(Dataset.scala:3856)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$6(SQLExecution.scala:109)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:169)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$1(SQLExecution.scala:95)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:64)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.withAction(Dataset.scala:3856)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.isEmpty(Dataset.scala:604)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at py4j.Gateway.invoke(Gateway.java:282)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+[2026-04-03T16:46:31.692+0000] {spark_submit.py:491} INFO - at py4j.commands.CallCommand.execute(CallCommand.java:79)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.sendCommand(ClientServerConnection.java:244)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at py4j.CallbackClient.sendCommand(CallbackClient.java:384)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at py4j.CallbackClient.sendCommand(CallbackClient.java:356)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at py4j.reflection.PythonProxyHandler.invoke(PythonProxyHandler.java:106)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at com.sun.proxy.$Proxy44.call(Unknown Source)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.PythonForeachBatchHelper$.$anonfun$callForeachBatch$1(ForeachBatchSink.scala:51)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.PythonForeachBatchHelper$.$anonfun$callForeachBatch$1$adapted(ForeachBatchSink.scala:51)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.ForeachBatchSink.addBatch(ForeachBatchSink.scala:32)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runBatch$17(MicroBatchExecution.scala:665)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$6(SQLExecution.scala:109)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:169)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$1(SQLExecution.scala:95)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:64)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runBatch$16(MicroBatchExecution.scala:663)
+[2026-04-03T16:46:31.693+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken(ProgressReporter.scala:375)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken$(ProgressReporter.scala:373)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.reportTimeTaken(StreamExecution.scala:68)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.runBatch(MicroBatchExecution.scala:663)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runActivatedStream$2(MicroBatchExecution.scala:256)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken(ProgressReporter.scala:375)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken$(ProgressReporter.scala:373)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.reportTimeTaken(StreamExecution.scala:68)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runActivatedStream$1(MicroBatchExecution.scala:219)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MultiBatchExecutor.execute(TriggerExecutor.scala:49)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.runActivatedStream(MicroBatchExecution.scala:213)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.$anonfun$runStream$1(StreamExecution.scala:307)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.org$apache$spark$sql$execution$streaming$StreamExecution$$runStream(StreamExecution.scala:285)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution$$anon$1.run(StreamExecution.scala:208)
+[2026-04-03T16:46:31.694+0000] {spark_submit.py:491} INFO - Caused by: org.apache.spark.sql.execution.QueryExecutionException: Encountered error while reading file s3a://lakehouse/bronze/olist/customers/year=2026/month=04/day=01/customers_20260401_000000.parquet. Details:
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryExecutionErrors$.cannotReadFilesError(QueryExecutionErrors.scala:731)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:283)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:460)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.WholeStageCodegenExec$$anon$1.hasNext(WholeStageCodegenExec.scala:760)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:364)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:46:31.695+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - Caused by: java.io.IOException: can not read class org.apache.parquet.format.PageHeader: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:365)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.readPageHeader(Util.java:132)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readPageHeader(ParquetFileReader.java:1382)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1429)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1402)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readChunkPages(ParquetFileReader.java:1023)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextRowGroup(ParquetFileReader.java:928)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextFilteredRowGroup(ParquetFileReader.java:956)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.checkRead(InternalParquetRecordReader.java:126)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.nextKeyValue(InternalParquetRecordReader.java:225)
+[2026-04-03T16:46:31.696+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetRecordReader.nextKeyValue(ParquetRecordReader.java:207)
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator.hasNext(RecordReaderIterator.scala:39)
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator$$anon$1.hasNext(RecordReaderIterator.scala:61)
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:274)
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - ... 19 more
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - Caused by: shaded.parquet.org.apache.thrift.protocol.TProtocolException: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1108)
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1019)
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader.read(PageHeader.java:896)
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:362)
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - ... 33 more
+[2026-04-03T16:46:31.697+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:31.731+0000] {spark_submit.py:491} INFO - 26/04/03 16:46:31 ERROR MicroBatchExecution: Query [id = b4b0725e-bb98-4ac4-b89b-7b64e394a12f, runId = 2d8d17e8-6204-4d42-b469-baa4b89e83e9] terminated with error
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - py4j.Py4JException: An exception was raised by the Python Proxy. Return Message: Traceback (most recent call last):
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/clientserver.py", line 617, in _call_proxy
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - return_value = getattr(self.pool[obj_id], method)(*params)
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 276, in call
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - raise e
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 273, in call
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - self.func(DataFrame(jdf, wrapped_session_jdf), batch_id)
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/silver_processor.py", line 34, in process_micro_batch
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - if micro_batch_df.isEmpty():
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/dataframe.py", line 553, in isEmpty
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - return self._jdf.isEmpty()
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/java_gateway.py", line 1321, in __call__
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - return_value = get_return_value(
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 190, in deco
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - return f(*a, **kw)
+[2026-04-03T16:46:31.732+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/protocol.py", line 326, in get_return_value
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - raise Py4JJavaError(
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - py4j.protocol.Py4JJavaError: An error occurred while calling o56.isEmpty.
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - : org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 1.0 failed 4 times, most recent failure: Lost task 0.3 in stage 1.0 (TID 4) (172.18.0.12 executor 7): org.apache.spark.sql.execution.QueryExecutionException: Encountered error while reading file s3a://lakehouse/bronze/olist/customers/year=2026/month=04/day=01/customers_20260401_000000.parquet. Details:
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryExecutionErrors$.cannotReadFilesError(QueryExecutionErrors.scala:731)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:283)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:460)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.WholeStageCodegenExec$$anon$1.hasNext(WholeStageCodegenExec.scala:760)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:364)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:46:31.733+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - Caused by: java.io.IOException: can not read class org.apache.parquet.format.PageHeader: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:365)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.readPageHeader(Util.java:132)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readPageHeader(ParquetFileReader.java:1382)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1429)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1402)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readChunkPages(ParquetFileReader.java:1023)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextRowGroup(ParquetFileReader.java:928)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextFilteredRowGroup(ParquetFileReader.java:956)
+[2026-04-03T16:46:31.734+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.checkRead(InternalParquetRecordReader.java:126)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.nextKeyValue(InternalParquetRecordReader.java:225)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetRecordReader.nextKeyValue(ParquetRecordReader.java:207)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator.hasNext(RecordReaderIterator.scala:39)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator$$anon$1.hasNext(RecordReaderIterator.scala:61)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:274)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - ... 19 more
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - Caused by: shaded.parquet.org.apache.thrift.protocol.TProtocolException: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1108)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1019)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader.read(PageHeader.java:896)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:362)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - ... 33 more
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - Driver stacktrace:
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.failJobAndIndependentStages(DAGScheduler.scala:2672)
+[2026-04-03T16:46:31.735+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:2608)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:2607)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach(ResizableArray.scala:62)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach$(ResizableArray.scala:55)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:49)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:2607)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1182)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1182)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at scala.Option.foreach(Option.scala:407)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1182)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:2860)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2802)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2791)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:952)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2238)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2259)
+[2026-04-03T16:46:31.736+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2278)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.executeTake(SparkPlan.scala:506)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.executeTake(SparkPlan.scala:459)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$isEmpty$1(Dataset.scala:605)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$isEmpty$1$adapted(Dataset.scala:604)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$withAction$2(Dataset.scala:3858)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.QueryExecution$.withInternalError(QueryExecution.scala:510)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$withAction$1(Dataset.scala:3856)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$6(SQLExecution.scala:109)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:169)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$1(SQLExecution.scala:95)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:64)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.withAction(Dataset.scala:3856)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.isEmpty(Dataset.scala:604)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[2026-04-03T16:46:31.737+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at py4j.Gateway.invoke(Gateway.java:282)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at py4j.commands.CallCommand.execute(CallCommand.java:79)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.sendCommand(ClientServerConnection.java:244)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at py4j.CallbackClient.sendCommand(CallbackClient.java:384)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at py4j.CallbackClient.sendCommand(CallbackClient.java:356)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at py4j.reflection.PythonProxyHandler.invoke(PythonProxyHandler.java:106)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at com.sun.proxy.$Proxy44.call(Unknown Source)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.PythonForeachBatchHelper$.$anonfun$callForeachBatch$1(ForeachBatchSink.scala:51)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.PythonForeachBatchHelper$.$anonfun$callForeachBatch$1$adapted(ForeachBatchSink.scala:51)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.ForeachBatchSink.addBatch(ForeachBatchSink.scala:32)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runBatch$17(MicroBatchExecution.scala:665)
+[2026-04-03T16:46:31.738+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$6(SQLExecution.scala:109)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:169)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$1(SQLExecution.scala:95)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:64)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runBatch$16(MicroBatchExecution.scala:663)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken(ProgressReporter.scala:375)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken$(ProgressReporter.scala:373)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.reportTimeTaken(StreamExecution.scala:68)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.runBatch(MicroBatchExecution.scala:663)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runActivatedStream$2(MicroBatchExecution.scala:256)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken(ProgressReporter.scala:375)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken$(ProgressReporter.scala:373)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.reportTimeTaken(StreamExecution.scala:68)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runActivatedStream$1(MicroBatchExecution.scala:219)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MultiBatchExecutor.execute(TriggerExecutor.scala:49)
+[2026-04-03T16:46:31.739+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.runActivatedStream(MicroBatchExecution.scala:213)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.$anonfun$runStream$1(StreamExecution.scala:307)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.org$apache$spark$sql$execution$streaming$StreamExecution$$runStream(StreamExecution.scala:285)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution$$anon$1.run(StreamExecution.scala:208)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - Caused by: org.apache.spark.sql.execution.QueryExecutionException: Encountered error while reading file s3a://lakehouse/bronze/olist/customers/year=2026/month=04/day=01/customers_20260401_000000.parquet. Details:
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryExecutionErrors$.cannotReadFilesError(QueryExecutionErrors.scala:731)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:283)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:460)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.WholeStageCodegenExec$$anon$1.hasNext(WholeStageCodegenExec.scala:760)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:364)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+[2026-04-03T16:46:31.740+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - Caused by: java.io.IOException: can not read class org.apache.parquet.format.PageHeader: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:365)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.readPageHeader(Util.java:132)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readPageHeader(ParquetFileReader.java:1382)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1429)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1402)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readChunkPages(ParquetFileReader.java:1023)
+[2026-04-03T16:46:31.741+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextRowGroup(ParquetFileReader.java:928)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextFilteredRowGroup(ParquetFileReader.java:956)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.checkRead(InternalParquetRecordReader.java:126)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.nextKeyValue(InternalParquetRecordReader.java:225)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetRecordReader.nextKeyValue(ParquetRecordReader.java:207)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator.hasNext(RecordReaderIterator.scala:39)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator$$anon$1.hasNext(RecordReaderIterator.scala:61)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:274)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - ... 19 more
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - Caused by: shaded.parquet.org.apache.thrift.protocol.TProtocolException: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1108)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1019)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader.read(PageHeader.java:896)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:362)
+[2026-04-03T16:46:31.742+0000] {spark_submit.py:491} INFO - ... 33 more
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at py4j.Protocol.getReturnValue(Protocol.java:476)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at py4j.reflection.PythonProxyHandler.invoke(PythonProxyHandler.java:108)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at com.sun.proxy.$Proxy44.call(Unknown Source)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.PythonForeachBatchHelper$.$anonfun$callForeachBatch$1(ForeachBatchSink.scala:51)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.PythonForeachBatchHelper$.$anonfun$callForeachBatch$1$adapted(ForeachBatchSink.scala:51)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.ForeachBatchSink.addBatch(ForeachBatchSink.scala:32)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runBatch$17(MicroBatchExecution.scala:665)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$6(SQLExecution.scala:109)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:169)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$1(SQLExecution.scala:95)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:64)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runBatch$16(MicroBatchExecution.scala:663)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken(ProgressReporter.scala:375)
+[2026-04-03T16:46:31.743+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken$(ProgressReporter.scala:373)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.reportTimeTaken(StreamExecution.scala:68)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.runBatch(MicroBatchExecution.scala:663)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runActivatedStream$2(MicroBatchExecution.scala:256)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken(ProgressReporter.scala:375)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken$(ProgressReporter.scala:373)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.reportTimeTaken(StreamExecution.scala:68)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runActivatedStream$1(MicroBatchExecution.scala:219)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MultiBatchExecutor.execute(TriggerExecutor.scala:49)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.runActivatedStream(MicroBatchExecution.scala:213)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.$anonfun$runStream$1(StreamExecution.scala:307)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.org$apache$spark$sql$execution$streaming$StreamExecution$$runStream(StreamExecution.scala:285)
+[2026-04-03T16:46:31.744+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution$$anon$1.run(StreamExecution.scala:208)
+[2026-04-03T16:46:32.123+0000] {spark_submit.py:491} INFO - ERROR:__main__:Lỗi khi xử lý lớp Silver bảng customers: Query [id = b4b0725e-bb98-4ac4-b89b-7b64e394a12f, runId = 2d8d17e8-6204-4d42-b469-baa4b89e83e9] terminated with exception: An exception was raised by the Python Proxy. Return Message: Traceback (most recent call last):
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/clientserver.py", line 617, in _call_proxy
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - return_value = getattr(self.pool[obj_id], method)(*params)
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 276, in call
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - raise e
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 273, in call
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - self.func(DataFrame(jdf, wrapped_session_jdf), batch_id)
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/silver_processor.py", line 34, in process_micro_batch
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - if micro_batch_df.isEmpty():
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/dataframe.py", line 553, in isEmpty
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - return self._jdf.isEmpty()
+[2026-04-03T16:46:32.124+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/java_gateway.py", line 1321, in __call__
+[2026-04-03T16:46:32.125+0000] {spark_submit.py:491} INFO - return_value = get_return_value(
+[2026-04-03T16:46:32.125+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 190, in deco
+[2026-04-03T16:46:32.125+0000] {spark_submit.py:491} INFO - return f(*a, **kw)
+[2026-04-03T16:46:32.125+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/protocol.py", line 326, in get_return_value
+[2026-04-03T16:46:32.125+0000] {spark_submit.py:491} INFO - raise Py4JJavaError(
+[2026-04-03T16:46:32.125+0000] {spark_submit.py:491} INFO - py4j.protocol.Py4JJavaError: An error occurred while calling o56.isEmpty.
+[2026-04-03T16:46:32.125+0000] {spark_submit.py:491} INFO - : org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 1.0 failed 4 times, most recent failure: Lost task 0.3 in stage 1.0 (TID 4) (172.18.0.12 executor 7): org.apache.spark.sql.execution.QueryExecutionException: Encountered error while reading file s3a://lakehouse/bronze/olist/customers/year=2026/month=04/day=01/customers_20260401_000000.parquet. Details:
+[2026-04-03T16:46:32.125+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryExecutionErrors$.cannotReadFilesError(QueryExecutionErrors.scala:731)
+[2026-04-03T16:46:32.125+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:283)
+[2026-04-03T16:46:32.125+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:460)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.WholeStageCodegenExec$$anon$1.hasNext(WholeStageCodegenExec.scala:760)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:364)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:46:32.126+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - Caused by: java.io.IOException: can not read class org.apache.parquet.format.PageHeader: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:365)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.readPageHeader(Util.java:132)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readPageHeader(ParquetFileReader.java:1382)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1429)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1402)
+[2026-04-03T16:46:32.127+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readChunkPages(ParquetFileReader.java:1023)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextRowGroup(ParquetFileReader.java:928)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextFilteredRowGroup(ParquetFileReader.java:956)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.checkRead(InternalParquetRecordReader.java:126)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.nextKeyValue(InternalParquetRecordReader.java:225)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetRecordReader.nextKeyValue(ParquetRecordReader.java:207)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator.hasNext(RecordReaderIterator.scala:39)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator$$anon$1.hasNext(RecordReaderIterator.scala:61)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:274)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - ... 19 more
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - Caused by: shaded.parquet.org.apache.thrift.protocol.TProtocolException: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1108)
+[2026-04-03T16:46:32.128+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1019)
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader.read(PageHeader.java:896)
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:362)
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - ... 33 more
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - Driver stacktrace:
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.failJobAndIndependentStages(DAGScheduler.scala:2672)
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:2608)
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:2607)
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach(ResizableArray.scala:62)
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach$(ResizableArray.scala:55)
+[2026-04-03T16:46:32.129+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:49)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:2607)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1182)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1182)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at scala.Option.foreach(Option.scala:407)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1182)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:2860)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2802)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2791)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:952)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2238)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2259)
+[2026-04-03T16:46:32.130+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2278)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.executeTake(SparkPlan.scala:506)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.executeTake(SparkPlan.scala:459)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$isEmpty$1(Dataset.scala:605)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$isEmpty$1$adapted(Dataset.scala:604)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$withAction$2(Dataset.scala:3858)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.QueryExecution$.withInternalError(QueryExecution.scala:510)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$withAction$1(Dataset.scala:3856)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$6(SQLExecution.scala:109)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:169)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$1(SQLExecution.scala:95)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:64)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.withAction(Dataset.scala:3856)
+[2026-04-03T16:46:32.131+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.isEmpty(Dataset.scala:604)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at py4j.Gateway.invoke(Gateway.java:282)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at py4j.commands.CallCommand.execute(CallCommand.java:79)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.sendCommand(ClientServerConnection.java:244)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at py4j.CallbackClient.sendCommand(CallbackClient.java:384)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at py4j.CallbackClient.sendCommand(CallbackClient.java:356)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at py4j.reflection.PythonProxyHandler.invoke(PythonProxyHandler.java:106)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at com.sun.proxy.$Proxy44.call(Unknown Source)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.PythonForeachBatchHelper$.$anonfun$callForeachBatch$1(ForeachBatchSink.scala:51)
+[2026-04-03T16:46:32.132+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.PythonForeachBatchHelper$.$anonfun$callForeachBatch$1$adapted(ForeachBatchSink.scala:51)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.ForeachBatchSink.addBatch(ForeachBatchSink.scala:32)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runBatch$17(MicroBatchExecution.scala:665)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$6(SQLExecution.scala:109)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:169)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$1(SQLExecution.scala:95)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:64)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runBatch$16(MicroBatchExecution.scala:663)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken(ProgressReporter.scala:375)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken$(ProgressReporter.scala:373)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.reportTimeTaken(StreamExecution.scala:68)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.runBatch(MicroBatchExecution.scala:663)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runActivatedStream$2(MicroBatchExecution.scala:256)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken(ProgressReporter.scala:375)
+[2026-04-03T16:46:32.133+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken$(ProgressReporter.scala:373)
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.reportTimeTaken(StreamExecution.scala:68)
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runActivatedStream$1(MicroBatchExecution.scala:219)
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MultiBatchExecutor.execute(TriggerExecutor.scala:49)
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.runActivatedStream(MicroBatchExecution.scala:213)
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.$anonfun$runStream$1(StreamExecution.scala:307)
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.org$apache$spark$sql$execution$streaming$StreamExecution$$runStream(StreamExecution.scala:285)
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution$$anon$1.run(StreamExecution.scala:208)
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - Caused by: org.apache.spark.sql.execution.QueryExecutionException: Encountered error while reading file s3a://lakehouse/bronze/olist/customers/year=2026/month=04/day=01/customers_20260401_000000.parquet. Details:
+[2026-04-03T16:46:32.134+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryExecutionErrors$.cannotReadFilesError(QueryExecutionErrors.scala:731)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:283)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:460)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.WholeStageCodegenExec$$anon$1.hasNext(WholeStageCodegenExec.scala:760)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:364)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:46:32.135+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - Caused by: java.io.IOException: can not read class org.apache.parquet.format.PageHeader: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:365)
+[2026-04-03T16:46:32.136+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.readPageHeader(Util.java:132)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readPageHeader(ParquetFileReader.java:1382)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1429)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1402)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readChunkPages(ParquetFileReader.java:1023)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextRowGroup(ParquetFileReader.java:928)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextFilteredRowGroup(ParquetFileReader.java:956)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.checkRead(InternalParquetRecordReader.java:126)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.nextKeyValue(InternalParquetRecordReader.java:225)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetRecordReader.nextKeyValue(ParquetRecordReader.java:207)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator.hasNext(RecordReaderIterator.scala:39)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator$$anon$1.hasNext(RecordReaderIterator.scala:61)
+[2026-04-03T16:46:32.137+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:32.138+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:274)
+[2026-04-03T16:46:32.138+0000] {spark_submit.py:491} INFO - ... 19 more
+[2026-04-03T16:46:32.138+0000] {spark_submit.py:491} INFO - Caused by: shaded.parquet.org.apache.thrift.protocol.TProtocolException: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:32.138+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1108)
+[2026-04-03T16:46:32.138+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1019)
+[2026-04-03T16:46:32.138+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader.read(PageHeader.java:896)
+[2026-04-03T16:46:32.138+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:362)
+[2026-04-03T16:46:32.138+0000] {spark_submit.py:491} INFO - ... 33 more
+[2026-04-03T16:46:32.138+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:32.138+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:32.708+0000] {spark_submit.py:491} INFO - Traceback (most recent call last):
+[2026-04-03T16:46:32.708+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/main_silver.py", line 60, in <module>
+[2026-04-03T16:46:32.708+0000] {spark_submit.py:491} INFO - raise e
+[2026-04-03T16:46:32.708+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/main_silver.py", line 49, in <module>
+[2026-04-03T16:46:32.708+0000] {spark_submit.py:491} INFO - process_silver_layer(
+[2026-04-03T16:46:32.709+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/silver_processor.py", line 85, in process_silver_layer
+[2026-04-03T16:46:32.709+0000] {spark_submit.py:491} INFO - streaming_query.awaitTermination()
+[2026-04-03T16:46:32.709+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/streaming.py", line 107, in awaitTermination
+[2026-04-03T16:46:32.709+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/java_gateway.py", line 1321, in __call__
+[2026-04-03T16:46:32.709+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 196, in deco
+[2026-04-03T16:46:32.711+0000] {spark_submit.py:491} INFO - pyspark.sql.utils.StreamingQueryException: Query [id = b4b0725e-bb98-4ac4-b89b-7b64e394a12f, runId = 2d8d17e8-6204-4d42-b469-baa4b89e83e9] terminated with exception: An exception was raised by the Python Proxy. Return Message: Traceback (most recent call last):
+[2026-04-03T16:46:32.711+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/clientserver.py", line 617, in _call_proxy
+[2026-04-03T16:46:32.711+0000] {spark_submit.py:491} INFO - return_value = getattr(self.pool[obj_id], method)(*params)
+[2026-04-03T16:46:32.712+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 276, in call
+[2026-04-03T16:46:32.712+0000] {spark_submit.py:491} INFO - raise e
+[2026-04-03T16:46:32.712+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 273, in call
+[2026-04-03T16:46:32.712+0000] {spark_submit.py:491} INFO - self.func(DataFrame(jdf, wrapped_session_jdf), batch_id)
+[2026-04-03T16:46:32.712+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/silver_processor.py", line 34, in process_micro_batch
+[2026-04-03T16:46:32.712+0000] {spark_submit.py:491} INFO - if micro_batch_df.isEmpty():
+[2026-04-03T16:46:32.712+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/dataframe.py", line 553, in isEmpty
+[2026-04-03T16:46:32.712+0000] {spark_submit.py:491} INFO - return self._jdf.isEmpty()
+[2026-04-03T16:46:32.712+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/java_gateway.py", line 1321, in __call__
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - return_value = get_return_value(
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 190, in deco
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - return f(*a, **kw)
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/protocol.py", line 326, in get_return_value
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - raise Py4JJavaError(
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - py4j.protocol.Py4JJavaError: An error occurred while calling o56.isEmpty.
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - : org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 1.0 failed 4 times, most recent failure: Lost task 0.3 in stage 1.0 (TID 4) (172.18.0.12 executor 7): org.apache.spark.sql.execution.QueryExecutionException: Encountered error while reading file s3a://lakehouse/bronze/olist/customers/year=2026/month=04/day=01/customers_20260401_000000.parquet. Details:
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryExecutionErrors$.cannotReadFilesError(QueryExecutionErrors.scala:731)
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:283)
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:32.713+0000] {spark_submit.py:491} INFO - at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:460)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.WholeStageCodegenExec$$anon$1.hasNext(WholeStageCodegenExec.scala:760)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:364)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:46:32.714+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - Caused by: java.io.IOException: can not read class org.apache.parquet.format.PageHeader: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:365)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.readPageHeader(Util.java:132)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readPageHeader(ParquetFileReader.java:1382)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1429)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1402)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readChunkPages(ParquetFileReader.java:1023)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextRowGroup(ParquetFileReader.java:928)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextFilteredRowGroup(ParquetFileReader.java:956)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.checkRead(InternalParquetRecordReader.java:126)
+[2026-04-03T16:46:32.715+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.nextKeyValue(InternalParquetRecordReader.java:225)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetRecordReader.nextKeyValue(ParquetRecordReader.java:207)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator.hasNext(RecordReaderIterator.scala:39)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator$$anon$1.hasNext(RecordReaderIterator.scala:61)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:274)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - ... 19 more
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - Caused by: shaded.parquet.org.apache.thrift.protocol.TProtocolException: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1108)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1019)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader.read(PageHeader.java:896)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:362)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - ... 33 more
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - Driver stacktrace:
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.failJobAndIndependentStages(DAGScheduler.scala:2672)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:2608)
+[2026-04-03T16:46:32.716+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:2607)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach(ResizableArray.scala:62)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ResizableArray.foreach$(ResizableArray.scala:55)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:49)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:2607)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1182)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1182)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at scala.Option.foreach(Option.scala:407)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1182)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:2860)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2802)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2791)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:952)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2238)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2259)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.SparkContext.runJob(SparkContext.scala:2278)
+[2026-04-03T16:46:32.717+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.executeTake(SparkPlan.scala:506)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.executeTake(SparkPlan.scala:459)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$isEmpty$1(Dataset.scala:605)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$isEmpty$1$adapted(Dataset.scala:604)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$withAction$2(Dataset.scala:3858)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.QueryExecution$.withInternalError(QueryExecution.scala:510)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.$anonfun$withAction$1(Dataset.scala:3856)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$6(SQLExecution.scala:109)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:169)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$1(SQLExecution.scala:95)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:64)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.withAction(Dataset.scala:3856)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.Dataset.isEmpty(Dataset.scala:604)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[2026-04-03T16:46:32.718+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at py4j.Gateway.invoke(Gateway.java:282)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at py4j.commands.CallCommand.execute(CallCommand.java:79)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.sendCommand(ClientServerConnection.java:244)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at py4j.CallbackClient.sendCommand(CallbackClient.java:384)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at py4j.CallbackClient.sendCommand(CallbackClient.java:356)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at py4j.reflection.PythonProxyHandler.invoke(PythonProxyHandler.java:106)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at com.sun.proxy.$Proxy44.call(Unknown Source)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.PythonForeachBatchHelper$.$anonfun$callForeachBatch$1(ForeachBatchSink.scala:51)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.PythonForeachBatchHelper$.$anonfun$callForeachBatch$1$adapted(ForeachBatchSink.scala:51)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.sources.ForeachBatchSink.addBatch(ForeachBatchSink.scala:32)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runBatch$17(MicroBatchExecution.scala:665)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$6(SQLExecution.scala:109)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:169)
+[2026-04-03T16:46:32.719+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.$anonfun$withNewExecutionId$1(SQLExecution.scala:95)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:64)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runBatch$16(MicroBatchExecution.scala:663)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken(ProgressReporter.scala:375)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken$(ProgressReporter.scala:373)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.reportTimeTaken(StreamExecution.scala:68)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.runBatch(MicroBatchExecution.scala:663)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runActivatedStream$2(MicroBatchExecution.scala:256)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken(ProgressReporter.scala:375)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.ProgressReporter.reportTimeTaken$(ProgressReporter.scala:373)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.reportTimeTaken(StreamExecution.scala:68)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.$anonfun$runActivatedStream$1(MicroBatchExecution.scala:219)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MultiBatchExecutor.execute(TriggerExecutor.scala:49)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.MicroBatchExecution.runActivatedStream(MicroBatchExecution.scala:213)
+[2026-04-03T16:46:32.720+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.$anonfun$runStream$1(StreamExecution.scala:307)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:779)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution.org$apache$spark$sql$execution$streaming$StreamExecution$$runStream(StreamExecution.scala:285)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamExecution$$anon$1.run(StreamExecution.scala:208)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - Caused by: org.apache.spark.sql.execution.QueryExecutionException: Encountered error while reading file s3a://lakehouse/bronze/olist/customers/year=2026/month=04/day=01/customers_20260401_000000.parquet. Details:
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.errors.QueryExecutionErrors$.cannotReadFilesError(QueryExecutionErrors.scala:731)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:283)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:460)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.WholeStageCodegenExec$$anon$1.hasNext(WholeStageCodegenExec.scala:760)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:364)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+[2026-04-03T16:46:32.721+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:365)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.spark.rdd.RDD.iterator(RDD.scala:329)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:90)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.spark.scheduler.Task.run(Task.scala:136)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$3(Executor.scala:548)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1504)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:551)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - Caused by: java.io.IOException: can not read class org.apache.parquet.format.PageHeader: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:365)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.readPageHeader(Util.java:132)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readPageHeader(ParquetFileReader.java:1382)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1429)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader$Chunk.readAllPages(ParquetFileReader.java:1402)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readChunkPages(ParquetFileReader.java:1023)
+[2026-04-03T16:46:32.722+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextRowGroup(ParquetFileReader.java:928)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetFileReader.readNextFilteredRowGroup(ParquetFileReader.java:956)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.checkRead(InternalParquetRecordReader.java:126)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.InternalParquetRecordReader.nextKeyValue(InternalParquetRecordReader.java:225)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.parquet.hadoop.ParquetRecordReader.nextKeyValue(ParquetRecordReader.java:207)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator.hasNext(RecordReaderIterator.scala:39)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.RecordReaderIterator$$anon$1.hasNext(RecordReaderIterator.scala:61)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:116)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:274)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - ... 19 more
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - Caused by: shaded.parquet.org.apache.thrift.protocol.TProtocolException: Required field 'uncompressed_page_size' was not found in serialized data! Struct: org.apache.parquet.format.PageHeader$PageHeaderStandardScheme@e29f1bc
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1108)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader$PageHeaderStandardScheme.read(PageHeader.java:1019)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.PageHeader.read(PageHeader.java:896)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - at org.apache.parquet.format.Util.read(Util.java:362)
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - ... 33 more
+[2026-04-03T16:46:32.723+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:32.724+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T16:46:32.724+0000] {spark_submit.py:491} INFO - INFO:py4j.clientserver:Closing down clientserver connection
+[2026-04-03T16:46:32.881+0000] {taskinstance.py:1937} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 422, in submit
+    raise AirflowException(
+airflow.exceptions.AirflowException: Cannot execute: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 --conf spark.hadoop.fs.s3a.access.key=minio --conf spark.hadoop.fs.s3a.secret.key=****** --conf spark.hadoop.fs.s3a.path.style.access=true --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem --conf spark.sql.parquet.enableVectorizedReader=false --conf spark.sql.legacy.parquet.nanosAsLong=true --conf spark.sql.parquet.int64RebaseModeInRead=LEGACY --conf spark.sql.parquet.datetimeRebaseModeInRead=LEGACY --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 512m --name airflow_silver_customers --verbose /opt/airflow/etl/silver/main_silver.py --table_name customers --merge_key customer_id --is_cdc false --json_schema . Error code is: 1.
+[2026-04-03T16:46:32.885+0000] {taskinstance.py:1400} INFO - Marking task as UP_FOR_RETRY. dag_id=silver_spark_processor, task_id=process_silver_customers, execution_date=20260402T000000, start_date=20260403T164552, end_date=20260403T164632
+[2026-04-03T16:46:32.901+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 635 for task process_silver_customers (Cannot execute: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 --conf spark.hadoop.fs.s3a.access.key=minio --conf spark.hadoop.fs.s3a.secret.key=****** --conf spark.hadoop.fs.s3a.path.style.access=true --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem --conf spark.sql.parquet.enableVectorizedReader=false --conf spark.sql.legacy.parquet.nanosAsLong=true --conf spark.sql.parquet.int64RebaseModeInRead=LEGACY --conf spark.sql.parquet.datetimeRebaseModeInRead=LEGACY --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 512m --name airflow_silver_customers --verbose /opt/airflow/etl/silver/main_silver.py --table_name customers --merge_key customer_id --is_cdc false --json_schema . Error code is: 1.; 1406)
+[2026-04-03T16:46:32.947+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2026-04-03T16:46:32.977+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

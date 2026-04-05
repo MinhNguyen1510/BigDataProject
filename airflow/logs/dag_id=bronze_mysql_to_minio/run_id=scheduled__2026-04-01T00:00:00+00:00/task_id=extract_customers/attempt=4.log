@@ -1,0 +1,39 @@
+[2026-04-02T04:03:33.472+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_customers scheduled__2026-04-01T00:00:00+00:00 [queued]>
+[2026-04-02T04:03:33.504+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_customers scheduled__2026-04-01T00:00:00+00:00 [queued]>
+[2026-04-02T04:03:33.505+0000] {taskinstance.py:1361} INFO - Starting attempt 4 of 5
+[2026-04-02T04:03:33.543+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): extract_customers> on 2026-04-01 00:00:00+00:00
+[2026-04-02T04:03:33.560+0000] {standard_task_runner.py:57} INFO - Started process 844 to run task
+[2026-04-02T04:03:33.566+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'bronze_mysql_to_minio', 'extract_customers', 'scheduled__2026-04-01T00:00:00+00:00', '--job-id', '67', '--raw', '--subdir', 'DAGS_FOLDER/bronze_dag.py', '--cfg-path', '/tmp/tmpnwna_f0q']
+[2026-04-02T04:03:33.571+0000] {standard_task_runner.py:85} INFO - Job 67: Subtask extract_customers
+[2026-04-02T04:03:33.732+0000] {task_command.py:416} INFO - Running <TaskInstance: bronze_mysql_to_minio.extract_customers scheduled__2026-04-01T00:00:00+00:00 [running]> on host bfff109fd42e
+[2026-04-02T04:03:33.978+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='bronze_mysql_to_minio' AIRFLOW_CTX_TASK_ID='extract_customers' AIRFLOW_CTX_EXECUTION_DATE='2026-04-01T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='4' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-01T00:00:00+00:00'
+[2026-04-02T04:03:34.011+0000] {extract_mysql.py:32} INFO - [customers] Full Load | Query: SELECT * FROM customers;
+[2026-04-02T04:03:39.651+0000] {extract_mysql.py:35} INFO - [customers] Đã đọc: 99441 dòng x 7 cột
+[2026-04-02T04:03:40.082+0000] {taskinstance.py:1937} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/opt/airflow/etl/utils/minio_client.py", line 61, in save
+    self._client.fput_object(self._bucket, object_key, tmp_path)
+  File "/home/airflow/.local/lib/python3.10/site-packages/minio/api.py", line 992, in fput_object
+    file_size = os.stat(file_path).st_size
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/file_bronze_customer_customers_20260402040339.parquet'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/operators/python.py", line 192, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/operators/python.py", line 209, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/bronze_dag.py", line 58, in _run
+    metadata = extract_fn(mysql, minio, logical_date=logical_date)
+  File "/opt/airflow/etl/bronze/extract_mysql.py", line 88, in extract_customers
+    return _extract_full_load(mysql, minio, "customers", "customer", logical_date=logical_date)
+  File "/opt/airflow/etl/bronze/extract_mysql.py", line 37, in _extract_full_load
+    object_key = minio.save(df, layer=LAYER, schema=schema, table=table_name, logical_date=logical_date)
+  File "/opt/airflow/etl/utils/minio_client.py", line 64, in save
+    raise Exception(f"Error saving to MinIO [{object_key}]: {e}")
+Exception: Error saving to MinIO [bronze/customer/customers/year=2026/month=04/day=02/customers_20260402_000000.parquet]: [Errno 2] No such file or directory: '/tmp/file_bronze_customer_customers_20260402040339.parquet'
+[2026-04-02T04:03:40.109+0000] {taskinstance.py:1400} INFO - Marking task as UP_FOR_RETRY. dag_id=bronze_mysql_to_minio, task_id=extract_customers, execution_date=20260401T000000, start_date=20260402T040333, end_date=20260402T040340
+[2026-04-02T04:03:40.130+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 67 for task extract_customers (Error saving to MinIO [bronze/customer/customers/year=2026/month=04/day=02/customers_20260402_000000.parquet]: [Errno 2] No such file or directory: '/tmp/file_bronze_customer_customers_20260402040339.parquet'; 844)
+[2026-04-02T04:03:40.180+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2026-04-02T04:03:40.221+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

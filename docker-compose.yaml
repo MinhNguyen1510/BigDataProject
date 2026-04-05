@@ -1,4 +1,4 @@
-version: "3.9"
+
 
 # --- CẤU HÌNH DÙNG CHUNG CHO AIRFLOW ---
 x-airflow-common: &airflow-common
@@ -48,6 +48,11 @@ services:
       - .env
     networks:
       - data_network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
 
   mc:
     image: minio/mc
@@ -85,6 +90,7 @@ services:
     volumes:
       - ./docker_image/spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
       - ./docker_image/spark/conf/log4j.properties:/opt/spark/conf/log4j.properties
+      - ./etl:/opt/airflow/etl
     networks:
       - data_network
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master --host spark-master
@@ -102,6 +108,7 @@ services:
     volumes:
       - ./docker_image/spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
       - ./docker_image/spark/conf/log4j.properties:/opt/spark/conf/log4j.properties
+      - ./etl:/opt/airflow/etl
     networks:
       - data_network
     # Chỉ định lệnh chạy Worker và trỏ về node Master
@@ -109,40 +116,40 @@ services:
     ports:
       - "8082:8081"
 
-  # --- APACHE SUPERSET ---
-  superset:
-    build:
-      context: ./docker_image/superset
-      dockerfile: Dockerfile
-    container_name: superset
-    ports:
-      - "8088:8088"
-    environment:
-      - SUPERSET_SECRET_KEY=DayLaMotCaiKeyBiMatChoSupersetCuaBan123!@#
-    volumes:
-      - superset_data:/app/superset_home
-    networks:
-      - data_network
-    depends_on:
-      superset-init:
-        condition: service_completed_successfully
+#  # --- APACHE SUPERSET ---
+#  superset:
+#    build:
+#      context: ./docker_image/superset
+#      dockerfile: Dockerfile
+#    container_name: superset
+#    ports:
+#      - "8088:8088"
+#    environment:
+#      - SUPERSET_SECRET_KEY=DayLaMotCaiKeyBiMatChoSupersetCuaBan123!@#
+#    volumes:
+#      - superset_data:/app/superset_home
+#    networks:
+#      - data_network
+#    depends_on:
+#      superset-init:
+#        condition: service_completed_successfully
 
-  # Khởi tạo Database và tài khoản Admin cho Superset
-  superset-init:
-    build:
-      context: ./docker_image/superset
-      dockerfile: Dockerfile
-    container_name: superset-init
-    environment:
-      - SUPERSET_SECRET_KEY=DayLaMotCaiKeyBiMatChoSupersetCuaBan123!@#
-    volumes:
-      - superset_data:/app/superset_home
-    networks:
-      - data_network
-    command: >
-      bash -c "superset db upgrade &&
-               superset fab create-admin --username admin --firstname Admin --lastname Superset --email admin@example.com --password admin &&
-               superset init"
+#  # Khởi tạo Database và tài khoản Admin cho Superset
+#  superset-init:
+#    build:
+#      context: ./docker_image/superset
+#      dockerfile: Dockerfile
+#    container_name: superset-init
+#    environment:
+#      - SUPERSET_SECRET_KEY=DayLaMotCaiKeyBiMatChoSupersetCuaBan123!@#
+#    volumes:
+#      - superset_data:/app/superset_home
+#    networks:
+#      - data_network
+#    command: >
+#      bash -c "superset db upgrade &&
+#               superset fab create-admin --username admin --firstname Admin --lastname Superset --email admin@example.com --password admin &&
+#               superset init"
 
   mysql:
     image: mysql:8.0
@@ -164,6 +171,12 @@ services:
       - MYSQL_ROOT_PASSWORD=${MLFLOW_DB_ROOT_PASS}
     networks:
       - data_network
+    command:
+      - --server-id=1
+      - --log-bin=mysql-bin
+      - --binlog-format=ROW
+      - --binlog-row-image=FULL
+      - --expire-logs-days=10
     healthcheck:
       test:
         [
@@ -210,23 +223,23 @@ services:
     networks:
       - data_network
 
-  web:
-    restart: always
-    build: ./docker_image/mlflow
-    container_name: mlflow_server
-    depends_on:
-      - mc
-      - mysql
-    ports:
-      - "7893:5000"
-    networks:
-      - data_network
-    environment:
-      - MLFLOW_S3_ENDPOINT_URL=http://minio:9000/
-      - AWS_ACCESS_KEY_ID=minio
-      - AWS_SECRET_ACCESS_KEY=minio123
-    # environment:#   - MLFLOW_S3_ENDPOINT_URL=http://minio:9000/#   - AWS_ACCESS_KEY_ID=minio#   - AWS_SECRET_ACCESS_KEY=minio123
-    command: mlflow server --backend-store-uri mysql+pymysql://root:${MLFLOW_DB_ROOT_PASS}@mysql:3306/${MLFLOW_DB_NAME} --default-artifact-root s3://mlflow/ --artifacts-destination s3://mlflow/ --host 0.0.0.0
+#  web:
+#    restart: always
+#    build: ./docker_image/mlflow
+#    container_name: mlflow_server
+#    depends_on:
+#      - mc
+#      - mysql
+#    ports:
+#      - "7893:5000"
+#    networks:
+#      - data_network
+#    environment:
+#      - MLFLOW_S3_ENDPOINT_URL=http://minio:9000/
+#      - AWS_ACCESS_KEY_ID=minio
+#      - AWS_SECRET_ACCESS_KEY=minio123
+#    # environment:#   - MLFLOW_S3_ENDPOINT_URL=http://minio:9000/#   - AWS_ACCESS_KEY_ID=minio#   - AWS_SECRET_ACCESS_KEY=minio123
+#    command: mlflow server --backend-store-uri mysql+pymysql://root:${MLFLOW_DB_ROOT_PASS}@mysql:3306/${MLFLOW_DB_NAME} --default-artifact-root s3://mlflow/ --artifacts-destination s3://mlflow/ --host 0.0.0.0
 
   mariadb:
     image: mariadb:10.5.16
@@ -275,36 +288,36 @@ services:
     networks:
       - data_network
 
-  spark-thrift-server:
-    build:
-      context: ./docker_image/spark
-      dockerfile: ./Dockerfile
-    container_name: "spark-thrift-server"
-    restart: always
-    depends_on:
-      - spark-master
-      - hive-metastore
-    ports:
-      - "4041:4040"
-      - "10000:10000"
-    command: >
-      bash -c "
-      echo 'Chờ Metastore lên hẳn...' &&
-      sleep 20 &&
-      /opt/spark/bin/spark-submit 
-      --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 
-      --name 'Thrift JDBC/ODBC Server' 
-      --master spark://spark-master:7077 
-      --conf spark.hadoop.hive.metastore.uris=thrift://hive-metastore:9083 
-      --executor-memory 1G 
-      --total-executor-cores 1 
-      --driver-memory 1G &
-      tail -f /dev/null"
-    volumes:
-      - ./docker_image/spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
-      - ./docker_image/spark/conf/hive-site.xml:/opt/spark/conf/hive-site.xml
-    networks:
-      - data_network
+#  spark-thrift-server:
+#    build:
+#      context: ./docker_image/spark
+#      dockerfile: ./Dockerfile
+#    container_name: "spark-thrift-server"
+#    restart: always
+#    depends_on:
+#      - spark-master
+#      - hive-metastore
+#    ports:
+#      - "4041:4040"
+#      - "10000:10000"
+#    command: >
+#      bash -c "
+#      echo 'Chờ Metastore lên hẳn...' &&
+#      sleep 20 &&
+#      /opt/spark/bin/spark-submit
+#      --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2
+#      --name 'Thrift JDBC/ODBC Server'
+#      --master spark://spark-master:7077
+#      --conf spark.hadoop.hive.metastore.uris=thrift://hive-metastore:9083
+#      --executor-memory 1G
+#      --total-executor-cores 1
+#      --driver-memory 1G &
+#      tail -f /dev/null"
+#    volumes:
+#      - ./docker_image/spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
+#      - ./docker_image/spark/conf/hive-site.xml:/opt/spark/conf/hive-site.xml
+#    networks:
+#      - data_network
 
   # Giao diện Web của Airflow (UI)
   airflow-webserver:
@@ -326,6 +339,10 @@ services:
     container_name: airflow-scheduler
     command: scheduler
     restart: always
+    environment:
+      <<: *airflow-common-env
+      # Bơm thẳng 2GB RAM cho tiến trình Python chạy Spark Driver
+      SPARK_DRIVER_MEMORY: "2g"
 
   # Chạy 1 lần để tạo tài khoản đăng nhập lúc đầu
   airflow-init:
@@ -339,6 +356,45 @@ services:
       _AIRFLOW_WWW_USER_USERNAME: ${AIRFLOW_ADMIN_USER}
       _AIRFLOW_WWW_USER_PASSWORD: ${AIRFLOW_ADMIN_PASS}
 
+#  # --- CỤM KAFKA & DEBEZIUM (LUỒNG CDC STREAMING) ---
+#  zookeeper:
+#    image: quay.io/debezium/zookeeper:2.4
+#    container_name: zookeeper
+#    ports:
+#      - "2181:2181"
+#    networks:
+#      - data_network
+#
+#  kafka:
+#    image: quay.io/debezium/kafka:2.4
+#    container_name: kafka
+#    ports:
+#      - "9092:9092"
+#    environment:
+#      - ZOOKEEPER_CONNECT=zookeeper:2181
+#      # Cấu hình để các container khác trong data_network có thể kết nối tới Kafka
+#      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+#    depends_on:
+#      - zookeeper
+#    networks:
+#      - data_network
+#
+#  connect:
+#    image: quay.io/debezium/connect:2.4
+#    container_name: debezium-connect
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      - BOOTSTRAP_SERVERS=kafka:9092
+#      - GROUP_ID=1
+#      - CONFIG_STORAGE_TOPIC=my_connect_configs
+#      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+#      - STATUS_STORAGE_TOPIC=my_connect_statuses
+#    depends_on:
+#      - kafka
+#      - mysql
+#    networks:
+#      - data_network
 
 networks:
   data_network:

@@ -1,0 +1,84 @@
+[2026-04-03T14:40:28.172+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_product_category_name_translation scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-03T14:40:28.186+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_product_category_name_translation scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-03T14:40:28.187+0000] {taskinstance.py:1361} INFO - Starting attempt 13 of 14
+[2026-04-03T14:40:28.208+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_product_category_name_translation> on 2026-04-02 00:00:00+00:00
+[2026-04-03T14:40:28.217+0000] {standard_task_runner.py:57} INFO - Started process 3146 to run task
+[2026-04-03T14:40:28.221+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_product_category_name_translation', 'scheduled__2026-04-02T00:00:00+00:00', '--job-id', '590', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmpxijgh4hd']
+[2026-04-03T14:40:28.223+0000] {standard_task_runner.py:85} INFO - Job 590: Subtask process_silver_product_category_name_translation
+[2026-04-03T14:40:28.316+0000] {task_command.py:416} INFO - Running <TaskInstance: silver_spark_processor.process_silver_product_category_name_translation scheduled__2026-04-02T00:00:00+00:00 [running]> on host e516154efc74
+[2026-04-03T14:40:28.448+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='silver_spark_processor' AIRFLOW_CTX_TASK_ID='process_silver_product_category_name_translation' AIRFLOW_CTX_EXECUTION_DATE='2026-04-02T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='13' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-02T00:00:00+00:00'
+[2026-04-03T14:40:28.462+0000] {base.py:73} INFO - Using connection ID 'spark_default' for task execution.
+[2026-04-03T14:40:28.464+0000] {spark_submit.py:340} INFO - Spark-Submit cmd: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_product_category_name_translation /opt/airflow/etl/silver/main_silver.py --table_name product_category_name_translation --merge_key product_category_name --is_cdc false --json_schema 
+[2026-04-03T14:40:28.612+0000] {spark_submit.py:491} INFO - /home/airflow/.local/lib/python3.10/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+[2026-04-03T14:40:34.711+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:34 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[2026-04-03T14:40:37.530+0000] {spark_submit.py:491} INFO - INFO:__main__:Khởi tạo Spark Job cho bảng: product_category_name_translation
+[2026-04-03T14:40:38.015+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO SparkContext: Running Spark version 3.3.2
+[2026-04-03T14:40:38.098+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO ResourceUtils: ==============================================================
+[2026-04-03T14:40:38.100+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO ResourceUtils: No custom resources configured for spark.driver.
+[2026-04-03T14:40:38.102+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO ResourceUtils: ==============================================================
+[2026-04-03T14:40:38.106+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO SparkContext: Submitted application: <class 'pyspark.sql.session.SparkSession'>
+[2026-04-03T14:40:38.177+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+[2026-04-03T14:40:38.231+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO ResourceProfile: Limiting resource is cpus at 1 tasks per executor
+[2026-04-03T14:40:38.240+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO ResourceProfileManager: Added ResourceProfile id: 0
+[2026-04-03T14:40:38.455+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO SecurityManager: Changing view acls to: airflow
+[2026-04-03T14:40:38.461+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO SecurityManager: Changing modify acls to: airflow
+[2026-04-03T14:40:38.465+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO SecurityManager: Changing view acls groups to:
+[2026-04-03T14:40:38.470+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO SecurityManager: Changing modify acls groups to:
+[2026-04-03T14:40:38.471+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:38 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(airflow); groups with view permissions: Set(); users  with modify permissions: Set(airflow); groups with modify permissions: Set()
+[2026-04-03T14:40:40.814+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:40 INFO Utils: Successfully started service 'sparkDriver' on port 46627.
+[2026-04-03T14:40:40.965+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:40 INFO SparkEnv: Registering MapOutputTracker
+[2026-04-03T14:40:41.142+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:41 INFO SparkEnv: Registering BlockManagerMaster
+[2026-04-03T14:40:41.203+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:41 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+[2026-04-03T14:40:41.204+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:41 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+[2026-04-03T14:40:41.216+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:41 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+[2026-04-03T14:40:41.294+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:41 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-b239cf6f-ec70-4b48-8cfe-09faf578f4d7
+[2026-04-03T14:40:41.368+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:41 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+[2026-04-03T14:40:41.434+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:41 INFO SparkEnv: Registering OutputCommitCoordinator
+[2026-04-03T14:40:42.267+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:42 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
+[2026-04-03T14:40:42.267+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:42 WARN Utils: Service 'SparkUI' could not bind on port 4041. Attempting port 4042.
+[2026-04-03T14:40:42.268+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:42 WARN Utils: Service 'SparkUI' could not bind on port 4042. Attempting port 4043.
+[2026-04-03T14:40:42.271+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:42 WARN Utils: Service 'SparkUI' could not bind on port 4043. Attempting port 4044.
+[2026-04-03T14:40:42.298+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:42 INFO Utils: Successfully started service 'SparkUI' on port 4044.
+[2026-04-03T14:40:42.461+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:42 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar at spark://e516154efc74:46627/jars/hadoop-aws-3.3.2.jar with timestamp 1775227237950
+[2026-04-03T14:40:42.461+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:42 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar at spark://e516154efc74:46627/jars/aws-java-sdk-bundle-1.11.1026.jar with timestamp 1775227237950
+[2026-04-03T14:40:42.462+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:42 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar at spark://e516154efc74:46627/jars/delta-core_2.12-2.3.0.jar with timestamp 1775227237950
+[2026-04-03T14:40:42.467+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:42 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar at spark://e516154efc74:46627/jars/delta-storage-2.3.0.jar with timestamp 1775227237950
+[2026-04-03T14:40:42.894+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:42 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+[2026-04-03T14:40:43.104+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:43 INFO TransportClientFactory: Successfully created connection to spark-master/172.18.0.6:7077 after 111 ms (0 ms spent in bootstraps)
+[2026-04-03T14:40:45.206+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:45 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20260403144045-0022
+[2026-04-03T14:40:45.298+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:45 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 37379.
+[2026-04-03T14:40:45.298+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:45 INFO NettyBlockTransferService: Server created on e516154efc74:37379
+[2026-04-03T14:40:45.306+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:45 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+[2026-04-03T14:40:45.351+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:45 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, e516154efc74, 37379, None)
+[2026-04-03T14:40:45.380+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:45 INFO BlockManagerMasterEndpoint: Registering block manager e516154efc74:37379 with 434.4 MiB RAM, BlockManagerId(driver, e516154efc74, 37379, None)
+[2026-04-03T14:40:45.408+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:45 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, e516154efc74, 37379, None)
+[2026-04-03T14:40:45.425+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:45 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, e516154efc74, 37379, None)
+[2026-04-03T14:40:46.144+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:46 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+[2026-04-03T14:40:48.941+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu xử lý lớp Silver cho bảng: product_category_name_translation | Chế độ CDC: False
+[2026-04-03T14:40:48.944+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu quét Data Nóng từ Bronze...
+[2026-04-03T14:40:49.832+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:49 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties
+[2026-04-03T14:43:42.003+0000] {local_task_job_runner.py:115} ERROR - Received SIGTERM. Terminating subprocesses
+[2026-04-03T14:43:42.104+0000] {process_utils.py:131} INFO - Sending 15 to group 3146. PIDs of all processes in the group: [3151, 3494, 3146]
+[2026-04-03T14:43:42.112+0000] {process_utils.py:86} INFO - Sending the signal 15 to group 3146
+[2026-04-03T14:43:42.128+0000] {taskinstance.py:1632} ERROR - Received SIGTERM. Terminating subprocesses.
+[2026-04-03T14:43:42.165+0000] {spark_submit.py:618} INFO - Sending kill signal to spark-submit
+[2026-04-03T14:43:42.171+0000] {process_utils.py:79} INFO - Process psutil.Process(pid=3494, status='terminated', started='14:40:35') (3494) terminated with exit code None
+[2026-04-03T14:43:42.523+0000] {taskinstance.py:1937} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 410, in submit
+    self._process_spark_submit_log(iter(self._submit_sp.stdout))  # type: ignore
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 459, in _process_spark_submit_log
+    for line in itr:
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/models/taskinstance.py", line 1634, in signal_handler
+    raise AirflowException("Task received SIGTERM signal")
+airflow.exceptions.AirflowException: Task received SIGTERM signal
+[2026-04-03T14:43:42.593+0000] {taskinstance.py:1400} INFO - Marking task as UP_FOR_RETRY. dag_id=silver_spark_processor, task_id=process_silver_product_category_name_translation, execution_date=20260402T000000, start_date=20260403T144028, end_date=20260403T144342
+[2026-04-03T14:43:42.900+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 590 for task process_silver_product_category_name_translation (Task received SIGTERM signal; 3146)
+[2026-04-03T14:43:42.940+0000] {process_utils.py:79} INFO - Process psutil.Process(pid=3151, status='terminated', started='14:40:28') (3151) terminated with exit code None
+[2026-04-03T14:43:42.941+0000] {process_utils.py:79} INFO - Process psutil.Process(pid=3146, status='terminated', exitcode=1, started='14:40:28') (3146) terminated with exit code 1
+[2026-04-03T14:43:42.945+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 143
+[2026-04-03T14:43:43.289+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-04-03T14:43:45.956+0000] {local_task_job_runner.py:115} ERROR - Received SIGTERM. Terminating subprocesses
+[2026-04-03T14:43:45.956+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 143

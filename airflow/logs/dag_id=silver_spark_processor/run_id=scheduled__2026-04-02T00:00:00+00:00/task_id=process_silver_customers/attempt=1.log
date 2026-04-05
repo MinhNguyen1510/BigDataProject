@@ -1,0 +1,166 @@
+[2026-04-03T11:02:20.054+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_customers scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-03T11:02:20.088+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_customers scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-03T11:02:20.091+0000] {taskinstance.py:1361} INFO - Starting attempt 1 of 2
+[2026-04-03T11:02:20.128+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_customers> on 2026-04-02 00:00:00+00:00
+[2026-04-03T11:02:20.150+0000] {standard_task_runner.py:57} INFO - Started process 203 to run task
+[2026-04-03T11:02:20.158+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_customers', 'scheduled__2026-04-02T00:00:00+00:00', '--job-id', '364', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmpnsoyu63r']
+[2026-04-03T11:02:20.164+0000] {standard_task_runner.py:85} INFO - Job 364: Subtask process_silver_customers
+[2026-04-03T11:02:20.564+0000] {task_command.py:416} INFO - Running <TaskInstance: silver_spark_processor.process_silver_customers scheduled__2026-04-02T00:00:00+00:00 [running]> on host ad303354f1ab
+[2026-04-03T11:02:21.374+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='silver_spark_processor' AIRFLOW_CTX_TASK_ID='process_silver_customers' AIRFLOW_CTX_EXECUTION_DATE='2026-04-02T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-02T00:00:00+00:00'
+[2026-04-03T11:02:21.566+0000] {base.py:73} INFO - Using connection ID 'spark_default' for task execution.
+[2026-04-03T11:02:21.616+0000] {spark_submit.py:340} INFO - Spark-Submit cmd: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --packages org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.11.1026,io.delta:delta-core_2.12:2.3.0 --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_customers /opt/airflow/etl/silver/main_silver.py --table_name customers --merge_key customer_id --is_cdc false --json_schema 
+[2026-04-03T11:02:22.714+0000] {spark_submit.py:491} INFO - /home/airflow/.local/lib/python3.10/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+[2026-04-03T11:02:37.753+0000] {spark_submit.py:491} INFO - :: loading settings :: url = jar:file:/home/airflow/.local/lib/python3.10/site-packages/pyspark/jars/ivy-2.5.1.jar!/org/apache/ivy/core/settings/ivysettings.xml
+[2026-04-03T11:02:38.209+0000] {spark_submit.py:491} INFO - Ivy Default Cache set to: /home/airflow/.ivy2/cache
+[2026-04-03T11:02:38.209+0000] {spark_submit.py:491} INFO - The jars for the packages stored in: /home/airflow/.ivy2/jars
+[2026-04-03T11:02:38.243+0000] {spark_submit.py:491} INFO - org.apache.hadoop#hadoop-aws added as a dependency
+[2026-04-03T11:02:38.244+0000] {spark_submit.py:491} INFO - com.amazonaws#aws-java-sdk-bundle added as a dependency
+[2026-04-03T11:02:38.244+0000] {spark_submit.py:491} INFO - io.delta#delta-core_2.12 added as a dependency
+[2026-04-03T11:02:38.255+0000] {spark_submit.py:491} INFO - :: resolving dependencies :: org.apache.spark#spark-submit-parent-431e5061-243e-4ad2-9c6b-13f9ce54ae1c;1.0
+[2026-04-03T11:02:38.255+0000] {spark_submit.py:491} INFO - confs: [default]
+[2026-04-03T11:02:42.158+0000] {spark_submit.py:491} INFO - found com.amazonaws#aws-java-sdk-bundle;1.11.1026 in central
+[2026-04-03T11:02:42.302+0000] {spark_submit.py:491} INFO - found io.delta#delta-core_2.12;2.3.0 in central
+[2026-04-03T11:02:42.588+0000] {spark_submit.py:491} INFO - found io.delta#delta-storage;2.3.0 in central
+[2026-04-03T11:02:45.317+0000] {spark_submit.py:491} INFO - downloading https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.1026/aws-java-sdk-bundle-1.11.1026.jar ...
+[2026-04-03T11:03:30.947+0000] {spark_submit.py:491} INFO - :: resolution report :: resolve 6747ms :: artifacts dl 45947ms
+[2026-04-03T11:03:30.948+0000] {spark_submit.py:491} INFO - :: modules in use:
+[2026-04-03T11:03:30.948+0000] {spark_submit.py:491} INFO - com.amazonaws#aws-java-sdk-bundle;1.11.1026 from central in [default]
+[2026-04-03T11:03:30.948+0000] {spark_submit.py:491} INFO - io.delta#delta-core_2.12;2.3.0 from central in [default]
+[2026-04-03T11:03:30.949+0000] {spark_submit.py:491} INFO - io.delta#delta-storage;2.3.0 from central in [default]
+[2026-04-03T11:03:30.949+0000] {spark_submit.py:491} INFO - ---------------------------------------------------------------------
+[2026-04-03T11:03:30.949+0000] {spark_submit.py:491} INFO - |                  |            modules            ||   artifacts   |
+[2026-04-03T11:03:30.949+0000] {spark_submit.py:491} INFO - |       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+[2026-04-03T11:03:30.949+0000] {spark_submit.py:491} INFO - ---------------------------------------------------------------------
+[2026-04-03T11:03:30.949+0000] {spark_submit.py:491} INFO - |      default     |   5   |   3   |   3   |   0   ||   3   |   0   |
+[2026-04-03T11:03:30.949+0000] {spark_submit.py:491} INFO - ---------------------------------------------------------------------
+[2026-04-03T11:03:30.953+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.953+0000] {spark_submit.py:491} INFO - :: problems summary ::
+[2026-04-03T11:03:30.953+0000] {spark_submit.py:491} INFO - :::: WARNINGS
+[2026-04-03T11:03:30.953+0000] {spark_submit.py:491} INFO - io problem while parsing ivy file: https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-project/3.3.2/hadoop-project-3.3.2.pom (java.io.FileNotFoundException: /home/airflow/.ivy2/cache/org.apache.hadoop/hadoop-project/ivy-3.3.2.xml.original (No such file or directory))
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - io problem while parsing ivy file: https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.2/hadoop-aws-3.3.2.pom (java.io.IOException: Impossible to load parent for file:/home/airflow/.ivy2/cache/org.apache.hadoop/hadoop-aws/ivy-3.3.2.xml.original. Parent=org.apache.hadoop#hadoop-project;3.3.2)
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - module not found: org.apache.hadoop#hadoop-aws;3.3.2
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - ==== local-m2-cache: tried
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - file:/home/airflow/.m2/repository/org/apache/hadoop/hadoop-project/3.3.2/hadoop-project-3.3.2.pom
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - -- artifact org.apache.hadoop#hadoop-project;3.3.2!hadoop-project.jar:
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.954+0000] {spark_submit.py:491} INFO - file:/home/airflow/.m2/repository/org/apache/hadoop/hadoop-project/3.3.2/hadoop-project-3.3.2.jar
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - ==== local-ivy-cache: tried
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - /home/airflow/.ivy2/local/org.apache.hadoop/hadoop-project/3.3.2/ivys/ivy.xml
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - -- artifact org.apache.hadoop#hadoop-project;3.3.2!hadoop-project.jar:
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - /home/airflow/.ivy2/local/org.apache.hadoop/hadoop-project/3.3.2/jars/hadoop-project.jar
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - ==== central: tried
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-project/3.3.2/hadoop-project-3.3.2.pom
+[2026-04-03T11:03:30.955+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - ==== spark-packages: tried
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - https://repos.spark-packages.org/org/apache/hadoop/hadoop-aws/3.3.2/hadoop-aws-3.3.2.pom
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - -- artifact org.apache.hadoop#hadoop-aws;3.3.2!hadoop-aws.jar:
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - https://repos.spark-packages.org/org/apache/hadoop/hadoop-aws/3.3.2/hadoop-aws-3.3.2.jar
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - io problem while parsing ivy file: https://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/9/oss-parent-9.pom (java.io.FileNotFoundException: /home/airflow/.ivy2/cache/org.sonatype.oss/oss-parent/ivy-9.xml.original (No such file or directory))
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - io problem while parsing ivy file: https://repo1.maven.org/maven2/org/antlr/antlr4-master/4.8/antlr4-master-4.8.pom (java.io.IOException: Impossible to load parent for file:/home/airflow/.ivy2/cache/org.antlr/antlr4-master/ivy-4.8.xml.original. Parent=org.sonatype.oss#oss-parent;9)
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - io problem while parsing ivy file: https://repo1.maven.org/maven2/org/antlr/antlr4-runtime/4.8/antlr4-runtime-4.8.pom (java.io.IOException: Impossible to load parent for file:/home/airflow/.ivy2/cache/org.antlr/antlr4-runtime/ivy-4.8.xml.original. Parent=org.antlr#antlr4-master;4.8)
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - module not found: org.antlr#antlr4-runtime;4.8
+[2026-04-03T11:03:30.956+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - ==== local-m2-cache: tried
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - file:/home/airflow/.m2/repository/org/sonatype/oss/oss-parent/9/oss-parent-9.pom
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - -- artifact org.sonatype.oss#oss-parent;9!oss-parent.jar:
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - file:/home/airflow/.m2/repository/org/sonatype/oss/oss-parent/9/oss-parent-9.jar
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - ==== local-ivy-cache: tried
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - /home/airflow/.ivy2/local/org.sonatype.oss/oss-parent/9/ivys/ivy.xml
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.957+0000] {spark_submit.py:491} INFO - -- artifact org.sonatype.oss#oss-parent;9!oss-parent.jar:
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - /home/airflow/.ivy2/local/org.sonatype.oss/oss-parent/9/jars/oss-parent.jar
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - ==== central: tried
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - https://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/9/oss-parent-9.pom
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - ==== spark-packages: tried
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - https://repos.spark-packages.org/org/antlr/antlr4-runtime/4.8/antlr4-runtime-4.8.pom
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - -- artifact org.antlr#antlr4-runtime;4.8!antlr4-runtime.jar:
+[2026-04-03T11:03:30.958+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - https://repos.spark-packages.org/org/antlr/antlr4-runtime/4.8/antlr4-runtime-4.8.jar
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - [FAILED     ] com.amazonaws#aws-java-sdk-bundle;1.11.1026!aws-java-sdk-bundle.jar: Downloaded file size (0) doesn't match expected Content Length (226379782) for https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.1026/aws-java-sdk-bundle-1.11.1026.jar. Please retry. (45942ms)
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - [FAILED     ] com.amazonaws#aws-java-sdk-bundle;1.11.1026!aws-java-sdk-bundle.jar: Downloaded file size (0) doesn't match expected Content Length (226379782) for https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.1026/aws-java-sdk-bundle-1.11.1026.jar. Please retry. (45942ms)
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - ==== central: tried
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.1026/aws-java-sdk-bundle-1.11.1026.jar
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - ::::::::::::::::::::::::::::::::::::::::::::::
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - ::          UNRESOLVED DEPENDENCIES         ::
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.959+0000] {spark_submit.py:491} INFO - ::::::::::::::::::::::::::::::::::::::::::::::
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - :: org.apache.hadoop#hadoop-aws;3.3.2: not found
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - :: org.antlr#antlr4-runtime;4.8: not found
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - ::::::::::::::::::::::::::::::::::::::::::::::
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - ::::::::::::::::::::::::::::::::::::::::::::::
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - ::              FAILED DOWNLOADS            ::
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - :: ^ see resolution messages for details  ^ ::
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - ::::::::::::::::::::::::::::::::::::::::::::::
+[2026-04-03T11:03:30.960+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - :: com.amazonaws#aws-java-sdk-bundle;1.11.1026!aws-java-sdk-bundle.jar
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - ::::::::::::::::::::::::::::::::::::::::::::::
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - 
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - :: USE VERBOSE OR DEBUG MESSAGE LEVEL FOR MORE DETAILS
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - Exception in thread "main" java.lang.RuntimeException: [unresolved dependency: org.apache.hadoop#hadoop-aws;3.3.2: not found, unresolved dependency: org.antlr#antlr4-runtime;4.8: not found, download failed: com.amazonaws#aws-java-sdk-bundle;1.11.1026!aws-java-sdk-bundle.jar]
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - at org.apache.spark.deploy.SparkSubmitUtils$.resolveMavenCoordinates(SparkSubmit.scala:1456)
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - at org.apache.spark.util.DependencyUtils$.resolveMavenDependencies(DependencyUtils.scala:185)
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - at org.apache.spark.deploy.SparkSubmit.prepareSubmitEnvironment(SparkSubmit.scala:308)
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - at org.apache.spark.deploy.SparkSubmit.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:901)
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - at org.apache.spark.deploy.SparkSubmit.doRunMain$1(SparkSubmit.scala:180)
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - at org.apache.spark.deploy.SparkSubmit.submit(SparkSubmit.scala:203)
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - at org.apache.spark.deploy.SparkSubmit.doSubmit(SparkSubmit.scala:90)
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - at org.apache.spark.deploy.SparkSubmit$$anon$2.doSubmit(SparkSubmit.scala:1046)
+[2026-04-03T11:03:30.961+0000] {spark_submit.py:491} INFO - at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:1055)
+[2026-04-03T11:03:30.962+0000] {spark_submit.py:491} INFO - at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+[2026-04-03T11:03:31.020+0000] {taskinstance.py:1937} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 422, in submit
+    raise AirflowException(
+airflow.exceptions.AirflowException: Cannot execute: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --packages org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.11.1026,io.delta:delta-core_2.12:2.3.0 --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_customers /opt/airflow/etl/silver/main_silver.py --table_name customers --merge_key customer_id --is_cdc false --json_schema . Error code is: 1.
+[2026-04-03T11:03:31.025+0000] {taskinstance.py:1400} INFO - Marking task as UP_FOR_RETRY. dag_id=silver_spark_processor, task_id=process_silver_customers, execution_date=20260402T000000, start_date=20260403T110220, end_date=20260403T110331
+[2026-04-03T11:03:31.041+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 364 for task process_silver_customers (Cannot execute: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --packages org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.11.1026,io.delta:delta-core_2.12:2.3.0 --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_customers /opt/airflow/etl/silver/main_silver.py --table_name customers --merge_key customer_id --is_cdc false --json_schema . Error code is: 1.; 203)
+[2026-04-03T11:03:31.053+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2026-04-03T11:03:31.086+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

@@ -1,0 +1,17 @@
+[2026-04-03T17:47:16.285+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_geolocation manual__2026-04-03T17:47:14.954839+00:00 [queued]>
+[2026-04-03T17:47:16.297+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_geolocation manual__2026-04-03T17:47:14.954839+00:00 [queued]>
+[2026-04-03T17:47:16.297+0000] {taskinstance.py:1361} INFO - Starting attempt 1 of 2
+[2026-04-03T17:47:16.313+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): extract_geolocation> on 2026-04-03 17:47:14.954839+00:00
+[2026-04-03T17:47:16.325+0000] {standard_task_runner.py:57} INFO - Started process 224 to run task
+[2026-04-03T17:47:16.329+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'bronze_mysql_to_minio', 'extract_geolocation', 'manual__2026-04-03T17:47:14.954839+00:00', '--job-id', '648', '--raw', '--subdir', 'DAGS_FOLDER/bronze_dag.py', '--cfg-path', '/tmp/tmpkq3bzwcj']
+[2026-04-03T17:47:16.332+0000] {standard_task_runner.py:85} INFO - Job 648: Subtask extract_geolocation
+[2026-04-03T17:47:16.402+0000] {task_command.py:416} INFO - Running <TaskInstance: bronze_mysql_to_minio.extract_geolocation manual__2026-04-03T17:47:14.954839+00:00 [running]> on host da4c1e7b19e0
+[2026-04-03T17:47:16.523+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='bronze_mysql_to_minio' AIRFLOW_CTX_TASK_ID='extract_geolocation' AIRFLOW_CTX_EXECUTION_DATE='2026-04-03T17:47:14.954839+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-03T17:47:14.954839+00:00'
+[2026-04-03T17:47:16.540+0000] {extract_mysql.py:32} INFO - [geolocation] Full Load | Query: SELECT * FROM geolocation;
+[2026-04-03T17:47:31.044+0000] {extract_mysql.py:35} INFO - [geolocation] Đã đọc: 738332 dòng x 7 cột
+[2026-04-03T17:47:31.249+0000] {extract_mysql.py:38} INFO - [geolocation] Đã lưu MinIO: bronze/olist/geolocation/year=2026/month=04/day=03/geolocation_20260403_000000.parquet
+[2026-04-03T17:47:31.250+0000] {bronze_dag.py:59} INFO -  extract_geolocation | {'table': 'geolocation', 'layer': 'bronze', 'schema': 'olist', 'row_count': 738332, 'column_count': 7, 'columns': ['geolocation_zip_code_prefix', 'geolocation_lat', 'geolocation_lng', 'geolocation_city', 'geolocation_state', 'created_date', 'last_modified_date'], 'minio_path': 'bronze/olist/geolocation/year=2026/month=04/day=03/geolocation_20260403_000000.parquet', 'mode': 'full'}
+[2026-04-03T17:47:31.250+0000] {python.py:194} INFO - Done. Returned value was: {'table': 'geolocation', 'layer': 'bronze', 'schema': 'olist', 'row_count': 738332, 'column_count': 7, 'columns': ['geolocation_zip_code_prefix', 'geolocation_lat', 'geolocation_lng', 'geolocation_city', 'geolocation_state', 'created_date', 'last_modified_date'], 'minio_path': 'bronze/olist/geolocation/year=2026/month=04/day=03/geolocation_20260403_000000.parquet', 'mode': 'full'}
+[2026-04-03T17:47:31.281+0000] {taskinstance.py:1400} INFO - Marking task as SUCCESS. dag_id=bronze_mysql_to_minio, task_id=extract_geolocation, execution_date=20260403T174714, start_date=20260403T174716, end_date=20260403T174731
+[2026-04-03T17:47:31.347+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2026-04-03T17:47:31.371+0000] {taskinstance.py:2778} INFO - 1 downstream tasks scheduled from follow-on schedule check

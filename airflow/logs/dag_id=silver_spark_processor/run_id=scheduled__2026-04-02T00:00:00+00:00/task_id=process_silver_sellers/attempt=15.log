@@ -1,0 +1,167 @@
+[2026-04-04T09:20:18.154+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_sellers scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-04T09:20:18.172+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_sellers scheduled__2026-04-02T00:00:00+00:00 [queued]>
+[2026-04-04T09:20:18.173+0000] {taskinstance.py:1361} INFO - Starting attempt 15 of 16
+[2026-04-04T09:20:18.223+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_sellers> on 2026-04-02 00:00:00+00:00
+[2026-04-04T09:20:18.237+0000] {standard_task_runner.py:57} INFO - Started process 1071 to run task
+[2026-04-04T09:20:18.248+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_sellers', 'scheduled__2026-04-02T00:00:00+00:00', '--job-id', '660', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmpmx0_6v4g']
+[2026-04-04T09:20:18.252+0000] {standard_task_runner.py:85} INFO - Job 660: Subtask process_silver_sellers
+[2026-04-04T09:20:18.364+0000] {task_command.py:416} INFO - Running <TaskInstance: silver_spark_processor.process_silver_sellers scheduled__2026-04-02T00:00:00+00:00 [running]> on host 03c232fb577d
+[2026-04-04T09:20:18.572+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='silver_spark_processor' AIRFLOW_CTX_TASK_ID='process_silver_sellers' AIRFLOW_CTX_EXECUTION_DATE='2026-04-02T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='15' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-02T00:00:00+00:00'
+[2026-04-04T09:20:18.591+0000] {base.py:73} INFO - Using connection ID 'spark_default' for task execution.
+[2026-04-04T09:20:18.597+0000] {spark_submit.py:340} INFO - Spark-Submit cmd: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --conf spark.hadoop.fs.s3a.endpoint=http://minio:9000 --conf spark.hadoop.fs.s3a.access.key=minio --conf spark.hadoop.fs.s3a.secret.key=****** --conf spark.hadoop.fs.s3a.path.style.access=true --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem --conf spark.sql.parquet.enableVectorizedReader=false --conf spark.sql.legacy.parquet.nanosAsLong=true --conf spark.sql.parquet.int64RebaseModeInRead=LEGACY --conf spark.sql.parquet.datetimeRebaseModeInRead=LEGACY --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar,/opt/airflow/etl/jars/mysql-connector-java-8.0.28.jar --executor-cores 1 --executor-memory 1g --driver-memory 512m --name airflow_silver_sellers --verbose /opt/airflow/etl/silver/main_silver.py --table_name sellers --merge_key seller_id --is_cdc false --json_schema 
+[2026-04-04T09:20:18.919+0000] {spark_submit.py:491} INFO - /home/airflow/.local/lib/python3.10/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+[2026-04-04T09:20:22.838+0000] {spark_submit.py:491} INFO - Using properties file: null
+[2026-04-04T09:20:23.146+0000] {spark_submit.py:491} INFO - Parsed arguments:
+[2026-04-04T09:20:23.147+0000] {spark_submit.py:491} INFO - master                  spark://spark-master:7077
+[2026-04-04T09:20:23.147+0000] {spark_submit.py:491} INFO - deployMode              null
+[2026-04-04T09:20:23.147+0000] {spark_submit.py:491} INFO - executorMemory          1g
+[2026-04-04T09:20:23.147+0000] {spark_submit.py:491} INFO - executorCores           1
+[2026-04-04T09:20:23.147+0000] {spark_submit.py:491} INFO - totalExecutorCores      null
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - propertiesFile          null
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - driverMemory            512m
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - driverCores             null
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - driverExtraClassPath    null
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - driverExtraLibraryPath  null
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - driverExtraJavaOptions  null
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - supervise               false
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - queue                   null
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - numExecutors            null
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - files                   null
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - pyFiles                 null
+[2026-04-04T09:20:23.148+0000] {spark_submit.py:491} INFO - archives                null
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - mainClass               null
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - primaryResource         file:/opt/airflow/etl/silver/main_silver.py
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - name                    airflow_silver_sellers
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - childArgs               [--table_name sellers --merge_key seller_id --is_cdc false --json_schema ]
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - jars                    file:/opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,file:/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,file:/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,file:/opt/airflow/etl/jars/delta-storage-2.3.0.jar,file:/opt/airflow/etl/jars/mysql-connector-java-8.0.28.jar
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - packages                null
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - packagesExclusions      null
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - repositories            null
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - verbose                 true
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - 
+[2026-04-04T09:20:23.149+0000] {spark_submit.py:491} INFO - Spark properties used, including those specified through
+[2026-04-04T09:20:23.150+0000] {spark_submit.py:491} INFO - --conf and those from the properties file null:
+[2026-04-04T09:20:23.150+0000] {spark_submit.py:491} INFO - (spark.databricks.delta.schema.autoMerge.enabled,true)
+[2026-04-04T09:20:23.150+0000] {spark_submit.py:491} INFO - (spark.driver.memory,512m)
+[2026-04-04T09:20:23.150+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.access.key,*********(redacted))
+[2026-04-04T09:20:23.153+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.connection.ssl.enabled,false)
+[2026-04-04T09:20:23.153+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.endpoint,http://minio:9000)
+[2026-04-04T09:20:23.153+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.impl,org.apache.hadoop.fs.s3a.S3AFileSystem)
+[2026-04-04T09:20:23.153+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.path.style.access,true)
+[2026-04-04T09:20:23.153+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.secret.key,*********(redacted))
+[2026-04-04T09:20:23.153+0000] {spark_submit.py:491} INFO - (spark.sql.catalog.spark_catalog,org.apache.spark.sql.delta.catalog.DeltaCatalog)
+[2026-04-04T09:20:23.154+0000] {spark_submit.py:491} INFO - (spark.sql.extensions,io.delta.sql.DeltaSparkSessionExtension)
+[2026-04-04T09:20:23.154+0000] {spark_submit.py:491} INFO - (spark.sql.legacy.parquet.nanosAsLong,true)
+[2026-04-04T09:20:23.154+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.datetimeRebaseModeInRead,LEGACY)
+[2026-04-04T09:20:23.154+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.enableVectorizedReader,false)
+[2026-04-04T09:20:23.154+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.int64RebaseModeInRead,LEGACY)
+[2026-04-04T09:20:23.154+0000] {spark_submit.py:491} INFO - 
+[2026-04-04T09:20:23.154+0000] {spark_submit.py:491} INFO - 
+[2026-04-04T09:20:24.171+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:24 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[2026-04-04T09:20:24.671+0000] {spark_submit.py:491} INFO - Main class:
+[2026-04-04T09:20:24.671+0000] {spark_submit.py:491} INFO - org.apache.spark.deploy.PythonRunner
+[2026-04-04T09:20:24.673+0000] {spark_submit.py:491} INFO - Arguments:
+[2026-04-04T09:20:24.673+0000] {spark_submit.py:491} INFO - file:/opt/airflow/etl/silver/main_silver.py
+[2026-04-04T09:20:24.673+0000] {spark_submit.py:491} INFO - null
+[2026-04-04T09:20:24.674+0000] {spark_submit.py:491} INFO - --table_name
+[2026-04-04T09:20:24.674+0000] {spark_submit.py:491} INFO - sellers
+[2026-04-04T09:20:24.674+0000] {spark_submit.py:491} INFO - --merge_key
+[2026-04-04T09:20:24.674+0000] {spark_submit.py:491} INFO - seller_id
+[2026-04-04T09:20:24.674+0000] {spark_submit.py:491} INFO - --is_cdc
+[2026-04-04T09:20:24.674+0000] {spark_submit.py:491} INFO - false
+[2026-04-04T09:20:24.674+0000] {spark_submit.py:491} INFO - --json_schema
+[2026-04-04T09:20:24.679+0000] {spark_submit.py:491} INFO - 
+[2026-04-04T09:20:24.690+0000] {spark_submit.py:491} INFO - Spark config:
+[2026-04-04T09:20:24.691+0000] {spark_submit.py:491} INFO - (spark.app.name,airflow_silver_sellers)
+[2026-04-04T09:20:24.691+0000] {spark_submit.py:491} INFO - (spark.app.submitTime,1775294424644)
+[2026-04-04T09:20:24.691+0000] {spark_submit.py:491} INFO - (spark.databricks.delta.schema.autoMerge.enabled,true)
+[2026-04-04T09:20:24.691+0000] {spark_submit.py:491} INFO - (spark.driver.memory,512m)
+[2026-04-04T09:20:24.691+0000] {spark_submit.py:491} INFO - (spark.executor.cores,1)
+[2026-04-04T09:20:24.691+0000] {spark_submit.py:491} INFO - (spark.executor.memory,1g)
+[2026-04-04T09:20:24.691+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.access.key,*********(redacted))
+[2026-04-04T09:20:24.691+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.connection.ssl.enabled,false)
+[2026-04-04T09:20:24.691+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.endpoint,http://minio:9000)
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.impl,org.apache.hadoop.fs.s3a.S3AFileSystem)
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.path.style.access,true)
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.hadoop.fs.s3a.secret.key,*********(redacted))
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.jars,file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar,file:///opt/airflow/etl/jars/mysql-connector-java-8.0.28.jar)
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.master,spark://spark-master:7077)
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.repl.local.jars,file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar,file:///opt/airflow/etl/jars/mysql-connector-java-8.0.28.jar)
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.sql.catalog.spark_catalog,org.apache.spark.sql.delta.catalog.DeltaCatalog)
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.sql.extensions,io.delta.sql.DeltaSparkSessionExtension)
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.sql.legacy.parquet.nanosAsLong,true)
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.datetimeRebaseModeInRead,LEGACY)
+[2026-04-04T09:20:24.692+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.enableVectorizedReader,false)
+[2026-04-04T09:20:24.693+0000] {spark_submit.py:491} INFO - (spark.sql.parquet.int64RebaseModeInRead,LEGACY)
+[2026-04-04T09:20:24.693+0000] {spark_submit.py:491} INFO - (spark.submit.deployMode,client)
+[2026-04-04T09:20:24.693+0000] {spark_submit.py:491} INFO - (spark.submit.pyFiles,)
+[2026-04-04T09:20:24.693+0000] {spark_submit.py:491} INFO - Classpath elements:
+[2026-04-04T09:20:24.697+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar
+[2026-04-04T09:20:24.697+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar
+[2026-04-04T09:20:24.698+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar
+[2026-04-04T09:20:24.698+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar
+[2026-04-04T09:20:24.698+0000] {spark_submit.py:491} INFO - file:///opt/airflow/etl/jars/mysql-connector-java-8.0.28.jar
+[2026-04-04T09:20:24.698+0000] {spark_submit.py:491} INFO - 
+[2026-04-04T09:20:24.698+0000] {spark_submit.py:491} INFO - 
+[2026-04-04T09:20:26.972+0000] {spark_submit.py:491} INFO - INFO:__main__:Khởi tạo Spark Job cho bảng: sellers
+[2026-04-04T09:20:27.215+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO SparkContext: Running Spark version 3.3.2
+[2026-04-04T09:20:27.294+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO ResourceUtils: ==============================================================
+[2026-04-04T09:20:27.295+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO ResourceUtils: No custom resources configured for spark.driver.
+[2026-04-04T09:20:27.296+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO ResourceUtils: ==============================================================
+[2026-04-04T09:20:27.297+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO SparkContext: Submitted application: Silver_Processor_sellers
+[2026-04-04T09:20:27.356+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+[2026-04-04T09:20:27.390+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO ResourceProfile: Limiting resource is cpus at 1 tasks per executor
+[2026-04-04T09:20:27.403+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO ResourceProfileManager: Added ResourceProfile id: 0
+[2026-04-04T09:20:27.559+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO SecurityManager: Changing view acls to: airflow
+[2026-04-04T09:20:27.560+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO SecurityManager: Changing modify acls to: airflow
+[2026-04-04T09:20:27.561+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO SecurityManager: Changing view acls groups to:
+[2026-04-04T09:20:27.562+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO SecurityManager: Changing modify acls groups to:
+[2026-04-04T09:20:27.563+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:27 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(airflow); groups with view permissions: Set(); users  with modify permissions: Set(airflow); groups with modify permissions: Set()
+[2026-04-04T09:20:28.470+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:28 INFO Utils: Successfully started service 'sparkDriver' on port 43071.
+[2026-04-04T09:20:28.612+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:28 INFO SparkEnv: Registering MapOutputTracker
+[2026-04-04T09:20:28.721+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:28 INFO SparkEnv: Registering BlockManagerMaster
+[2026-04-04T09:20:28.776+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:28 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+[2026-04-04T09:20:28.776+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:28 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+[2026-04-04T09:20:28.792+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:28 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+[2026-04-04T09:20:28.842+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:28 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-efab7984-8e8b-4fc1-bb3c-7e2267d5a715
+[2026-04-04T09:20:28.890+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:28 INFO MemoryStore: MemoryStore started with capacity 127.2 MiB
+[2026-04-04T09:20:28.930+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:28 INFO SparkEnv: Registering OutputCommitCoordinator
+[2026-04-04T09:20:29.548+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:29 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
+[2026-04-04T09:20:29.595+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:29 INFO Utils: Successfully started service 'SparkUI' on port 4041.
+[2026-04-04T09:20:29.699+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:29 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar at spark://03c232fb577d:43071/jars/hadoop-aws-3.3.2.jar with timestamp 1775294427193
+[2026-04-04T09:20:29.700+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:29 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar at spark://03c232fb577d:43071/jars/aws-java-sdk-bundle-1.11.1026.jar with timestamp 1775294427193
+[2026-04-04T09:20:29.702+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:29 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar at spark://03c232fb577d:43071/jars/delta-core_2.12-2.3.0.jar with timestamp 1775294427193
+[2026-04-04T09:20:29.704+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:29 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar at spark://03c232fb577d:43071/jars/delta-storage-2.3.0.jar with timestamp 1775294427193
+[2026-04-04T09:20:29.705+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:29 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/mysql-connector-java-8.0.28.jar at spark://03c232fb577d:43071/jars/mysql-connector-java-8.0.28.jar with timestamp 1775294427193
+[2026-04-04T09:20:30.096+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:30 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+[2026-04-04T09:20:30.267+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:30 INFO TransportClientFactory: Successfully created connection to spark-master/172.18.0.5:7077 after 104 ms (0 ms spent in bootstraps)
+[2026-04-04T09:20:30.589+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:30 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20260404092030-0003
+[2026-04-04T09:20:30.615+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:30 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 42757.
+[2026-04-04T09:20:30.615+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:30 INFO NettyBlockTransferService: Server created on 03c232fb577d:42757
+[2026-04-04T09:20:30.619+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:30 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+[2026-04-04T09:20:30.646+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:30 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 03c232fb577d, 42757, None)
+[2026-04-04T09:20:30.657+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:30 INFO BlockManagerMasterEndpoint: Registering block manager 03c232fb577d:42757 with 127.2 MiB RAM, BlockManagerId(driver, 03c232fb577d, 42757, None)
+[2026-04-04T09:20:30.671+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:30 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 03c232fb577d, 42757, None)
+[2026-04-04T09:20:30.672+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:30 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 03c232fb577d, 42757, None)
+[2026-04-04T09:20:31.307+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:31 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+[2026-04-04T09:20:38.973+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu xử lý lớp Silver cho bảng: sellers | Chế độ CDC: False
+[2026-04-04T09:20:38.973+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu quét Data Nóng từ Bronze...
+[2026-04-04T09:20:39.171+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:39 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties
+[2026-04-04T09:20:56.134+0000] {spark_submit.py:491} INFO - 26/04/04 09:20:56 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered and have sufficient resources
+[2026-04-04T09:21:11.132+0000] {spark_submit.py:491} INFO - 26/04/04 09:21:11 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered and have sufficient resources
+[2026-04-04T09:21:26.133+0000] {spark_submit.py:491} INFO - 26/04/04 09:21:26 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered and have sufficient resources
+[2026-04-04T09:21:41.188+0000] {spark_submit.py:491} INFO - 26/04/04 09:21:41 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered and have sufficient resources
+[2026-04-04T09:21:56.133+0000] {spark_submit.py:491} INFO - 26/04/04 09:21:56 WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered and have sufficient resources
+[2026-04-04T09:22:22.534+0000] {spark_submit.py:491} INFO - INFO:py4j.java_gateway:Callback Server Starting
+[2026-04-04T09:22:22.535+0000] {spark_submit.py:491} INFO - INFO:py4j.java_gateway:Socket listening on ('127.0.0.1', 38631)
+[2026-04-04T09:22:22.637+0000] {spark_submit.py:491} INFO - 26/04/04 09:22:22 WARN ResolveWriteToStream: spark.sql.adaptive.enabled is not supported in streaming DataFrames/Datasets and will be disabled.
+[2026-04-04T09:22:23.404+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Hoàn thành quét Data Nóng cập nhật vào Silver.
+[2026-04-04T09:22:27.219+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu dò tìm 'bóng ma' Hard Delete...
+[2026-04-04T09:22:28.566+0000] {spark_submit.py:491} INFO - 26/04/04 09:22:28 WARN package: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+[2026-04-04T09:23:04.660+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Ko phát hiện bản ghi Hard Delete nào.
+[2026-04-04T09:23:04.660+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Xử lý lớp Silver xong cho bảng: sellers
+[2026-04-04T09:23:04.661+0000] {spark_submit.py:491} INFO - ----------------------------------------
+[2026-04-04T09:23:05.228+0000] {spark_submit.py:491} INFO - INFO:py4j.clientserver:Closing down clientserver connection
+[2026-04-04T09:23:05.622+0000] {taskinstance.py:1400} INFO - Marking task as SUCCESS. dag_id=silver_spark_processor, task_id=process_silver_sellers, execution_date=20260402T000000, start_date=20260404T092018, end_date=20260404T092305
+[2026-04-04T09:23:05.703+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2026-04-04T09:23:05.764+0000] {taskinstance.py:2778} INFO - 1 downstream tasks scheduled from follow-on schedule check

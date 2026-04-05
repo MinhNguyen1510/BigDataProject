@@ -1,0 +1,152 @@
+[2026-04-02T11:21:22.468+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_sellers scheduled__2026-04-01T00:00:00+00:00 [queued]>
+[2026-04-02T11:21:22.532+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_sellers scheduled__2026-04-01T00:00:00+00:00 [queued]>
+[2026-04-02T11:21:22.532+0000] {taskinstance.py:1361} INFO - Starting attempt 6 of 6
+[2026-04-02T11:21:22.626+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_sellers> on 2026-04-01 00:00:00+00:00
+[2026-04-02T11:21:22.676+0000] {standard_task_runner.py:57} INFO - Started process 217 to run task
+[2026-04-02T11:21:22.700+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_sellers', 'scheduled__2026-04-01T00:00:00+00:00', '--job-id', '336', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmpmhnlh2r6']
+[2026-04-02T11:21:22.721+0000] {standard_task_runner.py:85} INFO - Job 336: Subtask process_silver_sellers
+[2026-04-02T11:21:22.953+0000] {task_command.py:416} INFO - Running <TaskInstance: silver_spark_processor.process_silver_sellers scheduled__2026-04-01T00:00:00+00:00 [running]> on host 5926004790ec
+[2026-04-02T11:21:23.395+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='silver_spark_processor' AIRFLOW_CTX_TASK_ID='process_silver_sellers' AIRFLOW_CTX_EXECUTION_DATE='2026-04-01T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='6' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-01T00:00:00+00:00'
+[2026-04-02T11:21:23.464+0000] {base.py:73} INFO - Using connection ID 'spark_default' for task execution.
+[2026-04-02T11:21:23.465+0000] {spark_submit.py:340} INFO - Spark-Submit cmd: spark-submit --master spark://spark-master:7077 --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_sellers /opt/airflow/etl/silver/main_silver.py --table_name sellers --merge_key seller_id --is_cdc false --json_schema 
+[2026-04-02T11:21:23.945+0000] {spark_submit.py:491} INFO - /home/airflow/.local/lib/python3.10/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+[2026-04-02T11:21:47.040+0000] {spark_submit.py:491} INFO - INFO:__main__:Khởi tạo Spark Job cho bảng: sellers
+[2026-04-02T11:21:48.589+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:48 INFO SparkContext: Running Spark version 3.3.2
+[2026-04-02T11:21:49.351+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:49 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[2026-04-02T11:21:50.696+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:50 INFO ResourceUtils: ==============================================================
+[2026-04-02T11:21:50.698+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:50 INFO ResourceUtils: No custom resources configured for spark.driver.
+[2026-04-02T11:21:50.703+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:50 INFO ResourceUtils: ==============================================================
+[2026-04-02T11:21:50.704+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:50 INFO SparkContext: Submitted application: <class 'pyspark.sql.session.SparkSession'>
+[2026-04-02T11:21:51.000+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:50 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+[2026-04-02T11:21:51.092+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:51 INFO ResourceProfile: Limiting resource is cpus at 1 tasks per executor
+[2026-04-02T11:21:51.101+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:51 INFO ResourceProfileManager: Added ResourceProfile id: 0
+[2026-04-02T11:21:51.467+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:51 INFO SecurityManager: Changing view acls to: airflow
+[2026-04-02T11:21:51.480+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:51 INFO SecurityManager: Changing modify acls to: airflow
+[2026-04-02T11:21:51.485+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:51 INFO SecurityManager: Changing view acls groups to:
+[2026-04-02T11:21:51.504+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:51 INFO SecurityManager: Changing modify acls groups to:
+[2026-04-02T11:21:51.509+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:51 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(airflow); groups with view permissions: Set(); users  with modify permissions: Set(airflow); groups with modify permissions: Set()
+[2026-04-02T11:21:55.770+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:55 INFO Utils: Successfully started service 'sparkDriver' on port 40161.
+[2026-04-02T11:21:56.213+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:56 INFO SparkEnv: Registering MapOutputTracker
+[2026-04-02T11:21:56.745+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:56 INFO SparkEnv: Registering BlockManagerMaster
+[2026-04-02T11:21:57.086+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:57 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+[2026-04-02T11:21:57.111+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:57 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+[2026-04-02T11:21:57.158+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:57 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+[2026-04-02T11:21:57.319+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:57 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-e913337a-c025-4c90-947c-39331391c0fc
+[2026-04-02T11:21:57.613+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:57 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+[2026-04-02T11:21:57.898+0000] {spark_submit.py:491} INFO - 26/04/02 11:21:57 INFO SparkEnv: Registering OutputCommitCoordinator
+[2026-04-02T11:22:02.124+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
+[2026-04-02T11:22:02.134+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4041. Attempting port 4042.
+[2026-04-02T11:22:02.140+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4042. Attempting port 4043.
+[2026-04-02T11:22:02.144+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4043. Attempting port 4044.
+[2026-04-02T11:22:02.149+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4044. Attempting port 4045.
+[2026-04-02T11:22:02.163+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4045. Attempting port 4046.
+[2026-04-02T11:22:02.163+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4046. Attempting port 4047.
+[2026-04-02T11:22:02.163+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4047. Attempting port 4048.
+[2026-04-02T11:22:02.169+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4048. Attempting port 4049.
+[2026-04-02T11:22:02.180+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4049. Attempting port 4050.
+[2026-04-02T11:22:02.192+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4050. Attempting port 4051.
+[2026-04-02T11:22:02.192+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4051. Attempting port 4052.
+[2026-04-02T11:22:02.198+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 WARN Utils: Service 'SparkUI' could not bind on port 4052. Attempting port 4053.
+[2026-04-02T11:22:02.409+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:02 INFO Utils: Successfully started service 'SparkUI' on port 4053.
+[2026-04-02T11:22:04.575+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:04 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+[2026-04-02T11:22:05.795+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:05 INFO TransportClientFactory: Successfully created connection to spark-master/172.18.0.6:7077 after 932 ms (0 ms spent in bootstraps)
+[2026-04-02T11:22:07.459+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:07 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20260402112207-0013
+[2026-04-02T11:22:07.581+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:07 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 40195.
+[2026-04-02T11:22:07.581+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:07 INFO NettyBlockTransferService: Server created on 5926004790ec:40195
+[2026-04-02T11:22:07.604+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:07 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+[2026-04-02T11:22:07.817+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:07 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 5926004790ec, 40195, None)
+[2026-04-02T11:22:07.882+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:07 INFO BlockManagerMasterEndpoint: Registering block manager 5926004790ec:40195 with 434.4 MiB RAM, BlockManagerId(driver, 5926004790ec, 40195, None)
+[2026-04-02T11:22:07.938+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:07 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 5926004790ec, 40195, None)
+[2026-04-02T11:22:07.972+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:07 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 5926004790ec, 40195, None)
+[2026-04-02T11:22:11.602+0000] {spark_submit.py:491} INFO - 26/04/02 11:22:11 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+[2026-04-02T11:22:21.478+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu xử lý lớp Silver cho bảng: sellers | Chế độ CDC: False
+[2026-04-02T11:22:21.480+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu quét Data Nóng từ Bronze...
+[2026-04-02T11:22:22.451+0000] {spark_submit.py:491} INFO - ERROR:__main__:Lỗi khi xử lý lớp Silver bảng sellers: An error occurred while calling o39.load.
+[2026-04-02T11:22:22.453+0000] {spark_submit.py:491} INFO - : java.lang.RuntimeException: java.lang.ClassNotFoundException: Class org.apache.hadoop.fs.s3a.S3AFileSystem not found
+[2026-04-02T11:22:22.461+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.conf.Configuration.getClass(Configuration.java:2688)
+[2026-04-02T11:22:22.463+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem.getFileSystemClass(FileSystem.java:3431)
+[2026-04-02T11:22:22.463+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem.createFileSystem(FileSystem.java:3466)
+[2026-04-02T11:22:22.463+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem.access$300(FileSystem.java:174)
+[2026-04-02T11:22:22.463+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem$Cache.getInternal(FileSystem.java:3574)
+[2026-04-02T11:22:22.464+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem$Cache.get(FileSystem.java:3521)
+[2026-04-02T11:22:22.464+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem.get(FileSystem.java:540)
+[2026-04-02T11:22:22.464+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.Path.getFileSystem(Path.java:365)
+[2026-04-02T11:22:22.464+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceSchema(DataSource.scala:249)
+[2026-04-02T11:22:22.464+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceInfo$lzycompute(DataSource.scala:118)
+[2026-04-02T11:22:22.464+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceInfo(DataSource.scala:118)
+[2026-04-02T11:22:22.464+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamingRelation$.apply(StreamingRelation.scala:34)
+[2026-04-02T11:22:22.464+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.streaming.DataStreamReader.loadInternal(DataStreamReader.scala:196)
+[2026-04-02T11:22:22.464+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.streaming.DataStreamReader.load(DataStreamReader.scala:210)
+[2026-04-02T11:22:22.464+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[2026-04-02T11:22:22.471+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[2026-04-02T11:22:22.471+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[2026-04-02T11:22:22.472+0000] {spark_submit.py:491} INFO - at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+[2026-04-02T11:22:22.472+0000] {spark_submit.py:491} INFO - at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+[2026-04-02T11:22:22.472+0000] {spark_submit.py:491} INFO - at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+[2026-04-02T11:22:22.472+0000] {spark_submit.py:491} INFO - at py4j.Gateway.invoke(Gateway.java:282)
+[2026-04-02T11:22:22.472+0000] {spark_submit.py:491} INFO - at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+[2026-04-02T11:22:22.472+0000] {spark_submit.py:491} INFO - at py4j.commands.CallCommand.execute(CallCommand.java:79)
+[2026-04-02T11:22:22.472+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
+[2026-04-02T11:22:22.472+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
+[2026-04-02T11:22:22.472+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-02T11:22:22.477+0000] {spark_submit.py:491} INFO - Caused by: java.lang.ClassNotFoundException: Class org.apache.hadoop.fs.s3a.S3AFileSystem not found
+[2026-04-02T11:22:22.478+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.conf.Configuration.getClassByName(Configuration.java:2592)
+[2026-04-02T11:22:22.478+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.conf.Configuration.getClass(Configuration.java:2686)
+[2026-04-02T11:22:22.478+0000] {spark_submit.py:491} INFO - ... 25 more
+[2026-04-02T11:22:22.484+0000] {spark_submit.py:491} INFO - 
+[2026-04-02T11:22:23.159+0000] {spark_submit.py:491} INFO - Traceback (most recent call last):
+[2026-04-02T11:22:23.159+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/main_silver.py", line 59, in <module>
+[2026-04-02T11:22:23.160+0000] {spark_submit.py:491} INFO - raise e
+[2026-04-02T11:22:23.160+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/main_silver.py", line 48, in <module>
+[2026-04-02T11:22:23.160+0000] {spark_submit.py:491} INFO - process_silver_layer(
+[2026-04-02T11:22:23.160+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/silver_processor.py", line 78, in process_silver_layer
+[2026-04-02T11:22:23.160+0000] {spark_submit.py:491} INFO - .load(bronze_path)
+[2026-04-02T11:22:23.160+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/streaming.py", line 467, in load
+[2026-04-02T11:22:23.161+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/java_gateway.py", line 1321, in __call__
+[2026-04-02T11:22:23.161+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/sql/utils.py", line 190, in deco
+[2026-04-02T11:22:23.161+0000] {spark_submit.py:491} INFO - File "/home/airflow/.local/lib/python3.10/site-packages/pyspark/python/lib/py4j-0.10.9.5-src.zip/py4j/protocol.py", line 326, in get_return_value
+[2026-04-02T11:22:23.169+0000] {spark_submit.py:491} INFO - py4j.protocol.Py4JJavaError: An error occurred while calling o39.load.
+[2026-04-02T11:22:23.169+0000] {spark_submit.py:491} INFO - : java.lang.RuntimeException: java.lang.ClassNotFoundException: Class org.apache.hadoop.fs.s3a.S3AFileSystem not found
+[2026-04-02T11:22:23.169+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.conf.Configuration.getClass(Configuration.java:2688)
+[2026-04-02T11:22:23.169+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem.getFileSystemClass(FileSystem.java:3431)
+[2026-04-02T11:22:23.169+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem.createFileSystem(FileSystem.java:3466)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem.access$300(FileSystem.java:174)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem$Cache.getInternal(FileSystem.java:3574)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem$Cache.get(FileSystem.java:3521)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.FileSystem.get(FileSystem.java:540)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.fs.Path.getFileSystem(Path.java:365)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceSchema(DataSource.scala:249)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceInfo$lzycompute(DataSource.scala:118)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.datasources.DataSource.sourceInfo(DataSource.scala:118)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.execution.streaming.StreamingRelation$.apply(StreamingRelation.scala:34)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.streaming.DataStreamReader.loadInternal(DataStreamReader.scala:196)
+[2026-04-02T11:22:23.170+0000] {spark_submit.py:491} INFO - at org.apache.spark.sql.streaming.DataStreamReader.load(DataStreamReader.scala:210)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at py4j.Gateway.invoke(Gateway.java:282)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at py4j.commands.CallCommand.execute(CallCommand.java:79)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
+[2026-04-02T11:22:23.171+0000] {spark_submit.py:491} INFO - at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
+[2026-04-02T11:22:23.175+0000] {spark_submit.py:491} INFO - at java.base/java.lang.Thread.run(Thread.java:829)
+[2026-04-02T11:22:23.175+0000] {spark_submit.py:491} INFO - Caused by: java.lang.ClassNotFoundException: Class org.apache.hadoop.fs.s3a.S3AFileSystem not found
+[2026-04-02T11:22:23.175+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.conf.Configuration.getClassByName(Configuration.java:2592)
+[2026-04-02T11:22:23.175+0000] {spark_submit.py:491} INFO - at org.apache.hadoop.conf.Configuration.getClass(Configuration.java:2686)
+[2026-04-02T11:22:23.175+0000] {spark_submit.py:491} INFO - ... 25 more
+[2026-04-02T11:22:23.176+0000] {spark_submit.py:491} INFO - 
+[2026-04-02T11:22:23.176+0000] {spark_submit.py:491} INFO - INFO:py4j.clientserver:Closing down clientserver connection
+[2026-04-02T11:22:24.041+0000] {taskinstance.py:1937} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 422, in submit
+    raise AirflowException(
+airflow.exceptions.AirflowException: Cannot execute: spark-submit --master spark://spark-master:7077 --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_sellers /opt/airflow/etl/silver/main_silver.py --table_name sellers --merge_key seller_id --is_cdc false --json_schema . Error code is: 1.
+[2026-04-02T11:22:24.151+0000] {taskinstance.py:1400} INFO - Marking task as FAILED. dag_id=silver_spark_processor, task_id=process_silver_sellers, execution_date=20260401T000000, start_date=20260402T112122, end_date=20260402T112224
+[2026-04-02T11:22:24.478+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 336 for task process_silver_sellers (Cannot execute: spark-submit --master spark://spark-master:7077 --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_sellers /opt/airflow/etl/silver/main_silver.py --table_name sellers --merge_key seller_id --is_cdc false --json_schema . Error code is: 1.; 217)
+[2026-04-02T11:22:24.532+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2026-04-02T11:22:24.643+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

@@ -1,0 +1,10 @@
+[2026-04-02T04:19:01.008+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_geolocation scheduled__2026-03-31T00:00:00+00:00 [queued]>
+[2026-04-02T04:19:01.018+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: bronze_mysql_to_minio.extract_geolocation scheduled__2026-03-31T00:00:00+00:00 [queued]>
+[2026-04-02T04:19:01.019+0000] {taskinstance.py:1361} INFO - Starting attempt 5 of 6
+[2026-04-02T04:19:01.034+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): extract_geolocation> on 2026-03-31 00:00:00+00:00
+[2026-04-02T04:19:01.045+0000] {standard_task_runner.py:57} INFO - Started process 1696 to run task
+[2026-04-02T04:19:01.049+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'bronze_mysql_to_minio', 'extract_geolocation', 'scheduled__2026-03-31T00:00:00+00:00', '--job-id', '108', '--raw', '--subdir', 'DAGS_FOLDER/bronze_dag.py', '--cfg-path', '/tmp/tmpochg13py']
+[2026-04-02T04:19:01.053+0000] {standard_task_runner.py:85} INFO - Job 108: Subtask extract_geolocation
+[2026-04-02T04:19:01.132+0000] {task_command.py:416} INFO - Running <TaskInstance: bronze_mysql_to_minio.extract_geolocation scheduled__2026-03-31T00:00:00+00:00 [running]> on host bfff109fd42e
+[2026-04-02T04:19:01.276+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='bronze_mysql_to_minio' AIRFLOW_CTX_TASK_ID='extract_geolocation' AIRFLOW_CTX_EXECUTION_DATE='2026-03-31T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='5' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-03-31T00:00:00+00:00'
+[2026-04-02T04:19:01.298+0000] {extract_mysql.py:32} INFO - [geolocation] Full Load | Query: SELECT * FROM geolocation;

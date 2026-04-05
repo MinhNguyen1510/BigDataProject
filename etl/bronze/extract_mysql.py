@@ -8,6 +8,7 @@ Airflow chỉ gọi các hàm này chứ không chứa bất kỳ logic data nà
 import logging
 from etl.utils.mysql_client import MySQLClient
 from etl.utils.minio_client import MinIOClient
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ def _extract_full_load(
     table_name: str,
     schema: str,
     sql: str = None,
+    logical_date: datetime = None,
 ) -> dict:
     """
     Đọc toàn bộ bảng từ MySQL, lưu Parquet lên MinIO.
@@ -32,7 +34,7 @@ def _extract_full_load(
     df = mysql.extract_data(query)
     logger.info(f"[{table_name}] Đã đọc: {df.shape[0]} dòng x {df.shape[1]} cột")
 
-    object_key = minio.save(df, layer=LAYER, schema=schema, table=table_name)
+    object_key = minio.save(df, layer=LAYER, schema=schema, table=table_name, logical_date=logical_date)
     logger.info(f"[{table_name}] Đã lưu MinIO: {object_key}")
 
     return {
@@ -46,46 +48,100 @@ def _extract_full_load(
         "mode": "full",
     }
 
+# HELPER 2: Incremental Load (Dành cho bảng Transaction lớn)
+def _extract_incremental_load(
+    mysql: MySQLClient,
+    minio: MinIOClient,
+    table_name: str,
+    schema: str,
+    watermark_col: str,
+    last_watermark: str,
+    logical_date: datetime = None,
+) -> dict:
+    # Chỉ lấy dữ liệu mới hơn watermark
+    query = f"SELECT * FROM {table_name} WHERE {watermark_col} > '{last_watermark}';"
+    logger.info(f"[{table_name}] Incremental Load | Sau {last_watermark}")
 
-# ─────────────────────────────────────────────────────────
-# MỖI HÀM = MỘT BẢNG
-# ─────────────────────────────────────────────────────────
+    df = mysql.extract_data(query)
+    logger.info(f"[{table_name}] Đã đọc dữ liệu mới: {df.shape[0]} dòng")
 
-def extract_customers(mysql: MySQLClient, minio: MinIOClient) -> dict:
-    return _extract_full_load(mysql, minio, table_name="customers", schema="customer")
+    if df.shape[0] == 0:
+        logger.info(f"[{table_name}] Không có dữ liệu mới.")
+        return {"table": table_name, "mode": "incremental", "row_count": 0, "status": "skipped"}
+
+    # Vẫn phân mảnh file theo logical_date
+    object_key = minio.save(df, layer=LAYER, schema=schema, table=table_name, logical_date=logical_date)
+    logger.info(f"[{table_name}] Đã lưu MinIO: {object_key}")
+
+    return {
+        "table": table_name,
+        "layer": LAYER,
+        "schema": schema,
+        "row_count": df.shape[0],
+        "minio_path": object_key,
+        "mode": "incremental",
+        "watermark_used": last_watermark,
+        "logical_date": str(logical_date) if logical_date else None
+    }
+
+def extract_customers(mysql: MySQLClient, minio: MinIOClient, logical_date: datetime = None) -> dict:
+    return _extract_full_load(mysql, minio, "customers", "olist", logical_date=logical_date)
+
+def extract_products(mysql: MySQLClient, minio: MinIOClient, logical_date: datetime = None) -> dict:
+    return _extract_full_load(mysql, minio, "products", "olist", logical_date=logical_date)
+
+def extract_product_category(mysql: MySQLClient, minio: MinIOClient, logical_date: datetime = None) -> dict:
+    return _extract_full_load(mysql, minio, "product_category_name_translation", "olist", logical_date=logical_date)
+
+def extract_geolocation(mysql: MySQLClient, minio: MinIOClient, logical_date: datetime = None) -> dict:
+    return _extract_full_load(mysql, minio, "geolocation", "olist", logical_date=logical_date)
 
 
-def extract_sellers(mysql: MySQLClient, minio: MinIOClient) -> dict:
-    return _extract_full_load(mysql, minio, table_name="sellers", schema="seller")
+def extract_sellers(mysql: MySQLClient, minio: MinIOClient, logical_date: datetime = None) -> dict:
+    return _extract_full_load(mysql, minio, "sellers", "olist", logical_date=logical_date)
 
 
-def extract_products(mysql: MySQLClient, minio: MinIOClient) -> dict:
-    return _extract_full_load(mysql, minio, table_name="products", schema="product")
+# def extract_orders(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None,
+#                    logical_date: datetime = None) -> dict:
+#     if not last_watermark:
+#         logger.info("[orders] Lần chạy đầu tiên (chưa có watermark) -> Kích hoạt FULL LOAD")
+#         return _extract_full_load(mysql, minio, "orders", "order", logical_date=logical_date)
+#
+#     # Các lần chạy sau (đã có watermark), chạy Incremental
+#     return _extract_incremental_load(
+#         mysql, minio, "orders", "order",
+#         watermark_col="last_modified_date",
+#         last_watermark=last_watermark,
+#         logical_date=logical_date
+#     )
 
 
-def extract_orders(mysql: MySQLClient, minio: MinIOClient) -> dict:
-    return _extract_full_load(mysql, minio, table_name="orders", schema="order")
+# def extract_order_items(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None,
+#                         logical_date: datetime = None) -> dict:
+#     if not last_watermark:
+#         logger.info("[order_items] Lần chạy đầu tiên -> Kích hoạt FULL LOAD")
+#         return _extract_full_load(mysql, minio, "order_items", "orderitem", logical_date=logical_date)
+#
+#     return _extract_incremental_load(
+#         mysql, minio, "order_items", "orderitem",
+#         watermark_col="last_modified_date",
+#         last_watermark=last_watermark,
+#         logical_date=logical_date
+#     )
 
 
-def extract_order_items(mysql: MySQLClient, minio: MinIOClient) -> dict:
-    return _extract_full_load(mysql, minio, table_name="order_items", schema="orderitem")
+def extract_order_payments(mysql: MySQLClient, minio: MinIOClient, logical_date: datetime = None) -> dict:
+    return _extract_full_load(mysql, minio, "order_payments", "olist", logical_date=logical_date)
 
 
-def extract_payments(mysql: MySQLClient, minio: MinIOClient) -> dict:
-    return _extract_full_load(mysql, minio, table_name="payments", schema="payment")
+def extract_order_reviews(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None, logical_date: datetime = None) -> dict:
+    if not last_watermark:
+        logger.info("[order_reviews] Lần chạy đầu tiên -> Kích hoạt FULL LOAD")
+        return _extract_full_load(mysql, minio, "order_reviews", "olist", logical_date=logical_date)
 
-
-def extract_order_reviews(mysql: MySQLClient, minio: MinIOClient) -> dict:
-    return _extract_full_load(mysql, minio, table_name="order_reviews", schema="orderreview")
-
-
-def extract_product_category(mysql: MySQLClient, minio: MinIOClient) -> dict:
-    return _extract_full_load(
-        mysql, minio,
-        table_name="product_category_name_translation",
-        schema="productcategory",
+    return _extract_incremental_load(
+        mysql, minio, "order_reviews", "olist",
+        watermark_col="last_modified_date",
+        last_watermark=last_watermark,
+        logical_date=logical_date
     )
-
-
-def extract_geolocation(mysql: MySQLClient, minio: MinIOClient) -> dict:
-    return _extract_full_load(mysql, minio, table_name="geolocation", schema="geolocation")

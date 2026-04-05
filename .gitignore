@@ -1,2 +1,5 @@
 *.tgz
 dataset/
+# --- THƯ VIỆN & JARS ---
+etl/jars/
+jars/

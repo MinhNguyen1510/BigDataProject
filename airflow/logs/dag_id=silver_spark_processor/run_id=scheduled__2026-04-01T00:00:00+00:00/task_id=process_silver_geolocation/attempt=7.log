@@ -1,0 +1,68 @@
+[2026-04-03T14:40:01.260+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_geolocation scheduled__2026-04-01T00:00:00+00:00 [queued]>
+[2026-04-03T14:40:01.271+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_geolocation scheduled__2026-04-01T00:00:00+00:00 [queued]>
+[2026-04-03T14:40:01.271+0000] {taskinstance.py:1361} INFO - Starting attempt 7 of 8
+[2026-04-03T14:40:01.291+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_geolocation> on 2026-04-01 00:00:00+00:00
+[2026-04-03T14:40:01.306+0000] {standard_task_runner.py:57} INFO - Started process 2023 to run task
+[2026-04-03T14:40:01.315+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_geolocation', 'scheduled__2026-04-01T00:00:00+00:00', '--job-id', '584', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmpllyn2uxe']
+[2026-04-03T14:40:01.321+0000] {standard_task_runner.py:85} INFO - Job 584: Subtask process_silver_geolocation
+[2026-04-03T14:40:01.419+0000] {task_command.py:416} INFO - Running <TaskInstance: silver_spark_processor.process_silver_geolocation scheduled__2026-04-01T00:00:00+00:00 [running]> on host e516154efc74
+[2026-04-03T14:40:01.617+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='silver_spark_processor' AIRFLOW_CTX_TASK_ID='process_silver_geolocation' AIRFLOW_CTX_EXECUTION_DATE='2026-04-01T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='7' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-01T00:00:00+00:00'
+[2026-04-03T14:40:01.634+0000] {base.py:73} INFO - Using connection ID 'spark_default' for task execution.
+[2026-04-03T14:40:01.637+0000] {spark_submit.py:340} INFO - Spark-Submit cmd: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_geolocation /opt/airflow/etl/silver/main_silver.py --table_name geolocation --merge_key geolocation_zip_code_prefix --is_cdc false --json_schema 
+[2026-04-03T14:40:01.828+0000] {spark_submit.py:491} INFO - /home/airflow/.local/lib/python3.10/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+[2026-04-03T14:40:08.968+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:08 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[2026-04-03T14:40:11.467+0000] {spark_submit.py:491} INFO - INFO:__main__:Khởi tạo Spark Job cho bảng: geolocation
+[2026-04-03T14:40:11.706+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:11 INFO SparkContext: Running Spark version 3.3.2
+[2026-04-03T14:40:11.816+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:11 INFO ResourceUtils: ==============================================================
+[2026-04-03T14:40:11.818+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:11 INFO ResourceUtils: No custom resources configured for spark.driver.
+[2026-04-03T14:40:11.818+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:11 INFO ResourceUtils: ==============================================================
+[2026-04-03T14:40:11.821+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:11 INFO SparkContext: Submitted application: <class 'pyspark.sql.session.SparkSession'>
+[2026-04-03T14:40:11.971+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:11 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+[2026-04-03T14:40:12.006+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:12 INFO ResourceProfile: Limiting resource is cpus at 1 tasks per executor
+[2026-04-03T14:40:12.013+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:12 INFO ResourceProfileManager: Added ResourceProfile id: 0
+[2026-04-03T14:40:12.182+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:12 INFO SecurityManager: Changing view acls to: airflow
+[2026-04-03T14:40:12.185+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:12 INFO SecurityManager: Changing modify acls to: airflow
+[2026-04-03T14:40:12.187+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:12 INFO SecurityManager: Changing view acls groups to:
+[2026-04-03T14:40:12.190+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:12 INFO SecurityManager: Changing modify acls groups to:
+[2026-04-03T14:40:12.191+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:12 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(airflow); groups with view permissions: Set(); users  with modify permissions: Set(airflow); groups with modify permissions: Set()
+[2026-04-03T14:40:14.121+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:14 INFO Utils: Successfully started service 'sparkDriver' on port 46031.
+[2026-04-03T14:40:14.246+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:14 INFO SparkEnv: Registering MapOutputTracker
+[2026-04-03T14:40:14.469+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:14 INFO SparkEnv: Registering BlockManagerMaster
+[2026-04-03T14:40:14.564+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:14 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+[2026-04-03T14:40:14.568+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:14 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+[2026-04-03T14:40:14.578+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:14 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+[2026-04-03T14:40:14.696+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:14 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-ee85b64b-e3c4-4b3b-9d0c-251517e25886
+[2026-04-03T14:40:14.748+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:14 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+[2026-04-03T14:40:14.826+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:14 INFO SparkEnv: Registering OutputCommitCoordinator
+[2026-04-03T14:40:15.407+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:15 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
+[2026-04-03T14:40:15.407+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:15 WARN Utils: Service 'SparkUI' could not bind on port 4041. Attempting port 4042.
+[2026-04-03T14:40:15.461+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:15 INFO Utils: Successfully started service 'SparkUI' on port 4042.
+[2026-04-03T14:40:15.639+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:15 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/hadoop-aws-3.3.2.jar at spark://e516154efc74:46031/jars/hadoop-aws-3.3.2.jar with timestamp 1775227211681
+[2026-04-03T14:40:15.641+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:15 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar at spark://e516154efc74:46031/jars/aws-java-sdk-bundle-1.11.1026.jar with timestamp 1775227211681
+[2026-04-03T14:40:15.646+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:15 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar at spark://e516154efc74:46031/jars/delta-core_2.12-2.3.0.jar with timestamp 1775227211681
+[2026-04-03T14:40:15.646+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:15 INFO SparkContext: Added JAR file:///opt/airflow/etl/jars/delta-storage-2.3.0.jar at spark://e516154efc74:46031/jars/delta-storage-2.3.0.jar with timestamp 1775227211681
+[2026-04-03T14:40:16.453+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:16 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+[2026-04-03T14:40:16.657+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:16 INFO TransportClientFactory: Successfully created connection to spark-master/172.18.0.6:7077 after 104 ms (0 ms spent in bootstraps)
+[2026-04-03T14:40:16.944+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:16 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20260403144016-0013
+[2026-04-03T14:40:16.981+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:16 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 34873.
+[2026-04-03T14:40:16.981+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:16 INFO NettyBlockTransferService: Server created on e516154efc74:34873
+[2026-04-03T14:40:16.990+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:16 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+[2026-04-03T14:40:17.044+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:17 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, e516154efc74, 34873, None)
+[2026-04-03T14:40:17.064+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:17 INFO BlockManagerMasterEndpoint: Registering block manager e516154efc74:34873 with 434.4 MiB RAM, BlockManagerId(driver, e516154efc74, 34873, None)
+[2026-04-03T14:40:17.072+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:17 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, e516154efc74, 34873, None)
+[2026-04-03T14:40:17.075+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:17 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, e516154efc74, 34873, None)
+[2026-04-03T14:40:17.824+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:17 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+[2026-04-03T14:40:20.273+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu xử lý lớp Silver cho bảng: geolocation | Chế độ CDC: False
+[2026-04-03T14:40:20.274+0000] {spark_submit.py:491} INFO - INFO:silver_processor: Bắt đầu quét Data Nóng từ Bronze...
+[2026-04-03T14:40:21.207+0000] {spark_submit.py:491} INFO - 26/04/03 14:40:21 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties
+[2026-04-03T14:40:32.834+0000] {taskinstance.py:1937} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 422, in submit
+    raise AirflowException(
+airflow.exceptions.AirflowException: Cannot execute: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_geolocation /opt/airflow/etl/silver/main_silver.py --table_name geolocation --merge_key geolocation_zip_code_prefix --is_cdc false --json_schema . Error code is: -9.
+[2026-04-03T14:40:32.937+0000] {taskinstance.py:1400} INFO - Marking task as UP_FOR_RETRY. dag_id=silver_spark_processor, task_id=process_silver_geolocation, execution_date=20260401T000000, start_date=20260403T144001, end_date=20260403T144032
+[2026-04-03T14:40:33.159+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 584 for task process_silver_geolocation (Cannot execute: spark-submit --master spark://spark-master:7077 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.databricks.delta.schema.autoMerge.enabled=true --jars /opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_geolocation /opt/airflow/etl/silver/main_silver.py --table_name geolocation --merge_key geolocation_zip_code_prefix --is_cdc false --json_schema . Error code is: -9.; 2023)
+[2026-04-03T14:40:33.242+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2026-04-03T14:40:33.576+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

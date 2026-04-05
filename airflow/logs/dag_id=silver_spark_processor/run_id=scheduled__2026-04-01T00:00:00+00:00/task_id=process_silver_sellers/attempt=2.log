@@ -1,0 +1,29 @@
+[2026-04-02T11:01:14.992+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_sellers scheduled__2026-04-01T00:00:00+00:00 [queued]>
+[2026-04-02T11:01:15.003+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_sellers scheduled__2026-04-01T00:00:00+00:00 [queued]>
+[2026-04-02T11:01:15.003+0000] {taskinstance.py:1361} INFO - Starting attempt 2 of 2
+[2026-04-02T11:01:15.022+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_sellers> on 2026-04-01 00:00:00+00:00
+[2026-04-02T11:01:15.031+0000] {standard_task_runner.py:57} INFO - Started process 3328 to run task
+[2026-04-02T11:01:15.036+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_sellers', 'scheduled__2026-04-01T00:00:00+00:00', '--job-id', '232', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmpie2r8td6']
+[2026-04-02T11:01:15.038+0000] {standard_task_runner.py:85} INFO - Job 232: Subtask process_silver_sellers
+[2026-04-02T11:01:15.108+0000] {task_command.py:416} INFO - Running <TaskInstance: silver_spark_processor.process_silver_sellers scheduled__2026-04-01T00:00:00+00:00 [running]> on host 1115d2cb4d12
+[2026-04-02T11:01:15.232+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-team' AIRFLOW_CTX_DAG_ID='silver_spark_processor' AIRFLOW_CTX_TASK_ID='process_silver_sellers' AIRFLOW_CTX_EXECUTION_DATE='2026-04-01T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-04-01T00:00:00+00:00'
+[2026-04-02T11:01:15.246+0000] {base.py:73} INFO - Using connection ID 'spark_default' for task execution.
+[2026-04-02T11:01:15.247+0000] {spark_submit.py:340} INFO - Spark-Submit cmd: spark-submit --master spark://spark-master:7077 --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_sellers /opt/airflow/etl/silver/main_silver.py --table_name sellers --merge_key seller_id --is_cdc false --json_schema 
+[2026-04-02T11:01:15.364+0000] {spark_submit.py:491} INFO - /home/airflow/.local/lib/python3.10/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+[2026-04-02T11:01:30.275+0000] {spark_submit.py:491} INFO - Traceback (most recent call last):
+[2026-04-02T11:01:30.277+0000] {spark_submit.py:491} INFO - File "/opt/airflow/etl/silver/main_silver.py", line 6, in <module>
+[2026-04-02T11:01:30.278+0000] {spark_submit.py:491} INFO - from docker_image.spark.spark_session import spark_session as build_spark_session
+[2026-04-02T11:01:30.278+0000] {spark_submit.py:491} INFO - ModuleNotFoundError: No module named 'docker_image'
+[2026-04-02T11:01:30.590+0000] {spark_submit.py:491} INFO - 26/04/02 11:01:30 INFO ShutdownHookManager: Shutdown hook called
+[2026-04-02T11:01:30.612+0000] {spark_submit.py:491} INFO - 26/04/02 11:01:30 INFO ShutdownHookManager: Deleting directory /tmp/spark-fbd158b3-5c82-40e4-9466-093dc0d8c71c
+[2026-04-02T11:01:30.749+0000] {taskinstance.py:1937} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.10/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 422, in submit
+    raise AirflowException(
+airflow.exceptions.AirflowException: Cannot execute: spark-submit --master spark://spark-master:7077 --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_sellers /opt/airflow/etl/silver/main_silver.py --table_name sellers --merge_key seller_id --is_cdc false --json_schema . Error code is: 1.
+[2026-04-02T11:01:30.760+0000] {taskinstance.py:1400} INFO - Marking task as FAILED. dag_id=silver_spark_processor, task_id=process_silver_sellers, execution_date=20260401T000000, start_date=20260402T110114, end_date=20260402T110130
+[2026-04-02T11:01:30.789+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 232 for task process_silver_sellers (Cannot execute: spark-submit --master spark://spark-master:7077 --executor-cores 1 --executor-memory 1g --driver-memory 1g --name airflow_silver_sellers /opt/airflow/etl/silver/main_silver.py --table_name sellers --merge_key seller_id --is_cdc false --json_schema . Error code is: 1.; 3328)
+[2026-04-02T11:01:30.819+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2026-04-02T11:01:30.905+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

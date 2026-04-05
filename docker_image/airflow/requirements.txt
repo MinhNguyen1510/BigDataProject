@@ -11,3 +11,4 @@ pymysql==1.1.0
 minio==7.1.15
 sqlalchemy>=1.4.28,<2.0
 Flask-Session>=0.5.0
+delta-spark==2.3.0
