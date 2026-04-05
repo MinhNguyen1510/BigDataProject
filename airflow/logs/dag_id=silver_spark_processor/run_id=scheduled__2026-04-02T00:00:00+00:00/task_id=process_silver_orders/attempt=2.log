@@ -1,7 +1,0 @@
-[2026-04-03T11:08:31.355+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_orders scheduled__2026-04-02T00:00:00+00:00 [queued]>
-[2026-04-03T11:08:31.384+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_orders scheduled__2026-04-02T00:00:00+00:00 [queued]>
-[2026-04-03T11:08:31.387+0000] {taskinstance.py:1361} INFO - Starting attempt 2 of 2
-[2026-04-03T11:08:31.469+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_orders> on 2026-04-02 00:00:00+00:00
-[2026-04-03T11:08:31.489+0000] {standard_task_runner.py:57} INFO - Started process 1468 to run task
-[2026-04-03T11:08:31.504+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_orders', 'scheduled__2026-04-02T00:00:00+00:00', '--job-id', '378', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmpeg85ywv_']
-[2026-04-03T11:08:31.509+0000] {standard_task_runner.py:85} INFO - Job 378: Subtask process_silver_orders

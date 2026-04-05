@@ -1,7 +1,0 @@
-[2026-04-03T11:08:31.355+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_product_category_name_translation scheduled__2026-04-02T00:00:00+00:00 [queued]>
-[2026-04-03T11:08:31.383+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: silver_spark_processor.process_silver_product_category_name_translation scheduled__2026-04-02T00:00:00+00:00 [queued]>
-[2026-04-03T11:08:31.387+0000] {taskinstance.py:1361} INFO - Starting attempt 2 of 2
-[2026-04-03T11:08:31.454+0000] {taskinstance.py:1382} INFO - Executing <Task(SparkSubmitOperator): process_silver_product_category_name_translation> on 2026-04-02 00:00:00+00:00
-[2026-04-03T11:08:31.475+0000] {standard_task_runner.py:57} INFO - Started process 1467 to run task
-[2026-04-03T11:08:31.505+0000] {standard_task_runner.py:84} INFO - Running: ['airflow', 'tasks', 'run', 'silver_spark_processor', 'process_silver_product_category_name_translation', 'scheduled__2026-04-02T00:00:00+00:00', '--job-id', '376', '--raw', '--subdir', 'DAGS_FOLDER/silver_processor_dag.py', '--cfg-path', '/tmp/tmpbm5s_n2f']
-[2026-04-03T11:08:31.512+0000] {standard_task_runner.py:85} INFO - Job 376: Subtask process_silver_product_category_name_translation

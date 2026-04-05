@@ -3,3 +3,8 @@ dataset/
 # --- THƯ VIỆN & JARS ---
 etl/jars/
 jars/
+# --- PYTHON & AIRFLOW LOGS ---
+airflow/logs/
+logs/
+__pycache__/
+*.pyc
