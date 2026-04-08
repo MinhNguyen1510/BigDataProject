@@ -93,6 +93,8 @@ with DAG(
                 # Ép Spark hiểu cách chuyển đổi thời gian kiểu mới (Proleptic Gregorian)
                 "spark.sql.parquet.int64RebaseModeInRead": "LEGACY",
                 "spark.sql.parquet.datetimeRebaseModeInRead": "LEGACY",
+                "spark.sql.parquet.int96RebaseModeInWrite": "LEGACY",
+                "spark.sql.parquet.datetimeRebaseModeInWrite": "LEGACY",
                 "spark.executor.memoryOverhead": "512m",
                 "spark.driver.memoryOverhead": "512m"
             }
