@@ -1,7 +1,7 @@
 import logging
 from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
-from pyspark.sql.functions import col, row_number, desc, lit, from_json, when
+from pyspark.sql.functions import col, row_number, desc, lit, from_json, when, year
 from delta.tables import DeltaTable
 from pyspark.sql.functions import trim, lower, upper, to_timestamp, lpad
 # RUN pip install --no-cache-dir delta-spark==2.3.0
@@ -70,6 +70,13 @@ def clean_table_data(df, table_name):
         cleaned_df = cleaned_df.withColumn("review_score", col("review_score").cast("integer")) \
             .withColumn("review_creation_date", to_timestamp(col("review_creation_date"))) \
             .withColumn("review_answer_timestamp", to_timestamp(col("review_answer_timestamp")))
+
+        for date_col in ["review_creation_date", "review_answer_timestamp"]:
+            cleaned_df = cleaned_df.withColumn(
+                date_col,
+                when((year(col(date_col)) < 2000) | (year(col(date_col)) > 2050), lit(None).cast("timestamp"))
+                .otherwise(col(date_col))
+            )
 
     elif table_name == "products":
         cleaned_df = cleaned_df.withColumn("product_name_lenght", col("product_name_lenght").cast("float")) \
@@ -192,8 +199,12 @@ def process_silver_layer(
                          .option("dbtable", f"(SELECT {merge_key} FROM {table_name}) AS tmp")
                          .option("user", mysql_config['user'])
                          .option("password", mysql_config['password'])
+                         .option("fetchsize", "10000")
                          .load())
 
+        if "zip_code_prefix" in merge_key:
+            source_ids_df = source_ids_df.withColumn(merge_key, lpad(col(merge_key).cast("string"), 5, '0'))
+            
         # Đọc bảng Silver hiện tại (Chỉ lấy các dòng Active)
         delta_table = DeltaTable.forPath(spark, silver_table_path)
         silver_active_df = delta_table.toDF().filter("is_active == True")
