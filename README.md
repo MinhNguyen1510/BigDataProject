@@ -87,6 +87,9 @@ Gửi Spark Job đến master node:
 ```bash
 docker exec -it spark-master bash -c "spark-submit \
   --master spark://spark-master:7077 \
+  --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.2,io.delta:delta-core_2.12:2.3.0 \
+  --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension \
+  --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog \
   /opt/airflow/etl/bronze/kafka_to_bronze.py"
 ```
 

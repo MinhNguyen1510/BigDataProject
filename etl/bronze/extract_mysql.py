@@ -96,43 +96,20 @@ def extract_product_category(mysql: MySQLClient, minio: MinIOClient, logical_dat
 def extract_geolocation(mysql: MySQLClient, minio: MinIOClient, logical_date: datetime = None) -> dict:
     return _extract_full_load(mysql, minio, "geolocation", "olist", logical_date=logical_date)
 
-
 def extract_sellers(mysql: MySQLClient, minio: MinIOClient, logical_date: datetime = None) -> dict:
     return _extract_full_load(mysql, minio, "sellers", "olist", logical_date=logical_date)
 
+def extract_order_payments(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None, logical_date: datetime = None) -> dict:
+    if not last_watermark:
+        logger.info("[order_payments] Lần chạy đầu tiên -> Kích hoạt FULL LOAD")
+        return _extract_full_load(mysql, minio, "order_payments", "olist", logical_date=logical_date)
 
-# def extract_orders(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None,
-#                    logical_date: datetime = None) -> dict:
-#     if not last_watermark:
-#         logger.info("[orders] Lần chạy đầu tiên (chưa có watermark) -> Kích hoạt FULL LOAD")
-#         return _extract_full_load(mysql, minio, "orders", "order", logical_date=logical_date)
-#
-#     # Các lần chạy sau (đã có watermark), chạy Incremental
-#     return _extract_incremental_load(
-#         mysql, minio, "orders", "order",
-#         watermark_col="last_modified_date",
-#         last_watermark=last_watermark,
-#         logical_date=logical_date
-#     )
-
-
-# def extract_order_items(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None,
-#                         logical_date: datetime = None) -> dict:
-#     if not last_watermark:
-#         logger.info("[order_items] Lần chạy đầu tiên -> Kích hoạt FULL LOAD")
-#         return _extract_full_load(mysql, minio, "order_items", "orderitem", logical_date=logical_date)
-#
-#     return _extract_incremental_load(
-#         mysql, minio, "order_items", "orderitem",
-#         watermark_col="last_modified_date",
-#         last_watermark=last_watermark,
-#         logical_date=logical_date
-#     )
-
-
-def extract_order_payments(mysql: MySQLClient, minio: MinIOClient, logical_date: datetime = None) -> dict:
-    return _extract_full_load(mysql, minio, "order_payments", "olist", logical_date=logical_date)
-
+    return _extract_incremental_load(
+        mysql, minio, "order_payments", "olist",
+        watermark_col="last_modified_date",
+        last_watermark=last_watermark,
+        logical_date=logical_date
+    )
 
 def extract_order_reviews(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None, logical_date: datetime = None) -> dict:
     if not last_watermark:

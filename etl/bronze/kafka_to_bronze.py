@@ -78,7 +78,7 @@ if __name__ == "__main__":
              .config("spark.hadoop.fs.s3a.secret.key", "minio123")
              .config("spark.hadoop.fs.s3a.path.style.access", "true")
              .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-             # .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.2")
+             .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.2")
              .getOrCreate())
     spark.sparkContext.setLogLevel("WARN")
 

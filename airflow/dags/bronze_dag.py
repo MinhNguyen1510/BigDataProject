@@ -112,7 +112,7 @@ with DAG(
     description="[Bronze] Extract Olist MySQL → MinIO (Partitioning & Incremental)",
     default_args=default_args,
     schedule_interval="@daily",
-    start_date=datetime(2027, 1, 5),
+    start_date=datetime(2025, 1, 5),
     catchup=False,
     tags=["bronze", "mysql", "minio", "olist"],
 ) as dag:
@@ -122,20 +122,15 @@ with DAG(
     t_customers = PythonOperator(task_id="extract_customers", python_callable=make_dim_task(extract_customers))
     t_products = PythonOperator(task_id="extract_products", python_callable=make_dim_task(extract_products))
     t_sellers = PythonOperator(task_id="extract_sellers", python_callable=make_dim_task(extract_sellers))
-    t_order_payments = PythonOperator(task_id="extract_payments", python_callable=make_dim_task(extract_order_payments))
+    t_order_payments = PythonOperator(
+        task_id="extract_payments",
+        python_callable=make_fact_task(extract_order_payments, "order_payments")
+    )
+    t_order_reviews = PythonOperator(
+        task_id="extract_order_reviews",
+        python_callable=make_fact_task(extract_order_reviews, "order_reviews")
+    )
 
-    # t_orders = PythonOperator(task_id="extract_orders", python_callable=make_fact_task(extract_orders, "orders"))
-    # t_order_items = PythonOperator(task_id="extract_order_items", python_callable=make_fact_task(extract_order_items, "order_items"))
-    t_order_reviews = PythonOperator(task_id="extract_order_reviews", python_callable=make_fact_task(extract_order_reviews, "order_reviews"))
-
-    # ── Thứ tự chạy (theo FOREIGN KEY) ──
     t_product_category >> t_products
 
-    # Các luồng song song hội tụ lại trước khi chạy bảng Transaction cuối
     [t_products, t_customers, t_sellers, t_geolocation, t_order_payments] >> t_order_reviews
-
-    # t_customers        >> t_orders
-    # t_sellers          >> t_orders
-    # t_products         >> t_order_items
-    # t_sellers          >> t_order_items
-    # t_orders           >> [t_order_items, t_payments, t_order_reviews]

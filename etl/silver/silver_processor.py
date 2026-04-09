@@ -204,7 +204,7 @@ def process_silver_layer(
 
         if "zip_code_prefix" in merge_key:
             source_ids_df = source_ids_df.withColumn(merge_key, lpad(col(merge_key).cast("string"), 5, '0'))
-            
+
         # Đọc bảng Silver hiện tại (Chỉ lấy các dòng Active)
         delta_table = DeltaTable.forPath(spark, silver_table_path)
         silver_active_df = delta_table.toDF().filter("is_active == True")

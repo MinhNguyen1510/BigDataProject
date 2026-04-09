@@ -12,3 +12,5 @@ minio==7.1.15
 sqlalchemy>=1.4.28,<2.0
 Flask-Session>=0.5.0
 delta-spark==2.3.0
+#pyarrow>=10.0.1
+#deltalake>=0.15.0
