@@ -62,9 +62,9 @@ with DAG(
             conn_id="spark_default",
             application="/opt/airflow/etl/silver/main_silver.py",
             name=f"airflow_silver_{table_name}",
-            executor_cores=1,
+            executor_cores=2,
             num_executors=2,
-            executor_memory="1g",
+            executor_memory="2g",
             driver_memory="512m",
             application_args=[
                 "--table_name", table_name,
