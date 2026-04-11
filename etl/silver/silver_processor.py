@@ -45,7 +45,7 @@ def clean_table_data(df, table_name):
         ]
         for t_col in cdc_time_columns:
             if t_col in cleaned_df.columns:
-                cleaned_df = cleaned_df.withColumn(t_col, (col(t_col) / 1000000000).cast("timestamp"))
+                cleaned_df = cleaned_df.withColumn(t_col, (col(t_col) / 1000).cast("timestamp"))
 
     elif table_name == "order_items":
         cleaned_df = cleaned_df.withColumn("price", col("price").cast("float")) \
@@ -54,7 +54,7 @@ def clean_table_data(df, table_name):
 
         if "shipping_limit_date" in cleaned_df.columns:
             cleaned_df = cleaned_df.withColumn("shipping_limit_date",
-                                               (col("shipping_limit_date") / 1000000000).cast("timestamp"))
+                                               (col("shipping_limit_date") / 1000).cast("timestamp"))
 
     elif table_name == "order_payments":
         # - Ép kiểu số tiền, số tháng trả góp
@@ -106,17 +106,53 @@ def process_silver_layer(
         mysql_config: dict,
         watermark_col: str = "last_modified_date",
         is_cdc: bool = False,         # <--- CỜ MỚI: Bật tắt chế độ CDC
-        json_schema: str = None       # <--- CỜ MỚI: Cấu trúc cột để bóc JSON
+        json_schema: str = None,         # <--- CỜ MỚI: Cấu trúc cột để bóc JSON
+        is_full_load: bool = False
 ):
     """
     Hàm xử lý lớp Silver: Streaming (Data Nóng) + Batch Anti-Join (Hard Delete)
     """
+    merge_keys = [k.strip() for k in merge_key.split(",")]
+    merge_condition = " AND ".join([f"target.{k} = source.{k}" for k in merge_keys])
     bronze_path = f"s3a://lakehouse/bronze/olist/{table_name}/"
     silver_table_name = f"silver.clean_{table_name}"
     silver_table_path = f"s3a://lakehouse/silver/clean_{table_name}/"
     checkpoint_path = f"s3a://lakehouse/checkpoints/silver/{table_name}/"
 
     logger.info(f" Bắt đầu xử lý lớp Silver cho bảng: {table_name} | Chế độ CDC: {is_cdc}")
+
+    # LUỒNG 1: BATCH PROCESSING (DÀNH RIÊNG CHO BẢNG FULL LOAD)
+    if is_full_load:
+        logger.info(" Chế độ BATCH: Đọc toàn bộ file data.parquet bị ghi đè...")
+
+        df_bronze = spark.read.format("parquet").load(bronze_path)
+
+        # Khử trùng lặp sơ bộ (đề phòng file bị nhân bản)
+        window_spec = Window.partitionBy(*merge_keys).orderBy(desc(watermark_col))
+        final_df = df_bronze.withColumn("rn", row_number().over(window_spec)) \
+            .filter(col("rn") == 1).drop("rn") \
+            .withColumn("is_active", lit(True))
+
+        # Dọn dẹp Data Quality
+        final_df = clean_table_data(final_df, table_name)
+
+        if DeltaTable.isDeltaTable(spark, silver_table_path):
+            delta_table = DeltaTable.forPath(spark, silver_table_path)
+
+            logger.info(" Tiến hành Upsert & Tự động Soft Delete...")
+            (delta_table.alias("target")
+             .merge(final_df.alias("source"), merge_condition)
+             .whenMatchedUpdateAll()
+             .whenNotMatchedInsertAll()
+             .whenNotMatchedBySourceUpdate(set={"is_active": lit(False)})
+             .execute())
+        else:
+            logger.info("Khởi tạo bảng Silver Full Load lần đầu...")
+            final_df.write.format("delta").mode("overwrite").option("path", silver_table_path).saveAsTable(
+                silver_table_name)
+
+        logger.info(f" Xong Full Load bảng {table_name}. (Không cần chạy Anti-Join Phase 2)")
+        return
 
     # Phase 1: Xử lý data nóng (Structured Streaming + Upsert)
 
@@ -130,7 +166,7 @@ def process_silver_layer(
             parsed_df = micro_batch_df.withColumn("parsed_data", from_json(col("raw_record"), json_schema)) \
                 .select("parsed_data.*", "op", "ts_ms")
 
-            window_spec = Window.partitionBy(merge_key).orderBy(desc("ts_ms"))
+            window_spec = Window.partitionBy(*merge_keys).orderBy(desc("ts_ms"))
             deduped_df = parsed_df.withColumn("rn", row_number().over(window_spec)) \
                 .filter(col("rn") == 1).drop("rn")
 
@@ -138,7 +174,7 @@ def process_silver_layer(
             final_df = deduped_df.withColumn("is_active", when(col("op") == 'd', lit(False)).otherwise(lit(True))) \
                 .drop("op", "ts_ms")
         else:
-            window_spec = Window.partitionBy(merge_key).orderBy(desc(watermark_col))
+            window_spec = Window.partitionBy(*merge_keys).orderBy(desc(watermark_col))
             final_df = micro_batch_df.withColumn("rn", row_number().over(window_spec)) \
                 .filter(col("rn") == 1).drop("rn") \
                 .withColumn("is_active", lit(True))
@@ -149,7 +185,6 @@ def process_silver_layer(
         if DeltaTable.isDeltaTable(spark, silver_table_path):
             delta_table = DeltaTable.forPath(spark, silver_table_path)
 
-            merge_condition = f"target.{merge_key} = source.{merge_key}"
 
             (delta_table.alias("target")
              .merge(final_df.alias("source"), merge_condition)
@@ -210,15 +245,15 @@ def process_silver_layer(
         silver_active_df = delta_table.toDF().filter("is_active == True")
 
         # (Anti-Join): Có ở Silver nhưng ko có ở MySQL
-        deleted_records = silver_active_df.join(source_ids_df, on=merge_key, how="left_anti")
+        deleted_records = silver_active_df.join(source_ids_df, on=merge_keys, how="left_anti")
         deleted_count = deleted_records.count()
 
         if deleted_count > 0:
             logger.info(f" Phát hiện {deleted_count} bản ghi bị Hard Delete. Tiến hành Soft Delete trên Silver...")
-
+            update_condition = " AND ".join([f"t.{k} = d.{k}" for k in merge_keys])
             # Update is_active = False cho các ghost record này
             (delta_table.alias("t")
-             .merge(deleted_records.alias("d"), f"t.{merge_key} = d.{merge_key}")
+             .merge(deleted_records.alias("d"), update_condition)
              .whenMatchedUpdate(set={"is_active": lit(False)})
              .execute())
             logger.info(f" THÀNH CÔNG: Đã chuyển trạng thái is_active = False cho {deleted_count} dòng.")

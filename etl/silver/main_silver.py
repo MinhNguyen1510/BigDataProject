@@ -27,9 +27,12 @@ if __name__ == "__main__":
     parser.add_argument("--merge_key", required=True, help="Khóa chính để Upsert/Anti-join")
     parser.add_argument("--is_cdc", type=str, default="false", help="Bật chế độ CDC (true/false)")
     parser.add_argument("--json_schema", type=str, default="", help="Chuỗi DDL Schema để bóc JSON")
+    parser.add_argument("--is_full_load", type=str, default="false", help="Bảng Full Load (true/false)")
     args = parser.parse_args()
 
     is_cdc_flag = args.is_cdc.lower() == "true"
+
+    is_full_load_flag = args.is_full_load.lower() == "true"
 
     mysql_config = {
         "host": "mysql",
@@ -56,6 +59,7 @@ if __name__ == "__main__":
             watermark_col="last_modified_date",
             is_cdc=is_cdc_flag,
             json_schema=args.json_schema,
+            is_full_load=is_full_load_flag
         )
     except Exception as e:
         logger.error(f"Lỗi khi xử lý lớp Silver bảng {args.table_name}: {e}")

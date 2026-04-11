@@ -17,23 +17,25 @@ default_args = {
 }
 
 TABLES_CONFIG = [
-    {"table": "customers", "merge_key": "customer_id"},
-    {"table": "sellers", "merge_key": "seller_id"},
-    {"table": "products", "merge_key": "product_id"},
-    {"table": "product_category_name_translation", "merge_key": "product_category_name"},
-    {"table": "geolocation", "merge_key": "geolocation_zip_code_prefix"},
-    {"table": "order_payments", "merge_key": "id"},
-    {"table": "order_reviews", "merge_key": "review_id"},
+    {"table": "customers", "merge_key": "customer_id", "is_full_load": "true"},
+    {"table": "sellers", "merge_key": "seller_id", "is_full_load": "true"},
+    {"table": "products", "merge_key": "product_id", "is_full_load": "true"},
+    {"table": "product_category_name_translation", "merge_key": "product_category_name", "is_full_load": "true"},
+    {"table": "geolocation", "merge_key": "geolocation_zip_code_prefix", "is_full_load": "true"},
+    {"table": "order_payments", "merge_key": "id", "is_full_load": "false"},
+    {"table": "order_reviews", "merge_key": "review_id", "is_full_load": "false"},
     {
         "table": "orders",
         "merge_key": "order_id",
         "is_cdc": "true",
+        "is_full_load": "false",
         "json_schema": "order_id STRING, customer_id STRING, order_status STRING, order_purchase_timestamp STRING, order_approved_at STRING, order_delivered_carrier_date STRING, order_delivered_customer_date STRING, order_estimated_delivery_date STRING"
     },
     {
         "table": "order_items",
-        "merge_key": "order_item_id",
+        "merge_key": "order_id, order_item_id",
         "is_cdc": "true",
+        "is_full_load": "false",
         "json_schema": "order_id STRING, order_item_id STRING, product_id STRING, seller_id STRING, shipping_limit_date STRING, price STRING, freight_value STRING"
     }
 ]
@@ -43,7 +45,7 @@ with DAG(
     description="[Silver] Xử lý Data Nóng và Hard Delete bằng PySpark & Delta Lake",
     default_args=default_args,
     schedule_interval="@daily",
-    start_date=datetime(2027, 1, 5),
+    start_date=datetime(2025, 1, 5),
     catchup=False,
     tags=["silver", "spark", "delta", "olist"],
 ) as dag:
@@ -70,7 +72,8 @@ with DAG(
                 "--table_name", table_name,
                 "--merge_key", merge_key,
                 "--is_cdc", config.get("is_cdc", "false"),
-                "--json_schema", config.get("json_schema", "")
+                "--json_schema", config.get("json_schema", ""),
+                "--is_full_load", config.get("is_full_load", "false")
             ],
 
             jars="/opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar,/opt/airflow/etl/jars/mysql-connector-java-8.0.28.jar",
@@ -96,7 +99,9 @@ with DAG(
                 "spark.sql.parquet.int96RebaseModeInWrite": "LEGACY",
                 "spark.sql.parquet.datetimeRebaseModeInWrite": "LEGACY",
                 "spark.executor.memoryOverhead": "512m",
-                "spark.driver.memoryOverhead": "512m"
+                "spark.driver.memoryOverhead": "512m",
+                "spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version": "2",
+                "spark.hadoop.fs.s3a.fast.upload": "true"
             }
         )
 

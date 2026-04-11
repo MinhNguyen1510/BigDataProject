@@ -3,6 +3,7 @@ import uuid
 import polars as pl
 from minio import Minio
 from datetime import datetime
+import io
 
 
 class MinIOClient:
@@ -49,16 +50,30 @@ class MinIOClient:
         unique_id = uuid.uuid4().hex
         return f"/tmp/file_{layer}_{schema}_{table}_{unique_id}.parquet"
 
-    def save(self, df: pl.DataFrame, layer: str, schema: str, table: str, logical_date: datetime = None) -> str:
+    def save(self, df: pl.DataFrame, layer: str, schema: str, table: str, logical_date: datetime = None, file_name = None) -> str:
         """
         Lưu Polars DataFrame lên MinIO dưới dạng Parquet.
         Trả về object key (đường dẫn trên MinIO).
         """
-        object_key = self._make_object_key(layer, schema, table, logical_date=logical_date)
+        if file_name:
+            # Dành cho Full Load: Ép cứng tên file (VD: data.parquet) để tự động Ghi đè (Overwrite)
+            object_key = f"{layer}/{schema}/{table}/{file_name}"
+        else:
+            object_key = self._make_object_key(layer, schema, table, logical_date=logical_date)
         tmp_path = self._make_tmp_path(layer, schema, table)
         try:
-            df.write_parquet(tmp_path)
-            self._client.fput_object(self._bucket, object_key, tmp_path)
+            parquet_buffer = io.BytesIO()
+
+            df.write_parquet(parquet_buffer, use_pyarrow=True)
+            parquet_buffer.seek(0)
+
+            self._client.put_object(
+                bucket_name=self._bucket,
+                object_name=object_key,
+                data=parquet_buffer,
+                length=parquet_buffer.getbuffer().nbytes,
+                content_type="application/octet-stream"
+            )
             return object_key
         except Exception as e:
             raise Exception(f"Error saving to MinIO [{object_key}]: {e}")
@@ -66,11 +81,14 @@ class MinIOClient:
             if os.path.exists(tmp_path):
                 os.remove(tmp_path)
 
-    def load(self, layer: str, schema: str, table: str) -> pl.DataFrame:
+    def load(self, layer: str, schema: str, table: str, file_name = None) -> pl.DataFrame:
         """
         Tải file Parquet từ MinIO, trả về Polars DataFrame.
         """
-        object_key = self._make_object_key(layer, schema, table)
+        if file_name:
+            object_key = f"{layer}/{schema}/{table}/{file_name}"
+        else:
+            object_key = self._make_object_key(layer, schema, table)
         tmp_path = self._make_tmp_path(layer, schema, table)
         try:
             self._client.fget_object(self._bucket, object_key, tmp_path)

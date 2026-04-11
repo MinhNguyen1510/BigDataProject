@@ -343,6 +343,11 @@ services:
       <<: *airflow-common-env
       # Bơm thẳng 2GB RAM cho tiến trình Python chạy Spark Driver
       SPARK_DRIVER_MEMORY: "2g"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 3072M
 
   # Chạy 1 lần để tạo tài khoản đăng nhập lúc đầu
   airflow-init:
