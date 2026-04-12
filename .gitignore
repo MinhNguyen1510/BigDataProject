@@ -1,10 +1,74 @@
+# =========================
+# COMPRESSED FILES
+# =========================
 *.tgz
+*.zip
+*.tar
+*.gz
+
+# =========================
+# DATA (KHÔNG PUSH DATA THÔ)
+# =========================
 dataset/
-# --- THƯ VIỆN & JARS ---
-etl/jars/
-jars/
-# --- PYTHON & AIRFLOW LOGS ---
-airflow/logs/
-logs/
+data/
+*.csv
+*.parquet
+
+# =========================
+# PYTHON
+# =========================
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+env/
+
+# =========================
+# AIRFLOW
+# =========================
+airflow/logs/
+logs/
+airflow/dags/__pycache__/
+airflow/*.pid
+
+# =========================
+# SPARK / BIG DATA SYSTEM
+# =========================
+spark-warehouse/
+metastore_db/
+derby.log
+checkpoint/
+.delta_log/
+
+# =========================
+# KAFKA / STREAMING
+# =========================
+kafka-logs/
+zookeeper-data/
+
+# =========================
+# JARS / LIBS
+# =========================
+jars/
+etl/jars/
+
+# =========================
+# IDE / EDITORS
+# =========================
+.idea/
+.vscode/
+
+# =========================
+# ENV FILES (RẤT QUAN TRỌNG)
+# =========================
+.env
+*.env
+
+# =========================
+# SYSTEM FILES
+# =========================
+.DS_Store
+Thumbs.db
