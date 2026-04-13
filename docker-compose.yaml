@@ -116,40 +116,40 @@ services:
     ports:
       - "8082:8081"
 
-#  # --- APACHE SUPERSET ---
-#  superset:
-#    build:
-#      context: ./docker_image/superset
-#      dockerfile: Dockerfile
-#    container_name: superset
-#    ports:
-#      - "8088:8088"
-#    environment:
-#      - SUPERSET_SECRET_KEY=DayLaMotCaiKeyBiMatChoSupersetCuaBan123!@#
-#    volumes:
-#      - superset_data:/app/superset_home
-#    networks:
-#      - data_network
-#    depends_on:
-#      superset-init:
-#        condition: service_completed_successfully
+  # --- APACHE SUPERSET ---
+  superset:
+    build:
+      context: ./docker_image/superset
+      dockerfile: Dockerfile
+    container_name: superset
+    ports:
+      - "8088:8088"
+    environment:
+      - SUPERSET_SECRET_KEY=DayLaMotCaiKeyBiMatChoSupersetCuaBan123!@#
+    volumes:
+      - superset_data:/app/superset_home
+    networks:
+      - data_network
+    depends_on:
+      superset-init:
+        condition: service_completed_successfully
 
-#  # Khởi tạo Database và tài khoản Admin cho Superset
-#  superset-init:
-#    build:
-#      context: ./docker_image/superset
-#      dockerfile: Dockerfile
-#    container_name: superset-init
-#    environment:
-#      - SUPERSET_SECRET_KEY=DayLaMotCaiKeyBiMatChoSupersetCuaBan123!@#
-#    volumes:
-#      - superset_data:/app/superset_home
-#    networks:
-#      - data_network
-#    command: >
-#      bash -c "superset db upgrade &&
-#               superset fab create-admin --username admin --firstname Admin --lastname Superset --email admin@example.com --password admin &&
-#               superset init"
+  # Khởi tạo Database và tài khoản Admin cho Superset
+  superset-init:
+    build:
+      context: ./docker_image/superset
+      dockerfile: Dockerfile
+    container_name: superset-init
+    environment:
+      - SUPERSET_SECRET_KEY=DayLaMotCaiKeyBiMatChoSupersetCuaBan123!@#
+    volumes:
+      - superset_data:/app/superset_home
+    networks:
+      - data_network
+    command: >
+      bash -c "superset db upgrade &&
+               superset fab create-admin --username admin --firstname Admin --lastname Superset --email admin@example.com --password admin &&
+               superset init"
 
   mysql:
     image: mysql:8.0
@@ -288,36 +288,45 @@ services:
     networks:
       - data_network
 
-#  spark-thrift-server:
-#    build:
-#      context: ./docker_image/spark
-#      dockerfile: ./Dockerfile
-#    container_name: "spark-thrift-server"
-#    restart: always
-#    depends_on:
-#      - spark-master
-#      - hive-metastore
-#    ports:
-#      - "4041:4040"
-#      - "10000:10000"
-#    command: >
-#      bash -c "
-#      echo 'Chờ Metastore lên hẳn...' &&
-#      sleep 20 &&
-#      /opt/spark/bin/spark-submit
-#      --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2
-#      --name 'Thrift JDBC/ODBC Server'
-#      --master spark://spark-master:7077
-#      --conf spark.hadoop.hive.metastore.uris=thrift://hive-metastore:9083
-#      --executor-memory 1G
-#      --total-executor-cores 1
-#      --driver-memory 1G &
-#      tail -f /dev/null"
-#    volumes:
-#      - ./docker_image/spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
-#      - ./docker_image/spark/conf/hive-site.xml:/opt/spark/conf/hive-site.xml
-#    networks:
-#      - data_network
+  spark-thrift-server:
+    build:
+      context: ./docker_image/spark
+      dockerfile: ./Dockerfile
+    container_name: "spark-thrift-server"
+    restart: always
+    depends_on:
+      - spark-master
+      - hive-metastore
+    ports:
+      - "4041:4040"
+      - "10000:10000"
+    command: >
+      bash -c "
+      echo 'Chờ Metastore lên hẳn...' &&
+      sleep 20 &&
+      /opt/spark/bin/spark-submit
+      --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2
+      --name 'Thrift JDBC/ODBC Server'
+      --master spark://spark-master:7077
+      --conf spark.hadoop.hive.metastore.uris=thrift://hive-metastore:9083
+      --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension
+      --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog
+      --conf spark.hadoop.fs.s3a.endpoint=http://minio:9000
+      --conf spark.hadoop.fs.s3a.access.key=minio
+      --conf spark.hadoop.fs.s3a.secret.key=minio123
+      --conf spark.hadoop.fs.s3a.path.style.access=true
+      --conf spark.hadoop.fs.s3a.connection.ssl.enabled=false
+      --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem
+      --conf spark.sql.warehouse.dir=file:///tmp
+      --executor-memory 1G
+      --total-executor-cores 1
+      --driver-memory 1G &
+      tail -f /dev/null"
+    volumes:
+      - ./docker_image/spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
+      - ./docker_image/spark/conf/hive-site.xml:/opt/spark/conf/hive-site.xml
+    networks:
+      - data_network
 
   # Giao diện Web của Airflow (UI)
   airflow-webserver:
@@ -361,45 +370,45 @@ services:
       _AIRFLOW_WWW_USER_USERNAME: ${AIRFLOW_ADMIN_USER}
       _AIRFLOW_WWW_USER_PASSWORD: ${AIRFLOW_ADMIN_PASS}
 
-  # --- CỤM KAFKA & DEBEZIUM (LUỒNG CDC STREAMING) ---
-  zookeeper:
-    image: quay.io/debezium/zookeeper:2.4
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
-    networks:
-      - data_network
-
-  kafka:
-    image: quay.io/debezium/kafka:2.4
-    container_name: kafka
-    ports:
-      - "9092:9092"
-    environment:
-      - ZOOKEEPER_CONNECT=zookeeper:2181
-      # Cấu hình để các container khác trong data_network có thể kết nối tới Kafka
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
-    depends_on:
-      - zookeeper
-    networks:
-      - data_network
-
-  connect:
-    image: quay.io/debezium/connect:2.4
-    container_name: debezium-connect
-    ports:
-      - "8083:8083"
-    environment:
-      - BOOTSTRAP_SERVERS=kafka:9092
-      - GROUP_ID=1
-      - CONFIG_STORAGE_TOPIC=my_connect_configs
-      - OFFSET_STORAGE_TOPIC=my_connect_offsets
-      - STATUS_STORAGE_TOPIC=my_connect_statuses
-    depends_on:
-      - kafka
-      - mysql
-    networks:
-      - data_network
+#  # --- CỤM KAFKA & DEBEZIUM (LUỒNG CDC STREAMING) ---
+#  zookeeper:
+#    image: quay.io/debezium/zookeeper:2.4
+#    container_name: zookeeper
+#    ports:
+#      - "2181:2181"
+#    networks:
+#      - data_network
+#
+#  kafka:
+#    image: quay.io/debezium/kafka:2.4
+#    container_name: kafka
+#    ports:
+#      - "9092:9092"
+#    environment:
+#      - ZOOKEEPER_CONNECT=zookeeper:2181
+#      # Cấu hình để các container khác trong data_network có thể kết nối tới Kafka
+#      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+#    depends_on:
+#      - zookeeper
+#    networks:
+#      - data_network
+#
+#  connect:
+#    image: quay.io/debezium/connect:2.4
+#    container_name: debezium-connect
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      - BOOTSTRAP_SERVERS=kafka:9092
+#      - GROUP_ID=1
+#      - CONFIG_STORAGE_TOPIC=my_connect_configs
+#      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+#      - STATUS_STORAGE_TOPIC=my_connect_statuses
+#    depends_on:
+#      - kafka
+#      - mysql
+#    networks:
+#      - data_network
 
 networks:
   data_network:

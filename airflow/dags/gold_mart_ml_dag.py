@@ -10,10 +10,12 @@ default_args = {
     "retries": 1,
     "retry_delay": timedelta(minutes=5),
     "email_on_failure": False,
-    "start_date": datetime(2025, 1, 1),
+    "start_date": datetime(2026, 4, 12),
 }
 
 SPARK_COMMON_CONF = {
+    "spark.sql.catalogImplementation": "hive",
+    "spark.hadoop.hive.metastore.uris": "thrift://hive-metastore:9083",
     "spark.sql.extensions": "io.delta.sql.DeltaSparkSessionExtension",
     "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog",
     "spark.hadoop.fs.s3a.endpoint": "http://minio:9000",

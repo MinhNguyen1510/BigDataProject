@@ -27,8 +27,16 @@ def _read_delta(spark: SparkSession, path: str):
     return spark.read.format("delta").load(path)
 
 
-def _write_delta_overwrite(df, path: str):
-    df.write.format("delta").mode("overwrite").save(path)
+def _write_delta_overwrite(spark, df, path: str, table_name: str):
+    logger.info(f"Writing and registering table: mart_db.{table_name}")
+
+    # Đảm bảo database mart_db tồn tại trong catalog
+    spark.sql("CREATE DATABASE IF NOT EXISTS mart_db LOCATION 's3a://lakehouse/gold/mart/'")
+    # df.write.format("delta").mode("overwrite").save(path)
+    df.write.format("delta") \
+        .mode("overwrite") \
+        .option("path", path) \
+        .saveAsTable(f"mart_db.{table_name}")
 
 
 def build_revenue_mart(spark: SparkSession):
@@ -73,7 +81,7 @@ def build_revenue_mart(spark: SparkSession):
         )
     )
 
-    _write_delta_overwrite(df, _mart_path("revenue_mart"))
+    _write_delta_overwrite(spark, df, _mart_path("revenue_mart"), "revenue_mart")
 
 
 def build_cashflow_mart(spark: SparkSession):
@@ -104,7 +112,7 @@ def build_cashflow_mart(spark: SparkSession):
         )
     )
 
-    _write_delta_overwrite(df, _mart_path("cashflow_mart"))
+    _write_delta_overwrite(spark, df, _mart_path("cashflow_mart"), "cashflow_mart")
 
 
 def build_customer_experience_mart(spark: SparkSession):
@@ -150,7 +158,7 @@ def build_customer_experience_mart(spark: SparkSession):
         )
     )
 
-    _write_delta_overwrite(df, _mart_path("customer_experience_mart"))
+    _write_delta_overwrite(spark, df, _mart_path("customer_experience_mart"), "customer_experience_mart")
 
 
 def build_logistics_mart(spark: SparkSession):
@@ -193,7 +201,7 @@ def build_logistics_mart(spark: SparkSession):
         )
     )
 
-    _write_delta_overwrite(df, _mart_path("logistics_mart"))
+    _write_delta_overwrite(spark, df, _mart_path("logistics_mart"), "logistics_mart")
 
 
 BUILDERS = {

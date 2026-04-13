@@ -11,9 +11,10 @@ if __name__ == "__main__":
         .join(df_orders, "order_id", "left").withColumn("payment_type_key", md5(col("primary_payment_type"))).withColumn("time_key", date_format(col("order_purchase_timestamp"), "yyyyMMdd").cast("int")).select("order_id", "payment_type_key", "Num_payment_methods", "time_key", "Total_payment_value", "payment_installments")
 
     target_path = GOLD_PATH + "fact_payments/"
+    spark.sql("CREATE DATABASE IF NOT EXISTS dw_db LOCATION 's3a://lakehouse/gold/dw/'")
 
     if DeltaTable.isDeltaTable(spark, target_path):
-        delta_table = DeltaTable.forPath(spark, target_path)
+        delta_table = DeltaTable.forName(spark, "dw_db.fact_payments")
         logger.info(" [*] Tiến hành MERGE (Incremental Load) bảng fact_payments...")
 
         (delta_table.alias("t")
@@ -24,7 +25,9 @@ if __name__ == "__main__":
 
         logger.info(" [+] Đã MERGE xong fact_payments")
     else:
-        fact_payments.write.format("delta").mode("overwrite").save(target_path)
-        logger.info(" [+] Đã khởi tạo (Overwrite) fact_payments lần đầu")
+        fact_payments.write.format("delta").mode("overwrite") \
+            .option("path", target_path) \
+            .saveAsTable("dw_db.fact_payments")
+        logger.info(" [+] Khởi tạo dw_db.fact_payments")
 
     spark.stop()

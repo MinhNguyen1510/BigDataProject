@@ -309,6 +309,7 @@ def build_seller_features(spark: SparkSession):
 def build_logistics_features(spark: SparkSession):
     dim_customer = _read_delta(spark, _dw_path("dim_customer"))
     dim_seller = _read_delta(spark, _dw_path("dim_seller"))
+    dim_geo = _read_delta(spark, _dw_path("dim_geolocation"))
 
     fact_sales = _read_delta(spark, _dw_path("fact_sales")) \
         .withColumn("purchase_ts", F.to_timestamp(F.col("purchase_time_key").cast("string"), "yyyyMMdd"))
@@ -317,20 +318,28 @@ def build_logistics_features(spark: SparkSession):
         .withColumn("delivered_ts", F.to_timestamp(F.col("delivered_customer_date").cast("string"), "yyyyMMdd")) \
         .withColumn("estimated_delivery_ts",
                     F.to_timestamp(F.col("estimated_delivery_date").cast("string"), "yyyyMMdd")) \
+        .withColumn("carrier_ts", F.to_timestamp(F.col("delivered_carrier_date").cast("string"), "yyyyMMdd")) \
         .join(fact_sales.select("order_id", "purchase_ts"), "order_id", "left")
 
     df = (
         fact_shipment.alias("fs")
         .join(dim_customer.alias("dc"), "customer_key", "left")
         .join(dim_seller.alias("ds"), "seller_key", "left")
+        .join(dim_geo.alias("geo_cust"), F.col("dc.city_key") == F.col("geo_cust.geolocation_key"), "left")
+        .join(dim_geo.alias("geo_seller"), F.col("ds.city_key") == F.col("geo_seller.geolocation_key"), "left")
         .select(
             "order_id",
             F.datediff("delivered_ts", "estimated_delivery_ts").alias("delivery_delay"),
             F.datediff("delivered_ts", "purchase_ts").alias("delivery_time"),
-            F.datediff("delivered_ts", "purchase_ts").alias("carrier_to_customer_days"),
+            F.datediff("delivered_ts", "carrier_ts").alias("carrier_to_customer_days"),
 
-            # [SỬA Ở ĐÂY]: Đổi geolocation_key thành city_key
-            F.abs(F.col("dc.city_key") - F.col("ds.city_key")).cast("double").alias("shipping_distance_proxy"),
+            (
+                F.asin(F.sqrt(
+                    F.pow(F.sin(F.radians(F.col("geo_seller.lat") - F.col("geo_cust.lat")) / 2), 2) +
+                    F.cos(F.radians(F.col("geo_cust.lat"))) * F.cos(F.radians(F.col("geo_seller.lat"))) *
+                    F.pow(F.sin(F.radians(F.col("geo_seller.lng") - F.col("geo_cust.lng")) / 2), 2)
+                )) * 2 * 6371
+            ).alias("shipping_distance_km")
         )
     )
 

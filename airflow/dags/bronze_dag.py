@@ -111,8 +111,8 @@ with DAG(
     dag_id="bronze_mysql_to_minio",
     description="[Bronze] Extract Olist MySQL → MinIO (Partitioning & Incremental)",
     default_args=default_args,
-    schedule_interval="@daily",
-    start_date=datetime(2025, 1, 5),
+    schedule_interval="0 0 * * *",
+    start_date=datetime(2026, 4, 12),
     catchup=False,
     tags=["bronze", "mysql", "minio", "olist"],
 ) as dag:

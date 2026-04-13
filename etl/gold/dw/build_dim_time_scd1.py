@@ -22,7 +22,10 @@ if __name__ == "__main__":
     dim_time = spark.sql("SELECT explode(sequence(to_date('2008-01-01'), to_date('2030-12-31'), interval 1 day)) as full_date") \
         .withColumn("time_key", date_format(col("full_date"), "yyyyMMdd").cast("int")).withColumn("day", date_format(col("full_date"), "dd").cast("int")).withColumn("month", date_format(col("full_date"), "MM").cast("int")).withColumn("quarter", date_format(col("full_date"), "q").cast("int")).withColumn("year", date_format(col("full_date"), "yyyy").cast("int")).withColumn("day_of_week", date_format(col("full_date"), "E")).withColumn("is_weekend", when(date_format(col("full_date"), "E").isin("Sat", "Sun"), 1).otherwise(0)).select("time_key", "full_date", "day", "month", "quarter", "year", "day_of_week", "is_weekend")
 
+    spark.sql("CREATE DATABASE IF NOT EXISTS dw_db LOCATION 's3a://lakehouse/gold/dw/'")
     for name, df in {"dim_geolocation": dim_geolocation, "dim_product_category": dim_category, "dim_status": dim_status, "dim_payment_type": dim_payment_type, "dim_time": dim_time}.items():
-        df.write.format("delta").mode("overwrite").save(GOLD_PATH + f"{name}/")
-        logger.info(f" [+] Đã lưu {name}")
+        df.write.format("delta").mode("overwrite") \
+            .option("path", GOLD_PATH + f"{name}/") \
+            .saveAsTable(f"dw_db.{name}")
+        logger.info(f" [+] Đã lưu và đăng ký dw_db.{name}")
     spark.stop()

@@ -44,8 +44,8 @@ with DAG(
     dag_id="silver_spark_processor",
     description="[Silver] Xử lý Data Nóng và Hard Delete bằng PySpark & Delta Lake",
     default_args=default_args,
-    schedule_interval="@daily",
-    start_date=datetime(2025, 1, 5),
+    schedule_interval="0 1 * * *",
+    start_date=datetime(2026, 4, 12),
     catchup=False,
     tags=["silver", "spark", "delta", "olist"],
 ) as dag:
@@ -79,6 +79,8 @@ with DAG(
             jars="/opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar,/opt/airflow/etl/jars/mysql-connector-java-8.0.28.jar",
             verbose=True,
             conf = {
+                "spark.sql.catalogImplementation": "hive",
+                "spark.hadoop.hive.metastore.uris": "thrift://hive-metastore:9083",
                 "spark.sql.extensions": "io.delta.sql.DeltaSparkSessionExtension",
                 "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog",
                 "spark.databricks.delta.schema.autoMerge.enabled": "true",
@@ -93,7 +95,6 @@ with DAG(
                 "spark.databricks.delta.autoCompact.enabled": "true",
                 "spark.sql.parquet.enableVectorizedReader": "false",
                 "spark.sql.legacy.parquet.nanosAsLong": "true",
-                # Ép Spark hiểu cách chuyển đổi thời gian kiểu mới (Proleptic Gregorian)
                 "spark.sql.parquet.int64RebaseModeInRead": "LEGACY",
                 "spark.sql.parquet.datetimeRebaseModeInRead": "LEGACY",
                 "spark.sql.parquet.int96RebaseModeInWrite": "LEGACY",

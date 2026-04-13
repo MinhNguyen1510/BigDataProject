@@ -100,7 +100,6 @@ def extract_sellers(mysql: MySQLClient, minio: MinIOClient, logical_date: dateti
     return _extract_full_load(mysql, minio, "sellers", "olist", logical_date=logical_date)
 
 def extract_order_payments(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None, logical_date: datetime = None) -> dict:
-    last_watermark = None
     if not last_watermark:
         logger.info("[order_payments] Lần chạy đầu tiên -> Kích hoạt FULL LOAD")
         return _extract_full_load(mysql, minio, "order_payments", "olist", logical_date=logical_date)
@@ -113,7 +112,6 @@ def extract_order_payments(mysql: MySQLClient, minio: MinIOClient, last_watermar
     )
 
 def extract_order_reviews(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None, logical_date: datetime = None) -> dict:
-    last_watermark = None
     if not last_watermark:
         logger.info("[order_reviews] Lần chạy đầu tiên -> Kích hoạt FULL LOAD")
         return _extract_full_load(mysql, minio, "order_reviews", "olist", logical_date=logical_date)

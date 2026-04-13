@@ -28,9 +28,10 @@ if __name__ == "__main__":
                 "delivery_delay_days", "carrier_to_customer_days", "is_late_delivery"))
 
     target_path = GOLD_PATH + "fact_shipment/"
+    spark.sql("CREATE DATABASE IF NOT EXISTS dw_db LOCATION 's3a://lakehouse/gold/dw/'")
 
     if DeltaTable.isDeltaTable(spark, target_path):
-        delta_table = DeltaTable.forPath(spark, target_path)
+        delta_table = DeltaTable.forName(spark, "dw_db.fact_shipment")
         logger.info(" [*] Tiến hành MERGE (Incremental Load) bảng fact_shipment...")
 
         (delta_table.alias("t")
@@ -41,7 +42,9 @@ if __name__ == "__main__":
 
         logger.info(" [+] Đã MERGE xong fact_shipment")
     else:
-        fact_shipment.write.format("delta").mode("overwrite").save(target_path)
-        logger.info(" [+] Đã khởi tạo (Overwrite) fact_shipment lần đầu")
+        fact_shipment.write.format("delta").mode("overwrite") \
+            .option("path", target_path) \
+            .saveAsTable("dw_db.fact_shipment")
+        logger.info(" [+] Khởi tạo dw_db.fact_shipment")
 
     spark.stop()

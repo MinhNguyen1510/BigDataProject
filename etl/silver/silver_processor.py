@@ -148,8 +148,9 @@ def process_silver_layer(
              .execute())
         else:
             logger.info("Khởi tạo bảng Silver Full Load lần đầu...")
+            spark.sql("CREATE DATABASE IF NOT EXISTS silver")
             final_df.write.format("delta").mode("overwrite").option("path", silver_table_path).saveAsTable(
-                silver_table_name)
+                f"silver.clean_{table_name}")
 
         logger.info(f" Xong Full Load bảng {table_name}. (Không cần chạy Anti-Join Phase 2)")
         return
@@ -198,9 +199,10 @@ def process_silver_layer(
 
             logger.info(f"   [Batch {batch_id}] Kết quả: Update {num_updated} dòng | Insert {num_inserted} dòng mới.")
         else:
+            spark.sql("CREATE DATABASE IF NOT EXISTS silver")
             final_df.write.format("delta").mode("overwrite") \
                 .option("path", silver_table_path) \
-                .saveAsTable(silver_table_name)
+                .saveAsTable(f"silver.clean_{table_name}")
 
             dt = DeltaTable.forPath(spark, silver_table_path)
             metrics = dt.history(1).select("operationMetrics").collect()[0][0]

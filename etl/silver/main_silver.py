@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     spark.conf.set("spark.app.name", f"Silver_Processor_{args.table_name}")
 
-    spark.sql("CREATE DATABASE IF NOT EXISTS silver")
+    spark.sql("CREATE DATABASE IF NOT EXISTS silver LOCATION 's3a://lakehouse/silver/'")
 
     try:
         process_silver_layer(
