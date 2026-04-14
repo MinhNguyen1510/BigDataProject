@@ -1,11 +1,14 @@
 
-FROM python:3.8-slim-bullseye
+FROM python:3.10-slim-bullseye
 
 USER root
 
 # 1. Cài đặt Java (Spark cần Java) và các công cụ cần thiết
 RUN apt-get update && apt-get install -y openjdk-11-jre-headless curl procps && \
        rm -rf /var/lib/apt/lists/*
+
+# 1b. Cài các thư viện Python cần cho PySpark ML + MLflow client
+RUN pip install --no-cache-dir numpy boto3 mlflow
 # 2. Cấu hình biến môi trường Spark
 ENV SPARK_VERSION=3.3.2
 ENV HADOOP_VERSION=3

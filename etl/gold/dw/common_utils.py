@@ -1,7 +1,5 @@
 import os
 import logging
-
-from pyspark.pandas import options
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, md5, to_timestamp, lit, expr
 from delta.tables import DeltaTable
