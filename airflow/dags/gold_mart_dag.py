@@ -79,4 +79,4 @@ with DAG(
 
         chain(*mart_tasks)
 
-    start_task >> tg_marts >> tg_ml >> end_task
+    start_task >> tg_marts >> end_task
