@@ -44,7 +44,7 @@ SPARK_COMMON_CONF = {
 SPARK_JARS = "/opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar,/opt/airflow/etl/jars/mysql-connector-java-8.0.28.jar"
 
 with DAG(
-        dag_id="Gold_Mart_and_ML_Features",
+        dag_id="Gold_Mart",
         description="[Gold] Data Mart & ML Features (Chạy sau DW lúc 3AM)",
         default_args=default_args,
         schedule_interval="0 3 * * *",
