@@ -4,6 +4,7 @@ import polars as pl
 from minio import Minio
 from datetime import datetime
 import io
+import logging
 
 
 class MinIOClient:
@@ -26,12 +27,10 @@ class MinIOClient:
         """Tạo bucket nếu chưa tồn tại."""
         if not self._client.bucket_exists(self._bucket):
             self._client.make_bucket(self._bucket)
+        else:
+            pass
 
     def _make_object_key(self, layer: str, schema: str, table: str, logical_date: datetime = None) -> str:
-        """
-        Tạo đường dẫn object trên MinIO có phân mảnh thời gian.
-        Ví dụ: bronze/olist/customers/year=2026/month=03/day=29/customers_20260329_103000.parquet
-        """
         run_time = logical_date or datetime.now()
 
         year = run_time.strftime("%Y")
@@ -39,11 +38,11 @@ class MinIOClient:
         day = run_time.strftime("%d")
         timestamp = run_time.strftime("%Y%m%d_%H%M%S")
 
-        # Áp dụng partition cho lớp Bronze
-        if layer.lower() == "bronze":
-            return f"{layer}/{schema}/{table}/year={year}/month={month}/day={day}/{table}_{timestamp}.parquet"
+        random_suffix = uuid.uuid4().hex[:6]
 
-        # Lớp Silver/Gold có thể dùng đường dẫn tĩnh nếu dùng Delta Lake
+        if layer.lower() == "bronze":
+            return f"{layer}/{schema}/{table}/year={year}/month={month}/day={day}/{table}_{timestamp}_{random_suffix}.parquet"
+
         return f"{layer}/{schema}/{table}.parquet"
 
     def _make_tmp_path(self, layer: str, schema: str, table: str) -> str:

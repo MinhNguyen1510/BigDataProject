@@ -69,7 +69,8 @@ def _extract_incremental_load(
         logger.info(f"[{table_name}] Không có dữ liệu mới.")
         return {"table": table_name, "mode": "incremental", "row_count": 0, "status": "skipped"}
 
-    # Vẫn phân mảnh file theo logical_date
+    max_watermark_in_data = str(df[watermark_col].max())
+
     object_key = minio.save(df, layer=LAYER, schema=schema, table=table_name, logical_date=logical_date)
     logger.info(f"[{table_name}] Đã lưu MinIO: {object_key}")
 
@@ -81,6 +82,7 @@ def _extract_incremental_load(
         "minio_path": object_key,
         "mode": "incremental",
         "watermark_used": last_watermark,
+        "new_watermark": max_watermark_in_data,
         "logical_date": str(logical_date) if logical_date else None
     }
 
@@ -101,8 +103,8 @@ def extract_sellers(mysql: MySQLClient, minio: MinIOClient, logical_date: dateti
 
 def extract_order_payments(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None, logical_date: datetime = None) -> dict:
     if not last_watermark:
-        logger.info("[order_payments] Lần chạy đầu tiên -> Kích hoạt FULL LOAD")
-        return _extract_full_load(mysql, minio, "order_payments", "olist", logical_date=logical_date)
+        logger.info("[order_payments] Lần chạy đầu tiên -> Kéo toàn bộ lịch sử")
+        last_watermark = "1900-01-01 00:00:00"
 
     return _extract_incremental_load(
         mysql, minio, "order_payments", "olist",
@@ -113,8 +115,8 @@ def extract_order_payments(mysql: MySQLClient, minio: MinIOClient, last_watermar
 
 def extract_order_reviews(mysql: MySQLClient, minio: MinIOClient, last_watermark: str = None, logical_date: datetime = None) -> dict:
     if not last_watermark:
-        logger.info("[order_reviews] Lần chạy đầu tiên -> Kích hoạt FULL LOAD")
-        return _extract_full_load(mysql, minio, "order_reviews", "olist", logical_date=logical_date)
+        logger.info("[order_reviews] Lần chạy đầu tiên -> Kéo toàn bộ lịch sử")
+        last_watermark = "1900-01-01 00:00:00"
 
     return _extract_incremental_load(
         mysql, minio, "order_reviews", "olist",

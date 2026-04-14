@@ -18,8 +18,6 @@ def stream_kafka_to_bronze(spark: SparkSession, topic_name: str, table_name: str
 
     logger.info(f" Khởi động luồng Streaming cho Topic: {topic_name} -> Bảng: {table_name}")
 
-    # Định nghĩa Schema linh hoạt (Chỉ lấy những thành phần lõi của Debezium)
-    # Vì chúng ta giữ data gốc, ta dùng kiểu STRING cho toàn bộ before/after để tránh lỗi ép kiểu
     debezium_schema = """
         payload STRUCT<
             before: STRING,
@@ -29,16 +27,14 @@ def stream_kafka_to_bronze(spark: SparkSession, topic_name: str, table_name: str
         >
     """
 
-    # Kết nối ống hút vào Kafka
     raw_kafka_df = (spark.readStream
                     .format("kafka")
                     .option("kafka.bootstrap.servers", kafka_servers)
                     .option("subscribe", topic_name)
-                    .option("startingOffsets", "earliest")  # Lấy từ đầu nếu có lỡ tắt máy
+                    .option("startingOffsets", "earliest")
                     .option("failOnDataLoss", "false")
                     .load())
 
-    # Bóc tách JSON (Giữ nguyên data gốc, không xào nấu)
     # - Cột value của Kafka là kiểu Binary, cần ép sang String
     # - Nếu là thao tác Xóa (op='d'), after sẽ bị null, ta phải lấy data từ before để biết ID nào bị xóa
     parsed_df = raw_kafka_df.select(
@@ -49,14 +45,11 @@ def stream_kafka_to_bronze(spark: SparkSession, topic_name: str, table_name: str
         col("data.payload.source.ts_ms").alias("ts_ms")
     )
 
-    # Phân mảnh theo ngày (Logical Date) để chuẩn format lớp Bronze
-    # Thêm cột năm, tháng, ngày dựa vào thời gian Spark xử lý để chia folder cho đẹp
     final_df = parsed_df.withColumn("processing_time", current_timestamp()) \
         .withColumn("year", date_format(col("processing_time"), "yyyy")) \
         .withColumn("month", date_format(col("processing_time"), "MM")) \
         .withColumn("day", date_format(col("processing_time"), "dd"))
 
-    # Mở van xả xuống MinIO
     # Dùng trigger(processingTime="1 minute") để cứ 1 phút Spark đóng gói 1 file Parquet thả xuống MinIO
     logger.info(" Bắt đầu xả data xuống MinIO...")
     query = (final_df.writeStream

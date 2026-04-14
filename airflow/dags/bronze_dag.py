@@ -10,7 +10,6 @@ from airflow.models import Variable
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
-# ── Toàn bộ logic data đến từ etl/ ──
 from etl.utils import MySQLClient, MinIOClient
 from etl.bronze import (
     extract_customers,
@@ -41,18 +40,13 @@ MINIO_CONFIG = {
 
 
 def make_dim_task(extract_fn):
-    """
-    Dành cho các bảng (Chạy Full Load, ghi đè theo phân mảnh ngày)
-    """
 
     def _run(**context):
-        # Lấy ngày chạy logical của Airflow
         logical_date = context["data_interval_end"]
 
         mysql = MySQLClient(MYSQL_CONFIG)
         minio = MinIOClient(MINIO_CONFIG)
 
-        # Truyền logical_date xuống để MinIO chia folder
         metadata = extract_fn(mysql, minio, logical_date=logical_date)
         logger.info(f" {extract_fn.__name__} | {metadata}")
         return metadata
@@ -61,20 +55,14 @@ def make_dim_task(extract_fn):
     return _run
 
 def make_fact_task(extract_fn, table_name):
-    """
-    Dành cho các bảng Transaction (Tự động chuyển đổi Full/Incremental Load)
-    Có đọc và cập nhật Airflow Variable để lưu vết Watermark.
-    """
     def _run(**context):
         logical_date = context["data_interval_end"]
         mysql = MySQLClient(MYSQL_CONFIG)
         minio = MinIOClient(MINIO_CONFIG)
 
-        # Đọc Watermark từ lần chạy trước (Mặc định None nếu là lần chạy đầu)
         var_key = f"watermark_{table_name}"
         last_watermark = Variable.get(var_key, default_var=None)
 
-        # Gọi logic thực thi (Code bên dưới sẽ tự lo việc chạy Full hay Inc)
         metadata = extract_fn(
             mysql,
             minio,
@@ -85,8 +73,8 @@ def make_fact_task(extract_fn, table_name):
 
         # Cập nhật Watermark MỚI cho lần chạy ngày mai
         # Chúng ta dùng luôn mốc thời gian chạy xong (logical_date) làm mốc quét cho ngày mai
-        if metadata.get("status") != "skipped":
-            new_watermark = logical_date.strftime("%Y-%m-%d %H:%M:%S")
+        if metadata.get("status") != "skipped" and "new_watermark" in metadata:
+            new_watermark = metadata["new_watermark"]
             Variable.set(var_key, new_watermark)
             logger.info(f" Đã cập nhật watermark cho '{table_name}' thành: {new_watermark}")
 
@@ -95,10 +83,6 @@ def make_fact_task(extract_fn, table_name):
     _run.__name__ = extract_fn.__name__
     return _run
 
-
-# ─────────────────────────────────────────────
-# DAG
-# ─────────────────────────────────────────────
 
 default_args = {
     "owner": "data-team",
