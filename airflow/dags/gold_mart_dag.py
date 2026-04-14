@@ -45,11 +45,11 @@ SPARK_JARS = "/opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/a
 
 with DAG(
         dag_id="Gold_Mart",
-        description="[Gold] Data Mart & ML Features (Chạy sau DW lúc 3AM)",
+        description="[Gold] Data Mart(Chạy sau DW lúc 3AM)",
         default_args=default_args,
         schedule_interval="0 3 * * *",
         catchup=False,
-        tags=["gold", "mart", "ml_features", "spark", "delta"],
+        tags=["gold", "mart", "spark", "delta"],
 ) as dag:
     start_task = EmptyOperator(task_id="start")
     end_task = EmptyOperator(task_id="end")
