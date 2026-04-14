@@ -79,18 +79,4 @@ with DAG(
 
         chain(*mart_tasks)
 
-
-    with TaskGroup("ML_Features") as tg_ml:
-        APP_PATH = "/opt/airflow/etl/ml_features/main_features.py"
-
-        t_feat_order = create_spark_task("feat_order", APP_PATH, "order_features")
-        t_feat_cust = create_spark_task("feat_customer", APP_PATH, "customer_features")
-        t_feat_prod = create_spark_task("feat_product", APP_PATH, "product_features")
-        t_feat_seller = create_spark_task("feat_seller", APP_PATH, "seller_features")
-        t_feat_log = create_spark_task("feat_logistics", APP_PATH, "logistics_features")
-        t_feat_train = create_spark_task("feat_training", APP_PATH, "training_datasets")
-
-        t_feat_order >> t_feat_cust >> t_feat_prod >> t_feat_seller >> t_feat_log >> t_feat_train
-
-
     start_task >> tg_marts >> tg_ml >> end_task
