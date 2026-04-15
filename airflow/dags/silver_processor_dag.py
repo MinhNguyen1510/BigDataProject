@@ -1,7 +1,7 @@
 """
 DAG: silver_spark_processor
 
-Task: Lấy dữ liệu từ lớp Bronze (Parquet) -> Lọc trùng, Upsert, Xóa hard delete -> Ghi vào Silver (Delta Lake).
+pipeline xử lý từ bronze -> silver
 """
 
 from datetime import datetime, timedelta
@@ -9,6 +9,7 @@ from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.operators.empty import EmptyOperator
 
+# config chung cho dag
 default_args = {
     "owner": "data-team",
     "retries": 1,
@@ -16,14 +17,19 @@ default_args = {
     "email_on_failure": False,
 }
 
+# list các bảng cần chạy
 TABLES_CONFIG = [
     {"table": "customers", "merge_key": "customer_id", "is_full_load": "true"},
     {"table": "sellers", "merge_key": "seller_id", "is_full_load": "true"},
     {"table": "products", "merge_key": "product_id", "is_full_load": "true"},
     {"table": "product_category_name_translation", "merge_key": "product_category_name", "is_full_load": "true"},
     {"table": "geolocation", "merge_key": "geolocation_zip_code_prefix", "is_full_load": "true"},
+    
+    # bảng incremental
     {"table": "order_payments", "merge_key": "id", "is_full_load": "false"},
     {"table": "order_reviews", "merge_key": "review_id", "is_full_load": "false"},
+    
+    # bảng CDC (debezium)
     {
         "table": "orders",
         "merge_key": "order_id",
@@ -50,24 +56,33 @@ with DAG(
     tags=["silver", "spark", "delta", "olist"],
 ) as dag:
 
+    # task dummy để bắt đầu/kết thúc
     start_task = EmptyOperator(task_id="start_silver_processing")
     end_task = EmptyOperator(task_id="end_silver_processing")
 
     prev_task = start_task
 
+    # loop qua từng bảng
     for config in TABLES_CONFIG:
         table_name = config["table"]
         merge_key = config["merge_key"]
 
+        # submit spark job cho từng table
         spark_task = SparkSubmitOperator(
             task_id=f"process_silver_{table_name}",
             conn_id="spark_default",
             application="/opt/airflow/etl/silver/main_silver.py",
+
+            # tên job trên spark UI
             name=f"airflow_silver_{table_name}",
+
+            # resource config (set nhẹ để chạy local)
             executor_cores=2,
             num_executors=2,
             executor_memory="2g",
             driver_memory="512m",
+
+            # param truyền vào spark job
             application_args=[
                 "--table_name", table_name,
                 "--merge_key", merge_key,
@@ -76,38 +91,56 @@ with DAG(
                 "--is_full_load", config.get("is_full_load", "false")
             ],
 
+            # mấy lib cần thiết (delta, mysql, s3, ...)
             jars="/opt/airflow/etl/jars/hadoop-aws-3.3.2.jar,/opt/airflow/etl/jars/aws-java-sdk-bundle-1.11.1026.jar,/opt/airflow/etl/jars/delta-core_2.12-2.3.0.jar,/opt/airflow/etl/jars/delta-storage-2.3.0.jar,/opt/airflow/etl/jars/mysql-connector-java-8.0.28.jar",
             verbose=True,
+
+            # config spark (delta + minio + tuning nhẹ)
             conf = {
                 "spark.sql.catalogImplementation": "hive",
                 "spark.hadoop.hive.metastore.uris": "thrift://hive-metastore:9083",
+
+                # enable delta
                 "spark.sql.extensions": "io.delta.sql.DeltaSparkSessionExtension",
                 "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog",
+
+                # auto merge schema
                 "spark.databricks.delta.schema.autoMerge.enabled": "true",
+
+                # config minio (s3 fake)
                 "spark.hadoop.fs.s3a.endpoint": "http://minio:9000",
                 "spark.hadoop.fs.s3a.access.key": "minio",
                 "spark.hadoop.fs.s3a.secret.key": "minio123",
                 "spark.hadoop.fs.s3a.path.style.access": "true",
                 "spark.hadoop.fs.s3a.connection.ssl.enabled": "false",
                 "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
+
+                # tuning nhẹ
                 "spark.sql.shuffle.partitions": "4",
                 "spark.databricks.delta.optimizeWrite.enabled": "true",
                 "spark.databricks.delta.autoCompact.enabled": "true",
+
+                # fix lỗi liên quan đến parquet time
                 "spark.sql.parquet.enableVectorizedReader": "false",
                 "spark.sql.legacy.parquet.nanosAsLong": "true",
                 "spark.sql.parquet.int64RebaseModeInRead": "LEGACY",
                 "spark.sql.parquet.datetimeRebaseModeInRead": "LEGACY",
                 "spark.sql.parquet.int96RebaseModeInWrite": "LEGACY",
                 "spark.sql.parquet.datetimeRebaseModeInWrite": "LEGACY",
+
+                # memory overhead
                 "spark.executor.memoryOverhead": "512m",
                 "spark.driver.memoryOverhead": "512m",
+
+                # optimize write lên s3
                 "spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version": "2",
                 "spark.hadoop.fs.s3a.fast.upload": "true"
             }
         )
 
+        # chain task tuần tự
         prev_task >> spark_task
-
         prev_task = spark_task
 
+    # kết thúc dag
     prev_task >> end_task

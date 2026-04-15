@@ -4,31 +4,31 @@ from pyspark.sql.window import Window
 from pyspark.sql.functions import col, row_number, desc, lit, from_json, when, year
 from delta.tables import DeltaTable
 from pyspark.sql.functions import trim, lower, upper, to_timestamp, lpad
-# RUN pip install --no-cache-dir delta-spark==2.3.0
 
 logger = logging.getLogger(__name__)
 
 def clean_table_data(df, table_name):
     """
-    Hàm dọn dẹp ngữ nghĩa (Data Quality) toàn diện cho lớp Silver.
+    Clean data cho lớp Silver
     """
+
     cleaned_df = df
 
+    # trim tất cả string (data lớp bronze thường khá bẩn)
     for column_name, dtype in cleaned_df.dtypes:
         if dtype == "string":
             cleaned_df = cleaned_df.withColumn(column_name, trim(col(column_name)))
 
 
     if table_name == "customers":
-        # - Thành phố: Chuyển hết về chữ thường để tránh lỗi group by (VD: "Sao Paulo" -> "sao paulo")
-        # - Bang (State): Chuyển thành chữ HOA (VD: "sp" -> "SP")
-        # - Zip code: Mã bưu điện Brazil luôn có 5 số, nếu bị mất số 0 ở đầu thì phải đắp thêm vào (lpad)
+        # nomolize text cho dễ group/join
         cleaned_df = cleaned_df.withColumn("customer_city", lower(col("customer_city"))) \
             .withColumn("customer_state", upper(col("customer_state"))) \
             .withColumn("customer_zip_code_prefix", lpad(col("customer_zip_code_prefix"), 5, '0')) \
             .fillna({"customer_city": "unknown", "customer_state": "UN"})
 
     elif table_name == "sellers":
+        # giống với customers
         cleaned_df = cleaned_df.withColumn("seller_city", lower(col("seller_city"))) \
             .withColumn("seller_state", upper(col("seller_state"))) \
             .withColumn("seller_zip_code_prefix", lpad(col("seller_zip_code_prefix"), 5, '0')) \
@@ -36,6 +36,8 @@ def clean_table_data(df, table_name):
 
     elif table_name == "orders":
         cleaned_df = cleaned_df.withColumn("order_status", lower(col("order_status")))
+
+        # convert epoch -> timestamp
         cdc_time_columns = [
             "order_purchase_timestamp",
             "order_approved_at",
@@ -48,6 +50,7 @@ def clean_table_data(df, table_name):
                 cleaned_df = cleaned_df.withColumn(t_col, (col(t_col) / 1000).cast("timestamp"))
 
     elif table_name == "order_items":
+        # cast về float cho chắc
         cleaned_df = cleaned_df.withColumn("price", col("price").cast("float")) \
             .withColumn("freight_value", col("freight_value").cast("float")) \
             .fillna({"price": 0.0, "freight_value": 0.0})
@@ -57,16 +60,14 @@ def clean_table_data(df, table_name):
                                                (col("shipping_limit_date") / 1000).cast("timestamp"))
 
     elif table_name == "order_payments":
-        # - Ép kiểu số tiền, số tháng trả góp
-        # - Dọn dẹp tên phương thức thanh toán
+        # clean payment
         cleaned_df = cleaned_df.withColumn("payment_value", col("payment_value").cast("float")) \
             .withColumn("payment_installments", col("payment_installments").cast("integer")) \
             .withColumn("payment_type", lower(col("payment_type"))) \
             .fillna({"payment_value": 0.0, "payment_installments": 1})
 
     elif table_name == "order_reviews":
-        # - Số điểm đánh giá (1-5) ép về số nguyên
-        # - Đổi chuỗi ngày tháng sang Timestamp
+        # filter date lỗi (data thực tế thường bị)
         cleaned_df = cleaned_df.withColumn("review_score", col("review_score").cast("integer")) \
             .withColumn("review_creation_date", to_timestamp(col("review_creation_date"))) \
             .withColumn("review_answer_timestamp", to_timestamp(col("review_answer_timestamp")))
@@ -79,6 +80,7 @@ def clean_table_data(df, table_name):
             )
 
     elif table_name == "products":
+        # ép kiểu mấy cột numeric
         cleaned_df = cleaned_df.withColumn("product_name_lenght", col("product_name_lenght").cast("float")) \
             .withColumn("product_description_lenght", col("product_description_lenght").cast("float")) \
             .withColumn("product_photos_qty", col("product_photos_qty").cast("integer")) \
@@ -88,8 +90,7 @@ def clean_table_data(df, table_name):
             .withColumn("product_width_cm", col("product_width_cm").cast("float"))
 
     elif table_name == "geolocation":
-        # Mã bưu điện địa lý đắp thêm số 0 cho đủ 5 ký tự
-        # Ép kiểu vĩ độ (lat), kinh độ (lng) về số thập phân
+        # zip code phải đủ năm số 
         cleaned_df = cleaned_df.withColumn("geolocation_zip_code_prefix",
                                            lpad(col("geolocation_zip_code_prefix"), 5, '0')) \
             .withColumn("geolocation_lat", col("geolocation_lat").cast("float")) \
@@ -105,13 +106,14 @@ def process_silver_layer(
         merge_key: str,
         mysql_config: dict,
         watermark_col: str = "last_modified_date",
-        is_cdc: bool = False,         # <--- CỜ MỚI: Bật tắt chế độ CDC
-        json_schema: str = None,         # <--- CỜ MỚI: Cấu trúc cột để bóc JSON
+        is_cdc: bool = False,       
+        json_schema: str = None,        
         is_full_load: bool = False
 ):
     """
-    Hàm xử lý lớp Silver: Streaming (Data Nóng) + Batch Anti-Join (Hard Delete)
+    Setup batch
     """
+
     merge_keys = [k.strip() for k in merge_key.split(",")]
     merge_condition = " AND ".join([f"target.{k} = source.{k}" for k in merge_keys])
     bronze_path = f"s3a://lakehouse/bronze/olist/{table_name}/"
@@ -121,25 +123,24 @@ def process_silver_layer(
 
     logger.info(f" Bắt đầu xử lý lớp Silver cho bảng: {table_name} | Chế độ CDC: {is_cdc}")
 
-    # LUỒNG 1: BATCH PROCESSING (DÀNH RIÊNG CHO BẢNG FULL LOAD)
+    # full load
     if is_full_load:
-        logger.info(" Chế độ BATCH: Đọc toàn bộ file data.parquet bị ghi đè...")
+        logger.info(" Chế độ BATCH: Đọc toàn bộ file data.parquet bị ghi đè")
 
         df_bronze = spark.read.format("parquet").load(bronze_path)
 
-        # Khử trùng lặp sơ bộ (đề phòng file bị nhân bản)
+        # duplicate theo key
         window_spec = Window.partitionBy(*merge_keys).orderBy(desc(watermark_col))
         final_df = df_bronze.withColumn("rn", row_number().over(window_spec)) \
             .filter(col("rn") == 1).drop("rn") \
             .withColumn("is_active", lit(True))
 
-        # Dọn dẹp Data Quality
         final_df = clean_table_data(final_df, table_name)
 
         if DeltaTable.isDeltaTable(spark, silver_table_path):
             delta_table = DeltaTable.forPath(spark, silver_table_path)
 
-            logger.info(" Tiến hành Upsert & Tự động Soft Delete...")
+            logger.info(" Tiến hành Upsert & Tự động Soft Delete")
             (delta_table.alias("target")
              .merge(final_df.alias("source"), merge_condition)
              .whenMatchedUpdateAll()
@@ -147,34 +148,35 @@ def process_silver_layer(
              .whenNotMatchedBySourceUpdate(set={"is_active": lit(False)})
              .execute())
         else:
-            logger.info("Khởi tạo bảng Silver Full Load lần đầu...")
+            logger.info("Khởi tạo bảng Silver Full Load lần đầu")
             spark.sql("CREATE DATABASE IF NOT EXISTS silver")
             final_df.write.format("delta").mode("overwrite").option("path", silver_table_path).saveAsTable(
                 f"silver.clean_{table_name}")
 
         logger.info(f" Xong Full Load bảng {table_name}. (Không cần chạy Anti-Join Phase 2)")
+
         return
 
-    # Phase 1: Xử lý data nóng (Structured Streaming + Upsert)
-
+    # streaming
     def process_micro_batch(micro_batch_df, batch_id):
-        """Hàm này xử lý từng cục data mới (Data Nóng) từ Bronze"""
         if micro_batch_df.isEmpty():
             return
 
         if is_cdc:
-            # Bóc tách JSON từ cột raw_record ra thành các cột độc lập
+            # parse json từ debezium
             parsed_df = micro_batch_df.withColumn("parsed_data", from_json(col("raw_record"), json_schema)) \
                 .select("parsed_data.*", "op", "ts_ms")
 
+            # lấy record mới nhất
             window_spec = Window.partitionBy(*merge_keys).orderBy(desc("ts_ms"))
             deduped_df = parsed_df.withColumn("rn", row_number().over(window_spec)) \
                 .filter(col("rn") == 1).drop("rn")
 
-            # Xử lý Hard Delete: Nếu Debezium báo 'd' (delete), gán is_active = False
+            # nếu op = d thì coi như delete
             final_df = deduped_df.withColumn("is_active", when(col("op") == 'd', lit(False)).otherwise(lit(True))) \
                 .drop("op", "ts_ms")
         else:
+            # normal streaming
             window_spec = Window.partitionBy(*merge_keys).orderBy(desc(watermark_col))
             final_df = micro_batch_df.withColumn("rn", row_number().over(window_spec)) \
                 .filter(col("rn") == 1).drop("rn") \
@@ -182,7 +184,7 @@ def process_silver_layer(
 
         final_df = clean_table_data(final_df, table_name)
 
-        # Merge (Upsert) vào bảng Delta Silver
+        # upset vào delta
         if DeltaTable.isDeltaTable(spark, silver_table_path):
             delta_table = DeltaTable.forPath(spark, silver_table_path)
 
@@ -210,7 +212,7 @@ def process_silver_layer(
 
             logger.info(f"   [Batch {batch_id}] Khởi tạo thành công: Insert {num_inserted} dòng đầu tiên.")
 
-    logger.info(" Bắt đầu quét Data Nóng từ Bronze...")
+    logger.info(" Bắt đầu quét Data Nóng từ Bronze")
     streaming_query = (spark.readStream
                        .format("parquet")
                        .load(bronze_path)
@@ -223,11 +225,11 @@ def process_silver_layer(
     streaming_query.awaitTermination()
     logger.info(" Hoàn thành quét Data Nóng cập nhật vào Silver.")
 
-    # Phase 2: Xử lý hard delete (Batch Anti-Join)
+    # hard delete
     if is_cdc:
         logger.info(" Bảng chạy chế độ CDC -> Bỏ qua bước Anti-Join.")
     elif DeltaTable.isDeltaTable(spark, silver_table_path):
-        logger.info(" Bắt đầu dò tìm 'bóng ma' Hard Delete...")
+        logger.info(" Bắt đầu dò tìm 'bóng ma' Hard Delete")
 
         mysql_url = f"jdbc:mysql://{mysql_config['host']}:{mysql_config['port']}/{mysql_config['database']}"
         source_ids_df = (spark.read.format("jdbc")
@@ -242,18 +244,16 @@ def process_silver_layer(
         if "zip_code_prefix" in merge_key:
             source_ids_df = source_ids_df.withColumn(merge_key, lpad(col(merge_key).cast("string"), 5, '0'))
 
-        # Đọc bảng Silver hiện tại (Chỉ lấy các dòng Active)
         delta_table = DeltaTable.forPath(spark, silver_table_path)
         silver_active_df = delta_table.toDF().filter("is_active == True")
 
-        # (Anti-Join): Có ở Silver nhưng ko có ở MySQL
+        # anti join -> record không còn ở source
         deleted_records = silver_active_df.join(source_ids_df, on=merge_keys, how="left_anti")
         deleted_count = deleted_records.count()
 
         if deleted_count > 0:
-            logger.info(f" Phát hiện {deleted_count} bản ghi bị Hard Delete. Tiến hành Soft Delete trên Silver...")
+            logger.info(f" Phát hiện {deleted_count} bản ghi bị Hard Delete. Tiến hành Soft Delete trên Silver")
             update_condition = " AND ".join([f"t.{k} = d.{k}" for k in merge_keys])
-            # Update is_active = False cho các ghost record này
             (delta_table.alias("t")
              .merge(deleted_records.alias("d"), update_condition)
              .whenMatchedUpdate(set={"is_active": lit(False)})

@@ -6,18 +6,19 @@ from pyspark.sql import SparkSession
 from silver_processor import process_silver_layer
 
 def build_spark_session(app_name="Silver_Layer_Processing"):
+   # init spark session
     spark = (SparkSession.builder
              .appName(app_name)
              .config("spark.hadoop.fs.s3a.endpoint", os.getenv("MINIO_ENDPOINT", "http://minio:9000"))
-             # .config("spark.hadoop.fs.s3a.access.key", "minio")
-             # .config("spark.hadoop.fs.s3a.secret.key", "minio123")
-             # .config("spark.hadoop.fs.s3a.path.style.access", "true")
-             # .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
              .config("spark.sql.streaming.schemaInference", "true")
              .getOrCreate())
+
+    # giảm log cho đỡ spam
     spark.sparkContext.setLogLevel("WARN")
+
     return spark
 
+# setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -30,10 +31,11 @@ if __name__ == "__main__":
     parser.add_argument("--is_full_load", type=str, default="false", help="Bảng Full Load (true/false)")
     args = parser.parse_args()
 
+    # convert string sang bool
     is_cdc_flag = args.is_cdc.lower() == "true"
-
     is_full_load_flag = args.is_full_load.lower() == "true"
 
+    # config MySQL (dùng để check hard delete)
     mysql_config = {
         "host": "mysql",
         "port": int(3306),
@@ -44,13 +46,16 @@ if __name__ == "__main__":
 
     logger.info(f"Khởi tạo Spark Job cho bảng: {args.table_name}")
 
+    # tạo spark job riêng cho từng table
     spark = build_spark_session(f"Silver_Processor_{args.table_name}")
 
     spark.conf.set("spark.app.name", f"Silver_Processor_{args.table_name}")
 
+    # đảm bảo database tồn tại
     spark.sql("CREATE DATABASE IF NOT EXISTS silver LOCATION 's3a://lakehouse/silver/'")
 
     try:
+        # gọi hàm xử lý chính
         process_silver_layer(
             spark=spark,
             table_name=args.table_name,
@@ -62,7 +67,9 @@ if __name__ == "__main__":
             is_full_load=is_full_load_flag
         )
     except Exception as e:
+        # log lỗi dễ debug
         logger.error(f"Lỗi khi xử lý lớp Silver bảng {args.table_name}: {e}")
         raise e
     finally:
+        # nhớ stop spark (không là leak source)
         spark.stop()
