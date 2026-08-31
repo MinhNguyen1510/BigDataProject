@@ -48,7 +48,8 @@ def build_revenue_mart(spark: SparkSession):
     dim_customer = _read_delta(spark, _dw_path("dim_customer")) \
         .withColumnRenamed("city_key", "geolocation_key")
 
-    dim_seller = _read_delta(spark, _dw_path("dim_seller"))
+    dim_seller = _read_delta(spark, _dw_path("dim_seller")) \
+        .withColumnRenamed("city_key", "geolocation_key")
 
     dim_time = _read_delta(spark, _dw_path("dim_time")) \
         .withColumnRenamed("full_date", "date")
@@ -56,25 +57,27 @@ def build_revenue_mart(spark: SparkSession):
     dim_category = _read_delta(spark, _dw_path("dim_product_category")) \
         .withColumnRenamed("category_name_en", "category_name")
 
+    dim_geo = _read_delta(spark, _dw_path("dim_geolocation"))
+
     df = (
         fact_sales.alias("fs")
         .join(dim_product.alias("dp"), "product_key", "left")
         .join(dim_customer.alias("dc"), "customer_key", "left")
         .join(dim_seller.alias("ds"), "seller_key", "left")
-        # [Chỉnh lại một chút đường nối cho đúng chuẩn DW mới]
         .join(dim_time.alias("dt"), F.col("fs.purchase_time_key") == F.col("dt.time_key"), "left")
         .join(dim_category.alias("cat"), F.col("dp.category_key") == F.col("cat.category_key"), "left")
+        .join(dim_geo.alias("geo_c"), F.col("dc.geolocation_key") == F.col("geo_c.geolocation_key"), "left")
+        .join(dim_geo.alias("geo_s"), F.col("ds.geolocation_key") == F.col("geo_s.geolocation_key"), "left")
         .groupBy(
             F.col("dt.date").alias("date"),
             F.col("cat.category_name").alias("product_category"),
-            F.col("ds.seller_key").alias("seller_key"),
-            F.col("dc.geolocation_key").alias("customer_geo_key"),
+            F.col("geo_s.state").alias("seller_state"),
+            F.col("geo_c.state").alias("customer_state"),
         )
         .agg(
             F.countDistinct("fs.order_id").alias("total_orders"),
             F.sum(F.col("fs.price") + F.col("fs.freight_value")).alias("total_revenue"),
             F.avg(F.col("fs.price") + F.col("fs.freight_value")).alias("avg_order_value"),
-            # Sửa count(*) thành sum(quantity) như đã fix ở ML Features
             F.sum("fs.quantity").alias("total_items_sold"),
             F.avg("fs.price").alias("avg_price"),
             F.avg("fs.freight_value").alias("avg_freight_value"),
@@ -134,6 +137,8 @@ def build_customer_experience_mart(spark: SparkSession):
     dim_seller = _read_delta(spark, _dw_path("dim_seller")) \
         .withColumnRenamed("city_key", "geolocation_key")
 
+    dim_geo = _read_delta(spark, _dw_path("dim_geolocation"))
+
     df = (
         fact_reviews.alias("fr")
         .join(fact_sales.alias("fs"), ["order_id"], "left")
@@ -141,10 +146,12 @@ def build_customer_experience_mart(spark: SparkSession):
         .join(dim_product.alias("dp"), "product_key", "left")
         .join(dim_category.alias("cat"), F.col("dp.category_key") == F.col("cat.category_key"), "left")
         .join(dim_seller.alias("ds"), "seller_key", "left")
+        .join(dim_geo.alias("geo_s"), F.col("ds.geolocation_key") == F.col("geo_s.geolocation_key"), "left")
         .groupBy(
             F.col("dt.date").alias("date"),
             F.col("cat.category_name").alias("product_category"),
             F.col("ds.geolocation_key").alias("seller_geo_key"),
+            F.col("geo_s.state").alias("seller_state")
         )
         .agg(
             F.avg("fr.review_score").alias("avg_review_score"),
@@ -179,15 +186,19 @@ def build_logistics_mart(spark: SparkSession):
 
     dim_time = _read_delta(spark, _dw_path("dim_time"))
 
+    dim_geo = _read_delta(spark, _dw_path("dim_geolocation"))
+
     df = (
         fact_shipment.alias("fsh")
         .join(dim_customer.alias("dc"), "customer_key", "left")
         .join(dim_seller.alias("ds"), "seller_key", "left")
+        .join(dim_geo.alias("geo_c"), F.col("dc.geolocation_key") == F.col("geo_c.geolocation_key"), "left")
+        .join(dim_geo.alias("geo_s"), F.col("ds.geolocation_key") == F.col("geo_s.geolocation_key"), "left")
         .withColumn("delivery_time", F.datediff("delivered_ts", "purchase_ts"))
         .withColumn("delivery_delay", F.datediff("delivered_ts", "estimated_delivery_ts"))
         .groupBy(
-            F.col("ds.geolocation_key").alias("seller_geo_key"),
-            F.col("dc.geolocation_key").alias("customer_geo_key"),
+            F.col("geo_s.state").alias("seller_state"),
+            F.col("geo_c.state"). alias("customer_state"),
             F.col("purchase_ts").cast("date").alias("date"),
         )
         .agg(
